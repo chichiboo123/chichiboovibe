@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebApp 포트폴리오 | 치수쌤</title>
   
-  <!-- Tailwind CSS 로드 --><script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- 전역 스타일 및 폰트, 애니메이션 --><style>
+  <style>
     /* 폰트 로드 */
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
     @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
@@ -40,43 +40,53 @@
     .animate-slide-up {
       animation: slide-up 0.3s ease-out;
     }
-    
-    @keyframes pulse-slow-1 {
-      0%, 100% { opacity: 0.1; transform: scale(0.8) translateX(-25%) translateY(-25%); }
-      50% { opacity: 0.2; transform: scale(1) translateX(-25%) translateY(-25%); }
+
+    /* 히어로 섹션 조명 애니메이션 (Tailwind 충돌 방지) */
+    @keyframes spotlight-move-1 {
+      0%   { transform: translate3d(-30%, -30%, 0) scale(0.9); opacity: .15; }
+      100% { transform: translate3d(-20%, -20%, 0) scale(1.1); opacity: .30; }
     }
-    .animate-pulse-slow-1 {
-      animation: pulse-slow-1 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    @keyframes spotlight-move-2 {
+      0%   { transform: translate3d(30%, 30%, 0) scale(1.0); opacity: .10; }
+      100% { transform: translate3d(20%, 20%, 0) scale(1.2); opacity: .25; }
     }
-    
-    @keyframes pulse-slow-2 {
-      0%, 100% { opacity: 0.1; transform: scale(0.8) translateX(25%) translateY(25%); }
-      50% { opacity: 0.2; transform: scale(1) translateX(25%) translateY(25%); }
-    }
-    .animate-pulse-slow-2 {
-      animation: pulse-slow-2 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      animation-delay: 2s;
+    @keyframes spotlight-move-3 {
+      0%   { transform: translate3d(-50%, 0%, 0) scale(0.8); opacity: .05; }
+      100% { transform: translate3d(-40%, 10%, 0) scale(1.0); opacity: .15; }
     }
     
-    @keyframes pulse-slow-3 {
-      0%, 100% { opacity: 0.05; transform: scale(0.8) translateX(-50%) translateY(-50%); }
-      50% { opacity: 0.15; transform: scale(1) translateX(-50%) translateY(-50%); }
+    /* 애니메이션은 '코어'에게만 준다(정적 transform과 분리) */
+    .spotlight-core { 
+      will-change: transform, opacity; 
+      pointer-events: none; 
+      animation-fill-mode: both; /* iOS/Safari 안전장치 */
     }
-    .animate-pulse-slow-3 {
-      animation: pulse-slow-3 9s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      animation-delay: 1s;
-    }
+    .spotlight-anim-1 { animation: spotlight-move-1 12s linear infinite alternate; }
+    .spotlight-anim-2 { animation: spotlight-move-2 15s linear infinite alternate; animation-delay: 2s; }
+    .spotlight-anim-3 { animation: spotlight-move-3 10s linear infinite alternate; animation-delay: 1s; }
+
   </style>
 </head>
 <body class="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-200">
 
-  <!-- 1. Hero Section --><section class="relative flex flex-col items-center justify-center w-full h-screen text-center text-white bg-gray-900 overflow-hidden">
-    <!-- Animated Gradient Spotlights --><div class="absolute top-0 left-0 w-96 h-96 rounded-full animate-pulse-slow-1 -translate-x-1/4 -translate-y-1/4
-                bg-[radial-gradient(circle,rgba(244,63,94,0.3)_0%,rgba(244,63,94,0)_70%)]"></div>
-    <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full animate-pulse-slow-2 translate-x-1/4 translate-y-1/4
-                bg-[radial-gradient(circle,rgba(2,132,199,0.3)_0%,rgba(2,132,199,0)_70%)]"></div>
-    <div class="absolute top-1/2 left-1/2 w-80 h-80 rounded-full animate-pulse-slow-3 -translate-x-1/2 -translate-y-1/2
-                bg-[radial-gradient(circle,rgba(245,158,11,0.2)_0%,rgba(245,158,11,0)_70%)]"></div>
+  <section class="relative flex flex-col items-center justify-center w-full h-screen text-center text-white bg-gray-900 overflow-hidden">
+    
+    <!-- 조명 효과 (래퍼/코어 2단 분리) -->
+    <!-- 1 -->
+    <div class="absolute top-0 left-0 w-[400px] h-[400px]">
+      <div class="w-full h-full rounded-full spotlight-core spotlight-anim-1
+                  bg-[radial-gradient(circle,rgba(244,63,94,0.4)_0%,rgba(244,63,94,0)_70%)]"></div>
+    </div>
+    <!-- 2 -->
+    <div class="absolute bottom-0 right-0 w-[500px] h-[500px]">
+      <div class="w-full h-full rounded-full spotlight-core spotlight-anim-2
+                  bg-[radial-gradient(circle,rgba(2,132,199,0.4)_0%,rgba(2,132,199,0)_70%)]"></div>
+    </div>
+    <!-- 3: 정적 가운데 정렬은 래퍼에만, 애니메이션은 코어에만 -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px]">
+      <div class="w-full h-full rounded-full spotlight-core spotlight-anim-3
+                  bg-[radial-gradient(circle,rgba(245,158,11,0.3)_0%,rgba(245,158,11,0)_70%)]"></div>
+    </div>
 
     <div class="z-10 p-4">
       <h1 class="font-dohyeon text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
@@ -92,7 +102,7 @@
           rel="noopener noreferrer"
           class="px-6 py-3 font-semibold text-white transition-colors bg-white/10 rounded-full backdrop-blur-sm hover:bg-white/20"
         >
-          litt.ly/chichiboo
+          치수쌤 홈페이지
         </a>
         <a
           href="#collection"
@@ -105,10 +115,12 @@
   </section>
 
   <main>
-    <!-- 2. About Section --><section id="about" class="py-24 bg-white dark:bg-gray-900">
+    <section id="about" class="py-24 bg-white dark:bg-gray-900">
       <div class="container px-4 mx-auto">
         <div class="grid items-center gap-12 lg:grid-cols-3">
-          <!-- 프로필 카드 --><div class="flex justify-center lg:col-span-1">
+          
+          <!-- 프로필 카드 -->
+          <div class="flex justify-center lg:col-span-1">
             <div class="w-full max-w-sm p-8 text-center bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-lg">
               <img
                 src="https://i.ibb.co/Tx52NF6Q/image.png"
@@ -124,8 +136,10 @@
             </div>
           </div>
 
-          <!-- 소개글 --><div class="lg:col-span-2">
-            <h2 class="mb-6 text-3xl font-bold text-gray-900 font-dohyeon dark:text-white">About Me</h2>
+          
+          <!-- 소개글 -->
+          <div class="lg:col-span-2">
+            <h2 class="mb-6 text-3xl sm:text-4xl font-bold text-gray-900 font-dohyeon dark:text-white">About Me</h2>
             <div class="space-y-4 text-gray-700 dark:text-gray-300">
               <p>
                 교육뮤지컬을 고민하고, 창작하고, 실천합니다.
@@ -156,17 +170,22 @@
       </div>
     </section>
 
-    <!-- 3. WebApp Collection --><section id="collection" class="py-24 bg-gray-50 dark:bg-gray-950">
+    <section id="collection" class="py-24 bg-gray-50 dark:bg-gray-950">
       <div class="container px-4 mx-auto">
-        <h2 class="mb-4 text-3xl font-bold text-center text-gray-900 font-dohyeon dark:text-white">
+        <h2 class="mb-4 text-3xl sm:text-4xl font-bold text-center text-gray-900 font-dohyeon dark:text-white">
           WebApp Collection
         </h2>
         <p id="app-count" class="mb-12 text-center text-gray-600 dark:text-gray-400">
-          <!-- JS로 카운트 삽입 --></p>
+          <!-- 총 앱 개수는 스크립트에서 동적 삽입 -->
+        </p>
 
-        <!-- 필터 및 검색 바 --><div class="sticky top-0 z-20 py-6 mb-8 bg-gray-50/80 dark:bg-gray-950/80 backdrop-blur-md">
+        
+        <!-- 필터 및 검색 바 -->
+        <div class="sticky top-0 z-20 py-6 mb-8 bg-gray-50/80 dark:bg-gray-950/80 backdrop-blur-md">
           <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <!-- 검색창 --><div class="relative w-full md:max-w-xs">
+            
+            <!-- 검색창 -->
+            <div class="relative w-full md:max-w-xs">
               <input
                 type="text"
                 id="search-input"
@@ -180,39 +199,45 @@
               </div>
             </div>
             
-            <!-- 카테고리 필터 --><div id="filter-buttons-container" class="flex flex-wrap justify-center gap-2">
-              <!-- JS로 버튼 삽입 --></div>
+            
+            <!-- 카테고리 필터 -->
+            <div id="filter-buttons-container" class="flex flex-wrap justify-center gap-2">
+              <!-- 필터 버튼은 스크립트에서 동적 생성 -->
+            </div>
           </div>
         </div>
 
-        <!-- 앱 카드 그리드 --><div id="app-grid" class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          <!-- JS로 카드 삽입 --></div>
+        
+        <!-- 앱 카드 그리드 -->
+        <div id="app-grid" class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <!-- 앱 카드는 스크립트에서 동적 생성 -->
+        </div>
       </div>
     </section>
 
-    <!-- 4. Philosophy Section --><section id="concept" class="py-24 bg-white dark:bg-gray-900">
+    <section id="concept" class="py-24 bg-white dark:bg-gray-900">
       <div class="container px-4 mx-auto">
-        <h2 class="mb-12 text-3xl font-bold text-center text-gray-900 font-dohyeon dark:text-white">
+        <h2 class="mb-12 text-3xl sm:text-4xl font-bold text-center text-gray-900 font-dohyeon dark:text-white">
           Concept
         </h2>
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
-          <!-- Philosophy 1 --><div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-rose-400 to-pink-500 flex flex-col">
+          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-rose-400 to-pink-500 flex flex-col">
             <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">뮤지컬</h3>
             <p class="text-lg font-light">이야기와 예술 친구의 만남</p>
           </div>
-          <!-- Philosophy 2 --><div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-amber-400 to-yellow-500 flex flex-col">
+          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-amber-400 to-yellow-500 flex flex-col">
             <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">인문·창작</h3>
             <p class="text-lg font-light">질문과 상상의 시작</p>
           </div>
-          <!-- Philosophy 3 --><div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-sky-400 to-cyan-500 flex flex-col">
+          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-sky-400 to-cyan-500 flex flex-col">
             <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">인터랙티브<br>시각디자인</h3>
             <p class="text-lg font-light">예술과 기술의 상호작용</p>
           </div>
-          <!-- Philosophy 4 --><div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex flex-col">
+          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex flex-col">
             <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">디지털시민교육<br>세계시민교육</h3>
             <p class="text-lg font-light">현 시대의 시민교육</p>
           </div>
-          <!-- Philosophy 5 --><div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-indigo-400 to-violet-500 flex flex-col">
+          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-indigo-400 to-violet-500 flex flex-col">
             <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">수업디자인</h3>
             <p class="text-lg font-light">교사의 전문성</p>
           </div>
@@ -221,7 +246,7 @@
     </section>
   </main>
 
-  <!-- 5. Footer --><footer class="py-12 text-center text-gray-400 bg-gray-800 dark:bg-black">
+  <footer class="py-12 text-center text-gray-400 bg-gray-800 dark:bg-black">
     <div class="container px-4 mx-auto">
       <p class="text-sm">
         © 2025 원치수 · 교육뮤지컬 꿈꾸는 치수쌤. All rights reserved.
@@ -250,7 +275,9 @@
     </div>
   </footer>
 
-  <!-- 6. App Modal --><div 
+  
+  <!-- App Modal -->
+  <div 
     id="app-modal"
     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in hidden"
   >
@@ -258,11 +285,16 @@
       id="modal-content-wrapper"
       class="relative w-full max-w-2xl max-h-[90vh] bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden flex flex-col animate-slide-up"
     >
-      <!-- 모달 헤더 --><div id="modal-header-bg" class="p-6 text-white"> <h2 id="modal-title" class="text-3xl font-bold font-dohyeon"></h2>
+      
+      <!-- 모달 헤더 -->
+      <div id="modal-header-bg" class="p-6 text-white"> 
+        <h2 id="modal-title" class="text-2xl sm:text-3xl font-bold font-dohyeon"></h2>
         <p id="modal-eng-title" class="mt-1 text-lg opacity-90"></p>
       </div>
 
-      <!-- 닫기 버튼 --><button
+      
+      <!-- 닫기 버튼 -->
+      <button
         id="modal-close-btn"
         class="absolute top-4 right-4 p-2 text-white/70 rounded-full hover:bg-white/20 hover:text-white transition-colors"
         aria-label="닫기"
@@ -272,45 +304,60 @@
         </svg>
       </button>
 
-      <!-- 모달 컨텐츠 --><div class="flex-grow p-8 overflow-y-auto">
+      
+      <!-- 모달 컨텐츠 (순서 변경됨) -->
+      <div class="flex-grow p-6 sm:p-8 overflow-y-auto">
         
-        <!-- 유튜브 영상 (JS로 제어) --><div id="modal-video-container" class="mb-6 overflow-hidden rounded-lg shadow-md aspect-video hidden">
-          <iframe
-            id="modal-video-iframe"
-            class="w-full h-full"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-        </div>
-
-        <!-- 스크린샷 이미지 (JS로 제어) --><div id="modal-image-container" class="mb-6 hidden">
-          <img
-            id="modal-image"
-            alt="스크린샷"
-            class="w-full h-auto rounded-lg shadow-md object-cover"
-            onerror="this.parentElement.style.display='none'"
-          />
-        </div>
-
         <div class="space-y-6">
+          
+          <!-- 1. 분류/설명 -->
           <div>
-            <h4 id="modal-category" class="text-sm font-bold tracking-wider uppercase"></h4> <p id="modal-description" class="mt-2 text-gray-700 dark:text-gray-300"></p>
+            <h4 id="modal-category" class="text-sm font-bold tracking-wider uppercase"></h4> 
+            <p id="modal-description" class="mt-2 text-gray-700 dark:text-gray-300"></p>
           </div>
           
+          
+          <!-- 2. 관련 태그 -->
           <div>
             <h4 class="text-lg font-semibold text-gray-900 dark:text-white">관련 태그</h4>
             <div id="modal-tags-container" class="flex flex-wrap gap-2 mt-2">
-              <!-- JS로 태그 삽입 --></div>
+              <!-- 태그는 스크립트에서 동적 생성 -->
+            </div>
           </div>
+          
+          
+          <!-- 3. 스크린샷 (텍스트 없음) -->
+          <div id="modal-image-container" class="mb-6 hidden">
+            <img
+              id="modal-image"
+              alt="스크린샷"
+              class="w-full h-auto rounded-lg shadow-md object-cover"
+              onerror="this.parentElement.style.display='none'"
+            />
+          </div>
+
+          
+          <!-- 4. 사용법 영상 -->
+          <div id="modal-video-link-container" class="mb-6 hidden">
+            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">사용법 영상</h4>
+            <a 
+              id="modal-video-link"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-indigo-500 hover:underline break-all"
+            ></a>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 
 
-  <!-- 7. JavaScript 로직 --><script>
+  
+  <!-- JavaScript -->
+  <script>
     // --- 데이터 ---
     const appData = [
       {
@@ -329,6 +376,7 @@
         engTitle: 'Musical Script Note',
         description: '뮤지컬 최적화 대본 작성·관리 도구',
         tags: '#대본 #가사 #시나리오',
+        imageUrl: 'https://i.ibb.co/RTShng0m/image04.png',
       },
       {
         id: 3,
@@ -337,6 +385,8 @@
         engTitle: 'Musical Blocking Note',
         description: '뮤지컬 안무 및 무대 동선 시각화',
         tags: '#안무 #무대 #시각화',
+        imageUrl: 'https://i.ibb.co/xtkVWXhX/image07.png',
+        youtubeVideoId: '-8XIclLTR4c',
       },
       {
         id: 4,
@@ -345,6 +395,7 @@
         engTitle: 'Musical Poster Lab',
         description: '공연 포스터 디자인',
         tags: '#포스터 #시각디자인 #홍보',
+        imageUrl: 'https://i.ibb.co/v2s6M7b/image08.png',
       },
       {
         id: 5,
@@ -353,14 +404,18 @@
         engTitle: 'Sound Box',
         description: '공연을 위한 효과음 재생기',
         tags: '#효과음 #사운드 #무대',
+        imageUrl: 'https://i.ibb.co/S71DLpc1/2025-10-30-10-05-24.webp',
+        youtubeVideoId: 'NhU9AtZS9Eg',
       },
       {
         id: 6,
         category: '뮤지컬',
-        title: '흑백 노래가사 바꾸기 마법사',
+        title: '흑백 가사 바꾸기 마법사',
         engTitle: 'Easy Lyrics',
         description: '가사 구조를 시각화하여 창작 활동 지원',
         tags: '#가사 #창작 #시각화',
+        imageUrl: 'https://i.ibb.co/GvVH11Py/2025-10-30-10-08-51.webp',
+        youtubeVideoId: 'mRlLQR86f30',
       },
       {
         id: 7,
@@ -369,6 +424,7 @@
         engTitle: 'Character Matrix',
         description: '인물 분석 및 창조 활동 지원 도구',
         tags: '#캐릭터 #드로잉 #서사 #인물프로필',
+        imageUrl: 'https://i.ibb.co/KxRsRLjn/2025-07-19-20-10-48.png',
       },
       {
         id: 8,
@@ -377,6 +433,8 @@
         engTitle: 'Han Dance',
         description: '한글 자모와 움직임을 결합한 디지털 타이포그래피',
         tags: '#한글 #움직임 #디지털아트',
+        imageUrl: 'https://i.ibb.co/1YbqRCZf/2025-10-30-10-24-36.webp',
+        youtubeVideoId: 'wBQe_-pANHM',
       },
       {
         id: 9,
@@ -385,6 +443,7 @@
         engTitle: 'Graffiti for All',
         description: '손 제스처 인식 기반 드로잉 도구',
         tags: '#드로잉 #제스처 #창작',
+        imageUrl: 'https://i.ibb.co/W4mH32LF/2025-10-30-10-28-02.webp',
       },
       {
         id: 10,
@@ -393,6 +452,7 @@
         engTitle: 'Photopus',
         description: '얼굴 인식 기반 AR 포토부스',
         tags: '#AR #포토 #시각체험',
+        imageUrl: 'https://i.ibb.co/DPFMyRKL/2025-10-30-10-31-10.webp',
       },
       {
         id: 11,
@@ -401,6 +461,8 @@
         engTitle: 'Our4to',
         description: '네컷 사진 촬영 및 디자인 도구',
         tags: '#사진 #기록 #포토부스',
+        imageUrl: 'https://i.ibb.co/5xGc8J5P/image03.png',
+        youtubeVideoId: 'IrDiL2DF_P4',
       },
       {
         id: 12,
@@ -409,6 +471,7 @@
         engTitle: 'Coding Canvas',
         description: '손쉬운 코딩 테스트 도구',
         tags: '#코딩 #아이디어보드 #시각표현',
+        imageUrl: 'https://i.ibb.co/qwNQpLH/2025-10-30-10-31-34.webp',
       },
       {
         id: 13,
@@ -417,6 +480,8 @@
         engTitle: 'Playball Now',
         description: '데이터 기반 게임형 인터랙티브 스코어보드',
         tags: '#야구 #게임형수업 #데이터',
+        imageUrl: 'https://i.ibb.co/mF4sjNgC/2025-10-30-10-32-08.webp',
+        youtubeVideoId: '89Ucfhcf1uI',
       },
       {
         id: 14,
@@ -425,6 +490,8 @@
         engTitle: 'Cards for Imagination',
         description: '랜덤 이미지로 상상력 자극하기',
         tags: '#영감 #상상력 #이미지',
+        imageUrl: 'https://i.ibb.co/8pLs0gr/2025-10-30-10-32-32.webp',
+        youtubeVideoId: 'WetbgRledIU',
       },
       {
         id: 15,
@@ -433,6 +500,8 @@
         engTitle: 'Poem Market',
         description: '시쓰기 소재·질문 랜덤 추천기',
         tags: '#시쓰기 #창작 #질문',
+        imageUrl: 'https://i.ibb.co/4RSG3ttK/image01.png',
+        youtubeVideoId: '8XySj7J-W2M',
       },
       {
         id: 16,
@@ -441,6 +510,7 @@
         engTitle: 'Storytelling Cards',
         description: '이미지 기반 이야기 창작 앱',
         tags: '#스토리텔링 #이미지 #창작',
+        imageUrl: 'https://i.ibb.co/5gD5NDHx/image02.png',
       },
       {
         id: 17,
@@ -458,6 +528,7 @@
         engTitle: 'SDGs Market',
         description: '지속가능발전목표(SDGs) 학습 및 실천 프로젝트 도구',
         tags: '#SDGs #지속가능발전 #세계시민교육',
+        imageUrl: 'https://i.ibb.co/20DRsH2B/2025-10-30-10-33-55.webp',
       },
       {
         id: 19,
@@ -466,6 +537,17 @@
         engTitle: 'Citation Helper',
         description: '학생용 디지털 리터러시 - 간편 출처 표기 생성기',
         tags: '#저작권 #출처 #디지털윤리',
+        imageUrl: 'https://i.ibb.co/1fvxxkwV/2025-10-30-10-34-43.webp',
+        youtubeVideoId: 'vjdiWT972bM',
+      },
+      {
+        id: 22, // 새 ID로 추가
+        category: '디지털·세계시민교육',
+        title: '가이드 바이브',
+        engTitle: 'Guide Vibe',
+        description: '앱 개발을 위한 AI 프롬프트 작성 지원 도구',
+        tags: '#AI #코딩 #디지털리터러시',
+        imageUrl: 'https://i.ibb.co/C3zspYqq/2025-11-01-10-30-23.png', // 요청하신 링크로 수정
       },
       {
         id: 20,
@@ -474,6 +556,7 @@
         engTitle: 'SSD Guide',
         description: '성취기준·수업 설계·교육과정 연계 지원 플랫폼',
         tags: '#2022개정교육과정 #성취기준 #수업디자인',
+        imageUrl: 'https://i.ibb.co/BYXH5mD/2025-10-30-10-35-04.webp',
       },
       {
         id: 21,
@@ -482,6 +565,7 @@
         engTitle: 'Musical Class Studio',
         description: '뮤지컬 수업 기획 지원 도구',
         tags: '#교육뮤지컬 #수업디자인 #교육과정',
+        imageUrl: 'https://i.ibb.co/GNzWV9g/2025-10-30-10-35-35.webp',
       },
     ];
 
@@ -543,10 +627,13 @@
     const modalHeaderBg = document.getElementById('modal-header-bg');
     const modalTitle = document.getElementById('modal-title');
     const modalEngTitle = document.getElementById('modal-eng-title');
-    const modalVideoContainer = document.getElementById('modal-video-container');
-    const modalVideoIframe = document.getElementById('modal-video-iframe');
+        
     const modalImageContainer = document.getElementById('modal-image-container');
     const modalImage = document.getElementById('modal-image');
+    
+    const modalVideoLinkContainer = document.getElementById('modal-video-link-container');
+    const modalVideoLink = document.getElementById('modal-video-link');
+    
     const modalCategory = document.getElementById('modal-category');
     const modalDescription = document.getElementById('modal-description');
     const modalTagsContainer = document.getElementById('modal-tags-container');
@@ -597,7 +684,7 @@
                 <p class="mb-4 text-xs text-gray-500 dark:text-gray-400">${app.engTitle}</p>
                 <p class="flex-grow text-sm text-gray-600 dark:text-gray-400">
                   ${app.description}
-                </p>
+                </p> 
                 <div class="mt-4">
                   ${tagsHTML}
                 </div>
@@ -667,28 +754,21 @@
       // 1. 모달 내용 채우기
       modalTitle.textContent = app.title;
       modalEngTitle.textContent = app.engTitle;
-      modalDescription.textContent = app.description;
-      modalCategory.textContent = app.category;
       
       // 헤더 및 카테고리 스타일
       modalHeaderBg.className = `p-6 bg-gradient-to-r ${style.gradient} text-white`;
       modalCategory.className = `text-sm font-bold tracking-wider uppercase ${style.text}`;
 
-      // 태그
+      // (1) 분류/설명
+      modalCategory.textContent = app.category;
+      modalDescription.textContent = app.description;
+
+      // (2) 태그
       modalTagsContainer.innerHTML = app.tags.split(' ').map(tag => 
         `<span class="px-3 py-1 text-sm text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-200">${tag}</span>`
       ).join('');
 
-      // 비디오
-      if (app.youtubeVideoId) {
-        modalVideoIframe.src = `https://www.youtube.com/embed/${app.youtubeVideoId}`;
-        modalVideoContainer.classList.remove('hidden');
-      } else {
-        modalVideoContainer.classList.add('hidden');
-        modalVideoIframe.src = ''; // 비디오 중지
-      }
-
-      // 이미지
+      // (3) 이미지
       if (app.imageUrl) {
         modalImage.src = app.imageUrl;
         modalImage.alt = `${app.title} 스크린샷`;
@@ -698,6 +778,18 @@
         modalImageContainer.classList.add('hidden');
         modalImage.src = '';
       }
+      
+      // (4) 유튜브 텍스트 링크
+      if (app.youtubeVideoId) {
+        const videoUrl = `https://youtu.be/${app.youtubeVideoId}`;
+        modalVideoLink.href = videoUrl;
+        modalVideoLink.textContent = videoUrl;
+        modalVideoLinkContainer.classList.remove('hidden');
+      } else {
+        modalVideoLinkContainer.classList.add('hidden');
+        modalVideoLink.href = '#';
+        modalVideoLink.textContent = '';
+      }
 
       // 2. 모달 보이기
       modal.classList.remove('hidden');
@@ -706,8 +798,6 @@
     /** 모달을 닫습니다. */
     function closeModal() {
       modal.classList.add('hidden');
-      // 비디오 재생 중지 (중요)
-      modalVideoIframe.src = '';
     }
 
     // --- 초기화 및 이벤트 리스너 ---
@@ -729,7 +819,7 @@
       modalCloseBtn.addEventListener('click', closeModal);
       modal.addEventListener('click', closeModal); // 배경 클릭 시
       modalContentWrapper.addEventListener('click', (e) => {
-        e.stopPropagation(); // 모달 내부 클릭 시 닫히지 않게
+        e.stopPropagation(); // 모달 내부 클릭 시 DOKS.
       });
     });
 
