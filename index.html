@@ -359,6 +359,18 @@
   <!-- JavaScript -->
   <script>
     // --- 데이터 ---
+    // ─────────────────────────────────────────────────────────────────────
+    // 새 자료 추가 시 아래 필드를 채워서 배열 끝(마지막 항목 뒤)에 추가하세요.
+    // 필드 설명:
+    //   id            : 기존 최댓값 + 1 (중복 불가)
+    //   category      : '뮤지컬' | '인문·창작' | '인터랙티브 시각디자인' | '디지털·세계시민교육' | '수업디자인'
+    //   title         : 한국어 앱 이름
+    //   engTitle      : 영어 앱 이름
+    //   description   : 한 줄 기능 설명
+    //   tags          : '#태그1 #태그2 #태그3' 형식 (공백으로 구분)
+    //   imageUrl      : 스크린샷 이미지 직접 링크 (imgbb.com 업로드 후 Direct link 복사)
+    //   youtubeVideoId: (선택) 유튜브 영상 ID만 입력 — URL 전체 X, ID만 O
+    // ─────────────────────────────────────────────────────────────────────
     const appData = [
       {
         id: 1,
@@ -566,6 +578,15 @@
         description: '뮤지컬 수업 기획 지원 도구',
         tags: '#교육뮤지컬 #수업디자인 #교육과정',
         imageUrl: 'https://i.ibb.co/GNzWV9g/2025-10-30-10-35-35.webp',
+      },
+      {
+        id: 23,
+        category: '인문·창작',
+        title: '영감노트',
+        engTitle: 'Insight Notes',
+        description: 'Google Apps Script 기반 개인 영감 기록·관리 웹앱',
+        tags: '#영감 #기록 #GAS',
+        imageUrl: 'https://i.ibb.co/zh1m3Bc4/2026-02-19-15-08-20.png',
       },
     ];
 
