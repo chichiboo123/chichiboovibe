@@ -689,10 +689,15 @@
         return true;
       });
 
-      // 2. 그리드 초기화
+      // 2. 전체 보기일 때 categories 배열 순서대로 정렬 (같은 카테고리 내 순서 유지)
+      if (currentFilter === allCategories) {
+        filteredApps.sort((a, b) => categories.indexOf(a.category) - categories.indexOf(b.category));
+      }
+
+      // 3. 그리드 초기화
       appGrid.innerHTML = '';
 
-      // 3. 필터링 결과에 따라 렌더링
+      // 4. 필터링 결과에 따라 렌더링
       if (filteredApps.length > 0) {
         const allCardsHTML = filteredApps.map(app => {
           const style = categoryStyles[app.category];
