@@ -238,7 +238,7 @@
             <p class="text-lg font-light">현 시대의 시민교육</p>
           </div>
           <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-indigo-400 to-violet-500 flex flex-col">
-            <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">수업디자인</h3>
+            <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">수업·학급운영</h3>
             <p class="text-lg font-light">교사의 전문성</p>
           </div>
         </div>
@@ -363,7 +363,7 @@
     // 새 자료 추가 시 아래 필드를 채워서 배열 끝(마지막 항목 뒤)에 추가하세요.
     // 필드 설명:
     //   id            : 기존 최댓값 + 1 (중복 불가)
-    //   category      : '뮤지컬' | '인문·창작' | '인터랙티브 시각디자인' | '디지털·세계시민교육' | '수업디자인'
+    //   category      : '뮤지컬' | '인문·창작' | '인터랙티브 시각디자인' | '디지털·세계시민교육' | '수업·학급운영'
     //   title         : 한국어 앱 이름
     //   engTitle      : 영어 앱 이름
     //   description   : 한 줄 기능 설명
@@ -590,21 +590,30 @@
       },
       {
         id: 20,
-        category: '수업디자인',
+        category: '수업·학급운영',
         title: '성수동(성취기준, 수업을 함께 디자인하는 동료)',
         engTitle: 'SSD Guide',
         description: '성취기준·수업 설계·교육과정 연계 지원 플랫폼',
-        tags: '#2022개정교육과정 #성취기준 #수업디자인',
+        tags: '#2022개정교육과정 #성취기준 #수업·학급운영',
         imageUrl: 'https://i.ibb.co/BYXH5mD/2025-10-30-10-35-04.webp',
       },
       {
         id: 21,
-        category: '수업디자인',
+        category: '수업·학급운영',
         title: '뮤지컬 수업 스튜디오',
         engTitle: 'Musical Class Studio',
         description: '뮤지컬 수업 기획 지원 도구',
-        tags: '#교육뮤지컬 #수업디자인 #교육과정',
+        tags: '#교육뮤지컬 #수업·학급운영 #교육과정',
         imageUrl: 'https://i.ibb.co/GNzWV9g/2025-10-30-10-35-35.webp',
+      },
+      {
+        id: 26,
+        category: '수업·학급운영',
+        title: '나세나반 다이어리',
+        engTitle: 'NSN Diary',
+        description: '구글 스프레드시트 연동형 통합 학급 경영 및 기록 관리 플랫폼',
+        tags: '#학급운영 #학급일지 #수업성찰 #아카이빙',
+        imageUrl: 'https://imgsh.net/i/642b3406df',
       },
     ];
 
@@ -613,7 +622,7 @@
       '인문·창작',
       '인터랙티브 시각디자인',
       '디지털·세계시민교육',
-      '수업디자인',
+      '수업·학급운영',
     ];
     const allCategories = '전체';
 
@@ -642,7 +651,7 @@
         border: 'border-teal-500',
         bg: 'bg-teal-500',
       },
-      '수업디자인': {
+      '수업·학급운영': {
         gradient: 'from-indigo-400 to-violet-500',
         text: 'text-violet-500',
         border: 'border-violet-500',
