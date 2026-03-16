@@ -41,29 +41,14 @@
       animation: slide-up 0.3s ease-out;
     }
 
-    /* 히어로 섹션 조명 애니메이션 (Tailwind 충돌 방지) */
-    @keyframes spotlight-move-1 {
-      0%   { transform: translate3d(-30%, -30%, 0) scale(0.9); opacity: .15; }
-      100% { transform: translate3d(-20%, -20%, 0) scale(1.1); opacity: .30; }
+    /* 히어로 섹션 조명 - JS 구동 방식 */
+    .spotlight-blob {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      will-change: left, top, opacity;
+      transform: translate(-50%, -50%);
     }
-    @keyframes spotlight-move-2 {
-      0%   { transform: translate3d(30%, 30%, 0) scale(1.0); opacity: .10; }
-      100% { transform: translate3d(20%, 20%, 0) scale(1.2); opacity: .25; }
-    }
-    @keyframes spotlight-move-3 {
-      0%   { transform: translate3d(-50%, 0%, 0) scale(0.8); opacity: .05; }
-      100% { transform: translate3d(-40%, 10%, 0) scale(1.0); opacity: .15; }
-    }
-    
-    /* 애니메이션은 '코어'에게만 준다(정적 transform과 분리) */
-    .spotlight-core { 
-      will-change: transform, opacity; 
-      pointer-events: none; 
-      animation-fill-mode: both; /* iOS/Safari 안전장치 */
-    }
-    .spotlight-anim-1 { animation: spotlight-move-1 12s linear infinite alternate; }
-    .spotlight-anim-2 { animation: spotlight-move-2 15s linear infinite alternate; animation-delay: 2s; }
-    .spotlight-anim-3 { animation: spotlight-move-3 10s linear infinite alternate; animation-delay: 1s; }
 
   </style>
 </head>
@@ -71,22 +56,8 @@
 
   <section class="relative flex flex-col items-center justify-center w-full h-screen text-center text-white bg-gray-900 overflow-hidden">
     
-    <!-- 조명 효과 (래퍼/코어 2단 분리) -->
-    <!-- 1 -->
-    <div class="absolute top-0 left-0 w-[400px] h-[400px]">
-      <div class="w-full h-full rounded-full spotlight-core spotlight-anim-1
-                  bg-[radial-gradient(circle,rgba(244,63,94,0.4)_0%,rgba(244,63,94,0)_70%)]"></div>
-    </div>
-    <!-- 2 -->
-    <div class="absolute bottom-0 right-0 w-[500px] h-[500px]">
-      <div class="w-full h-full rounded-full spotlight-core spotlight-anim-2
-                  bg-[radial-gradient(circle,rgba(2,132,199,0.4)_0%,rgba(2,132,199,0)_70%)]"></div>
-    </div>
-    <!-- 3: 정적 가운데 정렬은 래퍼에만, 애니메이션은 코어에만 -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px]">
-      <div class="w-full h-full rounded-full spotlight-core spotlight-anim-3
-                  bg-[radial-gradient(circle,rgba(245,158,11,0.3)_0%,rgba(245,158,11,0)_70%)]"></div>
-    </div>
+    <!-- 조명 효과 컨테이너 (JS가 동적으로 생성) -->
+    <div id="spotlight-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
     <div class="z-10 p-4">
       <h1 class="font-dohyeon text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
@@ -356,6 +327,68 @@
 
 
   
+  <!-- 히어로 조명 애니메이션 -->
+  <script>
+    (function () {
+      const container = document.getElementById('spotlight-container');
+
+      // 조명 정의: color(r,g,b), size(px), opacity 범위
+      const defs = [
+        { color: '244,63,94',   size: 520, minOp: 0.18, maxOp: 0.38 }, // 빨강/핑크
+        { color: '2,132,199',   size: 600, minOp: 0.12, maxOp: 0.30 }, // 파랑
+        { color: '245,158,11',  size: 380, minOp: 0.10, maxOp: 0.25 }, // 앰버
+        { color: '139,92,246',  size: 450, minOp: 0.12, maxOp: 0.28 }, // 보라
+        { color: '34,197,94',   size: 340, minOp: 0.08, maxOp: 0.20 }, // 초록
+        { color: '236,72,153',  size: 420, minOp: 0.10, maxOp: 0.24 }, // 핫핑크
+        { color: '14,165,233',  size: 500, minOp: 0.10, maxOp: 0.26 }, // 하늘
+      ];
+
+      const rand = (min, max) => Math.random() * (max - min) + min;
+
+      const blobs = defs.map((def, i) => {
+        const el = document.createElement('div');
+        el.className = 'spotlight-blob';
+        el.style.width  = def.size + 'px';
+        el.style.height = def.size + 'px';
+        el.style.background = `radial-gradient(circle, rgba(${def.color},0.4) 0%, rgba(${def.color},0) 70%)`;
+        el.style.opacity = '0';
+        // 초기 위치 (화면 내 랜덤)
+        el.style.left = rand(0, 100) + '%';
+        el.style.top  = rand(0, 100) + '%';
+        container.appendChild(el);
+        return { el, def };
+      });
+
+      function moveBlob({ el, def }) {
+        const duration = rand(10, 18); // 10~18초 — 느리고 부드럽게
+        const x = rand(-10, 110);      // 화면 바깥까지 살짝 나갈 수 있음
+        const y = rand(-10, 110);
+        const op = rand(def.minOp, def.maxOp);
+
+        el.style.transition = [
+          `left ${duration}s ease-in-out`,
+          `top ${duration}s ease-in-out`,
+          `opacity ${rand(3, 6)}s ease-in-out`,
+        ].join(', ');
+
+        el.style.left    = x + '%';
+        el.style.top     = y + '%';
+        el.style.opacity = op;
+
+        // 이동이 끝나기 약간 전에 다음 이동 예약 → 자연스럽게 이어짐
+        setTimeout(() => moveBlob({ el, def }), duration * 0.85 * 1000);
+      }
+
+      // 각 조명을 시차를 두고 시작 (한꺼번에 움직이지 않도록)
+      blobs.forEach(({ el, def }, i) => {
+        setTimeout(() => {
+          el.style.opacity = rand(def.minOp, def.maxOp);
+          moveBlob({ el, def });
+        }, i * 600);
+      });
+    })();
+  </script>
+
   <!-- JavaScript -->
   <script>
     // --- 데이터 ---
