@@ -191,7 +191,7 @@
         <h2 class="mb-12 text-3xl sm:text-4xl font-bold text-center text-gray-900 font-dohyeon dark:text-white">
           Concept
         </h2>
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-6">
           <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-rose-400 to-pink-500 flex flex-col">
             <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">뮤지컬</h3>
             <p class="text-lg font-light">이야기와 예술 친구의 만남</p>
@@ -211,6 +211,10 @@
           <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-indigo-400 to-violet-500 flex flex-col">
             <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">수업·학급운영</h3>
             <p class="text-lg font-light">교사의 전문성</p>
+          </div>
+          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-orange-400 to-red-500 flex flex-col">
+            <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">업무</h3>
+            <p class="text-lg font-light">효율성 추구</p>
           </div>
         </div>
       </div>
@@ -396,7 +400,7 @@
     // 새 자료 추가 시 아래 필드를 채워서 배열 끝(마지막 항목 뒤)에 추가하세요.
     // 필드 설명:
     //   id            : 기존 최댓값 + 1 (중복 불가)
-    //   category      : '뮤지컬' | '인문·창작' | '인터랙티브 시각디자인' | '디지털·세계시민교육' | '수업·학급운영'
+    //   category      : '뮤지컬' | '인문·창작' | '인터랙티브 시각디자인' | '디지털·세계시민교육' | '수업·학급운영' | '업무'
     //   title         : 한국어 앱 이름
     //   engTitle      : 영어 앱 이름
     //   description   : 한 줄 기능 설명
@@ -692,6 +696,7 @@
       '인터랙티브 시각디자인',
       '디지털·세계시민교육',
       '수업·학급운영',
+      '업무',
     ];
     const allCategories = '전체';
 
@@ -725,6 +730,12 @@
         text: 'text-violet-500',
         border: 'border-violet-500',
         bg: 'bg-violet-500',
+      },
+      '업무': {
+        gradient: 'from-orange-400 to-red-500',
+        text: 'text-red-500',
+        border: 'border-red-500',
+        bg: 'bg-red-500',
       },
     };
 
