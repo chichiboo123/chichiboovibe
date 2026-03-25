@@ -75,4 +75,5 @@ https://www.youtube.com/watch?v=mRlLQR86f30
 | `description` | 필수 | 한 줄 기능 설명 |
 | `tags` | 필수 | `#태그` 형식, 공백으로 구분 |
 | `imageUrl` | 필수 | 스크린샷 이미지 직접 링크 |
+| `siteUrl` | 선택 | 외부 사이트 링크 URL (있으면 모달에 표시) |
 | `youtubeVideoId` | 선택 | 유튜브 영상 ID (없으면 생략) |

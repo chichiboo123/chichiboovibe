@@ -312,7 +312,19 @@
           </div>
 
           
-          <!-- 4. 사용법 영상 -->
+          <!-- 4. 사이트 링크 -->
+          <div id="modal-site-link-container" class="mb-6 hidden">
+            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">사이트 링크</h4>
+            <a
+              id="modal-site-link"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-indigo-500 hover:underline break-all"
+            ></a>
+          </div>
+
+          <!-- 5. 사용법 영상 -->
           <div id="modal-video-link-container" class="mb-6 hidden">
             <h4 class="text-lg font-semibold text-gray-900 dark:text-white">사용법 영상</h4>
             <a 
@@ -406,6 +418,7 @@
     //   description   : 한 줄 기능 설명
     //   tags          : '#태그1 #태그2 #태그3' 형식 (공백으로 구분)
     //   imageUrl      : 스크린샷 이미지 직접 링크 (imgbb.com 업로드 후 Direct link 복사)
+    //   siteUrl       : (선택) 외부 사이트 링크 URL
     //   youtubeVideoId: (선택) 유튜브 영상 ID만 입력 — URL 전체 X, ID만 O
     // ─────────────────────────────────────────────────────────────────────
     const appData = [
@@ -706,6 +719,16 @@
         tags: '#바이브코딩 #AI교육 #교사연수',
         imageUrl: 'https://drive.google.com/thumbnail?id=167_OfiPWCpghH0Pnq0LeVbAxj61peK4G&sz=w2000',
       },
+      {
+        id: 33,
+        category: '수업·학급운영',
+        title: '우리반 학급회의',
+        engTitle: 'Class Meeting Guide',
+        description: '학생 주도적인 학급회의 진행을 돕는 단계별 시나리오 및 회의 기록 플랫폼',
+        tags: '#학급회의 #학급자치 #학급운영',
+        siteUrl: 'https://chichiboo.link/classmeeting',
+        imageUrl: 'https://drive.google.com/thumbnail?id=1HYoMFgxezOX7gbunbTgIP5vx12yYlWGS&sz=w2000',
+      },
     ];
 
     const categories = [
@@ -777,6 +800,9 @@
     const modalImageContainer = document.getElementById('modal-image-container');
     const modalImage = document.getElementById('modal-image');
     
+    const modalSiteLinkContainer = document.getElementById('modal-site-link-container');
+    const modalSiteLink = document.getElementById('modal-site-link');
+
     const modalVideoLinkContainer = document.getElementById('modal-video-link-container');
     const modalVideoLink = document.getElementById('modal-video-link');
     
@@ -930,7 +956,18 @@
         modalImage.src = '';
       }
       
-      // (4) 유튜브 텍스트 링크
+      // (4) 사이트 텍스트 링크
+      if (app.siteUrl) {
+        modalSiteLink.href = app.siteUrl;
+        modalSiteLink.textContent = app.siteUrl;
+        modalSiteLinkContainer.classList.remove('hidden');
+      } else {
+        modalSiteLinkContainer.classList.add('hidden');
+        modalSiteLink.href = '#';
+        modalSiteLink.textContent = '';
+      }
+
+      // (5) 유튜브 텍스트 링크
       if (app.youtubeVideoId) {
         const videoUrl = `https://youtu.be/${app.youtubeVideoId}`;
         modalVideoLink.href = videoUrl;
