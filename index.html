@@ -191,7 +191,7 @@
         <h2 class="mb-12 text-3xl sm:text-4xl font-bold text-center text-gray-900 font-dohyeon dark:text-white">
           Concept
         </h2>
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-6">
           <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-rose-400 to-pink-500 flex flex-col">
             <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">뮤지컬</h3>
             <p class="text-lg font-light">이야기와 예술 친구의 만남</p>
@@ -211,6 +211,10 @@
           <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-indigo-400 to-violet-500 flex flex-col">
             <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">수업·학급운영</h3>
             <p class="text-lg font-light">교사의 전문성</p>
+          </div>
+          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-orange-400 to-red-500 flex flex-col">
+            <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">업무</h3>
+            <p class="text-lg font-light">효율성 추구</p>
           </div>
         </div>
       </div>
@@ -308,7 +312,19 @@
           </div>
 
           
-          <!-- 4. 사용법 영상 -->
+          <!-- 4. 사이트 링크 -->
+          <div id="modal-site-link-container" class="mb-6 hidden">
+            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">사이트 링크</h4>
+            <a
+              id="modal-site-link"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-indigo-500 hover:underline break-all"
+            ></a>
+          </div>
+
+          <!-- 5. 사용법 영상 -->
           <div id="modal-video-link-container" class="mb-6 hidden">
             <h4 class="text-lg font-semibold text-gray-900 dark:text-white">사용법 영상</h4>
             <a 
@@ -396,12 +412,13 @@
     // 새 자료 추가 시 아래 필드를 채워서 배열 끝(마지막 항목 뒤)에 추가하세요.
     // 필드 설명:
     //   id            : 기존 최댓값 + 1 (중복 불가)
-    //   category      : '뮤지컬' | '인문·창작' | '인터랙티브 시각디자인' | '디지털·세계시민교육' | '수업·학급운영'
+    //   category      : '뮤지컬' | '인문·창작' | '인터랙티브 시각디자인' | '디지털·세계시민교육' | '수업·학급운영' | '업무'
     //   title         : 한국어 앱 이름
     //   engTitle      : 영어 앱 이름
     //   description   : 한 줄 기능 설명
     //   tags          : '#태그1 #태그2 #태그3' 형식 (공백으로 구분)
     //   imageUrl      : 스크린샷 이미지 직접 링크 (imgbb.com 업로드 후 Direct link 복사)
+    //   siteUrl       : (선택) 외부 사이트 링크 URL
     //   youtubeVideoId: (선택) 유튜브 영상 ID만 입력 — URL 전체 X, ID만 O
     // ─────────────────────────────────────────────────────────────────────
     const appData = [
@@ -668,7 +685,7 @@
       },
       {
         id: 29,
-        category: '수업·학급운영',
+        category: '업무',
         title: '돈 워리',
         engTitle: 'Don Worry',
         description: '구글 스프레드시트 연동형 예산 및 사업비 집행 현황 관리 플랫폼',
@@ -684,6 +701,80 @@
         tags: '#공연예술교육 #수업설계 #KOPIS',
         imageUrl: 'https://i.ibb.co/r2NXNZ9f/Screenshot-20260315-220522-Chrome.jpg',
       },
+      {
+        id: 31,
+        category: '업무',
+        title: '이미지 클라우드',
+        engTitle: 'Image Cloud',
+        description: '구글 드라이브와 GAS를 연동하여 이미지를 업로드하고 다목적 호스팅 링크를 생성하는 개인용 클라우드 웹앱',
+        tags: '#이미지호스팅 #GAS #바이브코딩',
+        imageUrl: 'https://drive.google.com/thumbnail?id=1-NH3wCyCkI9Ee4pMQXut_Od8l-wS_ZMQ&sz=w2000',
+      },
+      {
+        id: 32,
+        category: '디지털·세계시민교육',
+        title: '치수쌤 바이브코딩 클래스',
+        engTitle: 'How to vibe',
+        description: 'AI를 활용해 코딩 지식 없이도 필요한 교육 도구를 직접 만드는 방법을 안내하는 연수용 가이드 플랫폼',
+        tags: '#바이브코딩 #AI교육 #교사연수',
+        imageUrl: 'https://drive.google.com/thumbnail?id=167_OfiPWCpghH0Pnq0LeVbAxj61peK4G&sz=w2000',
+      },
+      {
+        id: 33,
+        category: '수업·학급운영',
+        title: '우리반 학급회의',
+        engTitle: 'Class Meeting Guide',
+        description: '학생 주도적인 학급회의 진행을 돕는 단계별 시나리오 및 회의 기록 플랫폼',
+        tags: '#학급회의 #학급자치 #학급운영',
+        siteUrl: 'https://chichiboo.link/classmeeting',
+        imageUrl: 'https://drive.google.com/thumbnail?id=1HYoMFgxezOX7gbunbTgIP5vx12yYlWGS&sz=w2000',
+        youtubeVideoId: 'hPIpGA3mmu4',
+      },
+      {
+        id: 34,
+        category: '디지털·세계시민교육',
+        title: '컬처박스',
+        engTitle: 'CultureBox',
+        description: '국제 학교 간 문화 교류 디지털 콘텐츠 박스 제작·발송·개봉 플랫폼',
+        tags: '#문화교류 #국제교육 #학교교류 #다국어',
+        imageUrl: 'https://drive.google.com/thumbnail?id=1Fcf1CO7l-_9hVsltN8VkFRWyhhSW-awQ&sz=w2000',
+      },
+      {
+        id: 35,
+        category: '디지털·세계시민교육',
+        title: 'SDGs-tory',
+        engTitle: 'SDGs-tory',
+        description: '이야기 창작과 바꿔쓰기를 통해 지속가능발전목표(SDGs)를 탐색하는 참여형 학습 앱',
+        tags: '#SDGs #스토리텔링 #세계시민교육',
+        imageUrl: 'https://drive.google.com/thumbnail?id=1ZpQRwxeB6rIZEvAVRwIvogOjHPYn-7nz&sz=w2000',
+      },
+      {
+        id: 36,
+        category: '인터랙티브 시각디자인',
+        title: '세상의 모든 소리',
+        engTitle: 'S.O.W (Sound of the World)',
+        description: '그리드 기반으로 음표 블록을 찍고 재생·녹음·공유할 수 있는 웹 뮤직 메이커',
+        tags: '#음악 #작곡 #인터랙티브',
+        imageUrl: 'https://drive.google.com/thumbnail?id=10kPNW5uldgTIWX0Lo5ho0Y2Pq4InUo3Z&sz=w2000',
+      },
+      {
+        id: 37,
+        category: '인터랙티브 시각디자인',
+        title: '세상의 모든 색깔',
+        engTitle: 'C.O.W (Colors of the World)',
+        description: '이미지에서 대표 색상을 추출하고 색상 카드 및 포스터를 제작하는 다국어 웹 앱',
+        tags: '#색상팔레트 #색채분석 #시각디자인',
+        imageUrl: 'https://drive.google.com/thumbnail?id=1eHs6ok71Kqalr3fNb5l3e1rNmw29IkaX&sz=w2000',
+      },
+      {
+        id: 38,
+        category: '업무',
+        title: '여기 있어 특수문자',
+        engTitle: 'Symbol Box',
+        description: '디지털 작업에 필요한 특수문자를 빠르게 검색하고 복사하는 웹 도구',
+        tags: '#특수문자 #시각디자인 #업무',
+        imageUrl: 'https://drive.google.com/thumbnail?id=1gEoWdG6OVmrFZpDSRbaZntFL1LnSfASw&sz=w2000',
+      },
     ];
 
     const categories = [
@@ -692,6 +783,7 @@
       '인터랙티브 시각디자인',
       '디지털·세계시민교육',
       '수업·학급운영',
+      '업무',
     ];
     const allCategories = '전체';
 
@@ -726,6 +818,12 @@
         border: 'border-violet-500',
         bg: 'bg-violet-500',
       },
+      '업무': {
+        gradient: 'from-orange-400 to-red-500',
+        text: 'text-red-500',
+        border: 'border-red-500',
+        bg: 'bg-red-500',
+      },
     };
 
     // --- 상태 변수 ---
@@ -748,6 +846,9 @@
     const modalImageContainer = document.getElementById('modal-image-container');
     const modalImage = document.getElementById('modal-image');
     
+    const modalSiteLinkContainer = document.getElementById('modal-site-link-container');
+    const modalSiteLink = document.getElementById('modal-site-link');
+
     const modalVideoLinkContainer = document.getElementById('modal-video-link-container');
     const modalVideoLink = document.getElementById('modal-video-link');
     
@@ -901,7 +1002,18 @@
         modalImage.src = '';
       }
       
-      // (4) 유튜브 텍스트 링크
+      // (4) 사이트 텍스트 링크
+      if (app.siteUrl) {
+        modalSiteLink.href = app.siteUrl;
+        modalSiteLink.textContent = app.siteUrl;
+        modalSiteLinkContainer.classList.remove('hidden');
+      } else {
+        modalSiteLinkContainer.classList.add('hidden');
+        modalSiteLink.href = '#';
+        modalSiteLink.textContent = '';
+      }
+
+      // (5) 유튜브 텍스트 링크
       if (app.youtubeVideoId) {
         const videoUrl = `https://youtu.be/${app.youtubeVideoId}`;
         modalVideoLink.href = videoUrl;
