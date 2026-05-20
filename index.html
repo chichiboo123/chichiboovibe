@@ -89,15 +89,15 @@
       cursor: pointer;
     }
     .dark .app-card {
-      background: #1e293b;
-      box-shadow: 0 2px 8px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.06);
+      background: #0f172a;
+      box-shadow: 0 2px 8px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.08);
     }
     .app-card:hover {
       box-shadow: 0 12px 32px rgba(0,0,0,.13), 0 0 0 1px rgba(99,102,241,.2);
       transform: translateY(-4px);
     }
     .dark .app-card:hover {
-      box-shadow: 0 12px 32px rgba(0,0,0,.5), 0 0 0 1px rgba(99,102,241,.4);
+      box-shadow: 0 12px 32px rgba(0,0,0,.6), 0 0 0 1px rgba(99,102,241,.5);
     }
 
     /* ── 모달 ── */
@@ -192,7 +192,12 @@
       background: #f1f5f9;
       color: #475569;
     }
-    .dark .tag-pill { background: #334155; color: #94a3b8; }
+    .dark .tag-pill { background: #1e3a5f; color: #93c5fd; }
+
+    /* ── 다크모드 전용 텍스트 강화 ── */
+    .dark .card-desc    { color: #cbd5e1; }
+    .dark .card-eng     { color: #64748b; }
+    .dark .section-desc { color: #94a3b8; }
 
     /* ── 모달 유튜브 임베드 ── */
     .yt-embed-wrap {
@@ -233,12 +238,21 @@
       color: #94a3b8;
     }
 
-    /* ── 검색 포커스 링 ── */
+    /* ── 검색창 ── */
     #search-input:focus { outline: none; box-shadow: 0 0 0 2px #6366f1; }
+    #search-input::placeholder { color: #9ca3af; }
+    .dark #search-input::placeholder { color: #475569; }
 
     /* ── 하이라이트 텍스트 ── */
     mark { background: #fef08a; border-radius: 2px; padding: 0 2px; }
-    .dark mark { background: #713f12; color: #fef9c3; }
+    .dark mark { background: #1e3a5f; color: #93c5fd; }
+
+    /* ── 모바일: 히어로 패딩 (nav 높이만큼 확보) ── */
+    @media (max-width: 640px) {
+      #main-nav .container { padding-left: 1rem; padding-right: 1rem; }
+      .hero-btns { flex-direction: column; align-items: stretch; }
+      .hero-btns a { text-align: center; justify-content: center; }
+    }
   </style>
 </head>
 <body class="min-h-screen bg-white text-gray-900 dark:bg-slate-950 dark:text-gray-100">
@@ -288,11 +302,11 @@
       <h1 class="font-dohyeon text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight">
         치수쌤의<br class="sm:hidden"> WebApps
       </h1>
-      <p class="mt-5 text-base md:text-lg text-gray-300 max-w-xl mx-auto leading-relaxed">
-        교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸며<br>
+      <p class="mt-5 text-base md:text-lg text-gray-300 max-w-xl mx-auto leading-relaxed px-2">
+        교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸며<br class="hidden sm:inline">
         직접 만든 <span id="hero-app-count" class="text-indigo-300 font-bold"></span>개의 디지털 교육 도구 모음
       </p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
+      <div class="hero-btns flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
         <a href="#collection"
           class="inline-flex items-center gap-2 px-7 py-3.5 font-semibold text-gray-900 bg-white rounded-full hover:bg-gray-100 transition-colors shadow-lg shadow-white/10">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -320,7 +334,7 @@
   <main>
 
     <!-- ── About ── -->
-    <section id="about" class="py-24 bg-white dark:bg-slate-900">
+    <section id="about" class="py-24 bg-white dark:bg-slate-900 scroll-mt-16">
       <div class="container px-4 mx-auto">
         <div class="grid items-center gap-12 lg:grid-cols-3">
 
@@ -350,11 +364,11 @@
           <div class="lg:col-span-2 reveal" style="transition-delay:.1s">
             <p class="mb-2 text-sm font-bold tracking-widest uppercase text-indigo-500">About Me</p>
             <h2 class="mb-6 text-3xl sm:text-4xl font-bold text-gray-900 font-dohyeon dark:text-white">
-              교육과 기술의<br>의미 있는 만남
+              교육과 뮤지컬, 디지털의<br>의미 있는 만남
             </h2>
-            <div class="space-y-4 text-gray-600 dark:text-gray-300 text-base leading-relaxed">
+            <div class="space-y-4 text-gray-600 dark:text-slate-300 text-base leading-relaxed">
               <p>교육뮤지컬을 고민하고, 창작하고, 실천합니다. 초등학생들과 함께 꿈꾸는 교육뮤지컬 이야기를 기록합니다. 따뜻한 디지털 활용 교육에도 관심이 많습니다.</p>
-              <blockquote class="pl-5 py-1 italic border-l-4 border-indigo-400 bg-indigo-50 dark:bg-indigo-950/30 rounded-r-lg text-gray-700 dark:text-gray-200">
+              <blockquote class="pl-5 py-3 italic border-l-4 border-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 rounded-r-lg text-gray-700 dark:text-indigo-200 text-sm">
                 "교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸다."
               </blockquote>
               <div>
@@ -383,7 +397,7 @@
     </section>
 
     <!-- ── App Collection ── -->
-    <section id="collection" class="py-24 bg-slate-50 dark:bg-slate-950">
+    <section id="collection" class="py-24 bg-slate-50 dark:bg-slate-950 scroll-mt-16">
       <div class="container px-4 mx-auto">
 
         <!-- 섹션 헤더 -->
@@ -442,7 +456,7 @@
     </section>
 
     <!-- ── Concept ── -->
-    <section id="concept" class="py-24 bg-white dark:bg-slate-900">
+    <section id="concept" class="py-24 bg-white dark:bg-slate-900 scroll-mt-16">
       <div class="container px-4 mx-auto">
         <div class="text-center mb-12 reveal">
           <p class="mb-2 text-sm font-bold tracking-widest uppercase text-indigo-500">Categories</p>
@@ -515,7 +529,7 @@
   <!-- ══════════════════════ 모달 ══════════════════════ -->
   <div id="app-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div id="modal-content-wrapper"
-      class="relative w-full max-w-2xl max-h-[92vh] bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-scale-in ring-1 ring-black/10 dark:ring-white/10">
+      class="relative w-full max-w-2xl max-h-[92vh] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-scale-in ring-1 ring-black/10 dark:ring-white/10">
 
       <!-- 모달 헤더 -->
       <div id="modal-header-bg" class="p-6 text-white shrink-0">
@@ -540,18 +554,18 @@
 
         <!-- 설명 -->
         <div>
-          <p id="modal-description" class="text-gray-700 dark:text-gray-300 text-base leading-relaxed"></p>
+          <p id="modal-description" class="text-gray-700 dark:text-slate-200 text-base leading-relaxed"></p>
         </div>
 
         <!-- 태그 -->
         <div>
-          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-2">태그</h4>
+          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-slate-500 mb-2">태그</h4>
           <div id="modal-tags-container" class="flex flex-wrap gap-2"></div>
         </div>
 
         <!-- 스크린샷 -->
         <div id="modal-image-container" class="hidden">
-          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-2">스크린샷</h4>
+          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-slate-500 mb-2">스크린샷</h4>
           <img id="modal-image" alt="스크린샷"
             class="w-full h-auto rounded-xl shadow-md object-cover ring-1 ring-black/5 dark:ring-white/10"
             loading="lazy"
@@ -560,7 +574,7 @@
 
         <!-- 사이트 링크 -->
         <div id="modal-site-link-container" class="hidden">
-          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-2">사이트 링크</h4>
+          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-slate-500 mb-2">사이트 링크</h4>
           <a id="modal-site-link" href="#" target="_blank" rel="noopener noreferrer"
             class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition-colors shadow-sm">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -572,7 +586,7 @@
 
         <!-- 유튜브 임베드 -->
         <div id="modal-video-container" class="hidden">
-          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-3">사용법 영상</h4>
+          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-slate-500 mb-3">사용법 영상</h4>
           <div class="yt-embed-wrap shadow-lg ring-1 ring-black/5 dark:ring-white/10">
             <iframe id="modal-youtube-iframe" title="사용법 영상"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -657,7 +671,7 @@
       { id:34, category:'디지털·세계시민교육', title:'컬처박스', engTitle:'CultureBox', description:'국제 학교 간 문화 교류 디지털 콘텐츠 박스 제작·발송·개봉 플랫폼', tags:'#문화교류 #국제교육 #학교교류 #다국어', imageUrl:'https://drive.google.com/thumbnail?id=1Fcf1CO7l-_9hVsltN8VkFRWyhhSW-awQ&sz=w2000' },
       { id:35, category:'디지털·세계시민교육', title:'SDGs-tory', engTitle:'SDGs-tory', description:'이야기 창작과 바꿔쓰기를 통해 지속가능발전목표(SDGs)를 탐색하는 참여형 학습 앱', tags:'#SDGs #스토리텔링 #세계시민교육', imageUrl:'https://drive.google.com/thumbnail?id=1ZpQRwxeB6rIZEvAVRwIvogOjHPYn-7nz&sz=w2000' },
       { id:44, category:'디지털·세계시민교육', title:'Ma-sical Story 설명서', engTitle:'Ma-sical Story with SDGs', description:'디지털 국제교류 수업을 위해 프로젝트 개요, 활용 도구, 참여 안내를 다국어로 제공하는 웹 기반 소개 플랫폼', tags:'#국제교류 #SDGs #세계시민교육', imageUrl:'https://i.ibb.co/8LP8GFjB/image.png' },
-      { id:45, category:'디지털·세계시민교육', title:'국기 팔레트', engTitle:'Flag Palette', description:'세계 각국의 국기를 색상 중심으로 탐색하고, 관심 국기를 나만의 팔레트로 구성해 학습·수업 자료로 저장할 수 있는 웹앱', tags:'#세계시민교육 #국기 #상징물', imageUrl:'https://drive.google.com/uc?export=view&id=1Ptw5x1StU-joCnAlKs1n65ohDSlnu1ij', youtubeVideoId:'gKAuxDgDGb0' },
+      { id:45, category:'디지털·세계시민교육', title:'국기 팔레트', engTitle:'Flag Palette', description:'세계 각국의 국기를 색상 중심으로 탐색하고, 관심 국기를 나만의 팔레트로 구성해 학습·수업 자료로 저장할 수 있는 웹앱', tags:'#세계시민교육 #국기 #상징물', imageUrl:'https://drive.google.com/thumbnail?id=1bJdi3l6At82nNhEy7gZh03QJATSU046F&sz=w2000', youtubeVideoId:'gKAuxDgDGb0' },
       { id:47, category:'디지털·세계시민교육', title:'디지털 컬쳐박스 보드', engTitle:'Digital Culturebox Board', description:'국제 교류 학교가 문화 상자 콘텐츠를 만들고 공유하며 지도에서 교류 흐름을 확인하는 다국어 문화교류 웹앱', tags:'#국제교류 #세계시민교육 #국제공동수업', imageUrl:'https://drive.google.com/thumbnail?id=13zsnpJXUM9Te4ZeGTpeW19CrUNPAFwsm&sz=w2000' },
       { id:48, category:'디지털·세계시민교육', title:'캐릭터 여권 제작소', engTitle:'Toy passport', description:'캐릭터의 프로필과 여행 스탬프를 꾸며 가상의 캐릭 여권 이미지를 만드는 창작형 웹앱', tags:'#캐릭터 #스토리텔링 #국제교류', imageUrl:'https://drive.google.com/thumbnail?id=1C4lOMDxyxSuZz0pbUyCdK94pkv3tmhy1&sz=w2000' },
       { id:51, category:'디지털·세계시민교육', title:'SDGs 마스터', engTitle:'SDGs Master', description:'UN 지속가능발전목표(SDGs)를 일상 사례와 연결해 나만의 마스터 카드를 만들고 학급 패들렛에 함께 전시하는 세계시민교육 웹앱', tags:'#SDGs #세계시민교육 #마스터카드', imageUrl:'https://drive.google.com/thumbnail?id=1gWmnYtgySnUNelyBXu4Y62uChvM7scrH&sz=w2000' },
@@ -672,7 +686,7 @@
       { id:38, category:'업무', title:'여기 있어 특수문자', engTitle:'Symbol Box', description:'디지털 작업에 필요한 특수문자를 빠르게 검색하고 복사하는 웹 도구', tags:'#특수문자 #시각디자인 #업무', imageUrl:'https://drive.google.com/thumbnail?id=1gEoWdG6OVmrFZpDSRbaZntFL1LnSfASw&sz=w2000' },
       { id:39, category:'업무', title:'이지북', engTitle:'easy Book', description:'PDF 파일을 업로드하거나 URL로 불러와 실제 책처럼 넘기며 읽을 수 있는 웹 기반 eBook 뷰어', tags:'#eBook #PDF #업무', imageUrl:'https://drive.google.com/thumbnail?id=1njnSCyhUVzJAduojxYyDaEHrjtUeKYhW&sz=w2000' },
       { id:40, category:'업무', title:'여기 있어 QR코드', engTitle:'QR BOX', description:'QR코드 생성과 인식을 한 곳에서 할 수 있는 통합형 웹 도구', tags:'#QR코드 #업무', imageUrl:'https://drive.google.com/thumbnail?id=1RNBoJCQTDcRSuVpjEcorygjJGNJ7j99A&sz=w2000' },
-      { id:49, category:'업무', title:'패들렛 스캐너', engTitle:'Padlet Scanner', description:'패들렛 API를 활용해 보드의 활동 현황을 분석하고 한눈에 확인하며 엑셀로 정리할 수 있는 웹앱', tags:'#패들렛 #API #데이터분석 #수업디자인', imageUrl:'' },
+      { id:49, category:'업무', title:'패들렛 스캐너', engTitle:'Padlet Scanner', description:'패들렛 API를 활용해 보드의 활동 현황을 분석하고 한눈에 확인하며 엑셀로 정리할 수 있는 웹앱', tags:'#패들렛 #API #데이터분석 #수업디자인', imageUrl:'https://drive.google.com/thumbnail?id=1RoM1b_kQ2CByP2fbfLoqk24v0wuqJ06V&sz=w2000' },
       { id:50, category:'업무', title:'칫허브', engTitle:'Chithub', description:'GitHub 리포지토리를 불러와 웹앱 정보를 체계적으로 정리하고 홍보 문구를 자동 생성하는 개인 대시보드형 웹앱', tags:'#Github #바이브코딩 #데이터분석 #아카이빙', imageUrl:'https://drive.google.com/thumbnail?id=1ENf9o9m6zPgvLeHVPdurBHhA5f0QIOGc&sz=w2000' },
     ];
 
@@ -806,9 +820,9 @@
               <div>
                 <span class="inline-flex items-center gap-1 text-xs font-bold ${meta.text}">${meta.emoji} ${highlight(app.category, currentSearch)}</span>
                 <h3 class="mt-1 text-base font-bold text-gray-900 dark:text-white font-dohyeon leading-snug line-clamp-2">${highlight(app.title, currentSearch)}</h3>
-                <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">${highlight(app.engTitle, currentSearch)}</p>
+                <p class="text-xs text-gray-400 dark:text-slate-500 mt-0.5">${highlight(app.engTitle, currentSearch)}</p>
               </div>
-              <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">${highlight(app.description, currentSearch)}</p>
+              <p class="text-sm text-gray-600 dark:text-slate-300 leading-relaxed line-clamp-2">${highlight(app.description, currentSearch)}</p>
               <div class="flex flex-wrap gap-1 pt-1">${tagsHtml}</div>
             </div>
           </article>`;
