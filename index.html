@@ -1,47 +1,50 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebApp 포트폴리오 | 치수쌤</title>
-  
+
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <style>
-    /* 폰트 로드 */
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
     @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
 
+    :root {
+      --nav-h: 64px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-    }
-    .font-dohyeon {
-      font-family: 'Do Hyeon', sans-serif;
-    }
-
-    /* 스크롤바 부드럽게 */
-    html {
-      scroll-behavior: smooth;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+        'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
+        'Malgun Gothic', sans-serif;
     }
 
-    /* 커스텀 애니메이션 */
-    @keyframes fade-in {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .animate-fade-in {
-      animation: fade-in 0.3s ease-out;
-    }
-    
-    @keyframes slide-up {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    .animate-slide-up {
-      animation: slide-up 0.3s ease-out;
-    }
+    .font-dohyeon { font-family: 'Do Hyeon', sans-serif; }
 
-    /* 히어로 섹션 조명 - JS 구동 방식 */
+    /* ── 스크롤바 ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 9999px; }
+
+    /* ── 애니메이션 ── */
+    @keyframes fade-in   { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slide-up  { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes bounce-y  { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+    @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes scale-in  { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .animate-fade-in   { animation: fade-in  0.25s ease-out; }
+    .animate-slide-up  { animation: slide-up 0.3s  ease-out; }
+    .animate-scale-in  { animation: scale-in 0.3s  cubic-bezier(.2,.8,.2,1); }
+    .animate-bounce-y  { animation: bounce-y 1.8s  ease-in-out infinite; }
+
+    /* ── 조명 blob ── */
     .spotlight-blob {
       position: absolute;
       border-radius: 50%;
@@ -50,90 +53,328 @@
       transform: translate(-50%, -50%);
     }
 
+    /* ── 카드 썸네일 ── */
+    .card-thumb {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 */
+      overflow: hidden;
+      background: #f1f5f9;
+    }
+    .dark .card-thumb { background: #1e293b; }
+    .card-thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .card-thumb .card-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .group:hover .card-thumb img { transform: scale(1.05); }
+
+    /* ── 카드 ── */
+    .app-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06), 0 0 0 1px rgba(0,0,0,.04);
+      transition: box-shadow .3s, transform .3s;
+      cursor: pointer;
+    }
+    .dark .app-card {
+      background: #1e293b;
+      box-shadow: 0 2px 8px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.06);
+    }
+    .app-card:hover {
+      box-shadow: 0 12px 32px rgba(0,0,0,.13), 0 0 0 1px rgba(99,102,241,.2);
+      transform: translateY(-4px);
+    }
+    .dark .app-card:hover {
+      box-shadow: 0 12px 32px rgba(0,0,0,.5), 0 0 0 1px rgba(99,102,241,.4);
+    }
+
+    /* ── 모달 ── */
+    #app-modal { transition: opacity .2s; }
+    #app-modal.hidden { display: none !important; }
+
+    /* ── 네비게이션 ── */
+    #main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      transition: background .3s, box-shadow .3s;
+    }
+    #main-nav.scrolled {
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 1px 16px rgba(0,0,0,.08);
+      backdrop-filter: blur(12px);
+    }
+    .dark #main-nav.scrolled {
+      background: rgba(15,23,42,0.92);
+      box-shadow: 0 1px 16px rgba(0,0,0,.4);
+    }
+
+    /* ── 맨위로 버튼 ── */
+    #back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 1.5rem;
+      z-index: 90;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #6366f1;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(99,102,241,.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s, transform .3s;
+      transform: translateY(8px);
+    }
+    #back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    /* ── 필터 스크롤 ── */
+    #filter-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    #filter-scroll::-webkit-scrollbar { display: none; }
+
+    /* ── Reveal 애니메이션 ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── 다크모드 토글 버튼 ── */
+    .theme-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s;
+    }
+    .theme-btn:hover { background: rgba(99,102,241,.12); }
+    .dark .theme-btn:hover { background: rgba(99,102,241,.2); }
+
+    /* ── 태그 pill ── */
+    .tag-pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: #f1f5f9;
+      color: #475569;
+    }
+    .dark .tag-pill { background: #334155; color: #94a3b8; }
+
+    /* ── 모달 유튜브 임베드 ── */
+    .yt-embed-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+    .yt-embed-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ── 필터 버튼 badge ── */
+    .filter-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 9999px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0 5px;
+      background: rgba(255,255,255,0.25);
+      margin-left: 5px;
+    }
+    .filter-btn-inactive .filter-badge {
+      background: rgba(0,0,0,0.08);
+      color: #64748b;
+    }
+    .dark .filter-btn-inactive .filter-badge {
+      background: rgba(255,255,255,0.1);
+      color: #94a3b8;
+    }
+
+    /* ── 검색 포커스 링 ── */
+    #search-input:focus { outline: none; box-shadow: 0 0 0 2px #6366f1; }
+
+    /* ── 하이라이트 텍스트 ── */
+    mark { background: #fef08a; border-radius: 2px; padding: 0 2px; }
+    .dark mark { background: #713f12; color: #fef9c3; }
   </style>
 </head>
-<body class="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-200">
+<body class="min-h-screen bg-white text-gray-900 dark:bg-slate-950 dark:text-gray-100">
 
-  <section class="relative flex flex-col items-center justify-center w-full h-screen text-center text-white bg-gray-900 overflow-hidden">
-    
-    <!-- 조명 효과 컨테이너 (JS가 동적으로 생성) -->
-    <div id="spotlight-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+  <!-- ══════════════════════ 네비게이션 ══════════════════════ -->
+  <nav id="main-nav">
+    <div class="container mx-auto px-4 h-full flex items-center justify-between">
+      <!-- 로고 -->
+      <a href="#" class="font-dohyeon text-xl text-white dark:text-white transition-colors" id="nav-logo">
+        치수쌤 WebApps
+      </a>
 
-    <div class="z-10 p-4">
-      <h1 class="font-dohyeon text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
-        Education x Musical x Digital
-      </h1>
-      <p class="mt-6 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-        “교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸다.”
-      </p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-        <a
-          href="https://litt.ly/chichiboo"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-6 py-3 font-semibold text-white transition-colors bg-white/10 rounded-full backdrop-blur-sm hover:bg-white/20"
-        >
-          치수쌤 홈페이지
-        </a>
-        <a
-          href="#collection"
-          class="px-6 py-3 font-semibold text-gray-900 transition-colors bg-white rounded-full hover:bg-gray-200"
-        >
-          WebApps 둘러보기
+      <!-- 데스크탑 링크 -->
+      <div class="hidden md:flex items-center gap-1">
+        <a href="#about"      class="px-3 py-1.5 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors">About</a>
+        <a href="#collection" class="px-3 py-1.5 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors">Apps</a>
+        <a href="#concept"    class="px-3 py-1.5 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors">Concept</a>
+      </div>
+
+      <!-- 오른쪽: 다크모드 + 외부링크 -->
+      <div class="flex items-center gap-2">
+        <button id="theme-toggle" class="theme-btn text-white/70 hover:text-white" aria-label="다크/라이트 모드 전환">
+          <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364-1.414 1.414M7.05 16.95l-1.414 1.414M18.364 18.364l-1.414-1.414M7.05 7.05 5.636 5.636M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" />
+          </svg>
+          <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75 9.75 9.75 0 0 1 8.25 6 9.77 9.77 0 0 1 8.998 2.248 9.75 9.75 0 0 0 12 21.75c3.43 0 6.45-1.77 8.19-4.454a.75.75 0 0 0-.438-1.294Z" />
+          </svg>
+        </button>
+        <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener noreferrer"
+          class="hidden sm:flex items-center gap-1.5 px-4 py-1.5 text-sm font-semibold rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm">
+          홈페이지
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+          </svg>
         </a>
       </div>
     </div>
+  </nav>
+
+  <!-- ══════════════════════ 히어로 ══════════════════════ -->
+  <section class="relative flex flex-col items-center justify-center w-full h-screen text-center text-white bg-gray-900 dark:bg-slate-950 overflow-hidden">
+    <div id="spotlight-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+
+    <div class="z-10 p-4 animate-slide-up">
+      <p class="mb-4 text-sm font-semibold tracking-[0.2em] uppercase text-indigo-300/80">Education × Musical × Digital</p>
+      <h1 class="font-dohyeon text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight">
+        치수쌤의<br class="sm:hidden"> WebApps
+      </h1>
+      <p class="mt-5 text-base md:text-lg text-gray-300 max-w-xl mx-auto leading-relaxed">
+        교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸며<br>
+        직접 만든 <span id="hero-app-count" class="text-indigo-300 font-bold"></span>개의 디지털 교육 도구 모음
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
+        <a href="#collection"
+          class="inline-flex items-center gap-2 px-7 py-3.5 font-semibold text-gray-900 bg-white rounded-full hover:bg-gray-100 transition-colors shadow-lg shadow-white/10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m0 0-6.75-6.75M20.25 12l-6.75 6.75" />
+          </svg>
+          WebApps 둘러보기
+        </a>
+        <a href="#about"
+          class="inline-flex items-center gap-2 px-7 py-3.5 font-semibold text-white bg-white/10 rounded-full hover:bg-white/20 transition-colors backdrop-blur-sm">
+          About Me
+        </a>
+      </div>
+    </div>
+
+    <!-- 스크롤 다운 indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/40 animate-bounce-y">
+      <span class="text-xs tracking-widest uppercase">Scroll</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+      </svg>
+    </div>
   </section>
 
+  <!-- ══════════════════════ MAIN ══════════════════════ -->
   <main>
-    <section id="about" class="py-24 bg-white dark:bg-gray-900">
+
+    <!-- ── About ── -->
+    <section id="about" class="py-24 bg-white dark:bg-slate-900">
       <div class="container px-4 mx-auto">
         <div class="grid items-center gap-12 lg:grid-cols-3">
-          
+
           <!-- 프로필 카드 -->
-          <div class="flex justify-center lg:col-span-1">
-            <div class="w-full max-w-sm p-8 text-center bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-lg">
-              <img
-                src="https://i.ibb.co/Tx52NF6Q/image.png"
-                alt="프로필 이미지"
-                class="w-32 h-32 mx-auto rounded-full shadow-md object-cover"
-                onerror="this.src='https://placehold.co/150x150/E2E8F0/334155?text=Profile'"
-              />
-              <h3 class="mt-6 text-2xl font-bold font-dohyeon text-gray-900 dark:text-white">원치수</h3>
-              <p class="mt-1 text-indigo-500 dark:text-indigo-400">교육뮤지컬 꿈꾸는 치수쌤</p>
-              <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
-                교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸며 고민하고 창작하고 실천합니다.
-              </p>
+          <div class="flex justify-center lg:col-span-1 reveal">
+            <div class="w-full max-w-sm p-8 text-center bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/10">
+              <div class="relative inline-block">
+                <img
+                  src="https://i.ibb.co/Tx52NF6Q/image.png"
+                  alt="프로필 이미지"
+                  class="w-28 h-28 mx-auto rounded-full shadow-md object-cover ring-4 ring-white dark:ring-slate-700"
+                  onerror="this.src='https://placehold.co/150x150/6366f1/ffffff?text=ChiSoo'"
+                />
+                <span class="absolute bottom-1 right-1 w-5 h-5 bg-green-400 border-2 border-white dark:border-slate-700 rounded-full"></span>
+              </div>
+              <h3 class="mt-5 text-2xl font-bold font-dohyeon text-gray-900 dark:text-white">원치수</h3>
+              <p class="mt-1 text-sm font-medium text-indigo-500 dark:text-indigo-400">교육뮤지컬 꿈꾸는 치수쌤</p>
+              <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <span class="px-3 py-1 text-xs font-medium rounded-full bg-white dark:bg-slate-900 text-gray-600 dark:text-gray-300 shadow-sm">🎭 교육뮤지컬</span>
+                <span class="px-3 py-1 text-xs font-medium rounded-full bg-white dark:bg-slate-900 text-gray-600 dark:text-gray-300 shadow-sm">💻 바이브코딩</span>
+                <span class="px-3 py-1 text-xs font-medium rounded-full bg-white dark:bg-slate-900 text-gray-600 dark:text-gray-300 shadow-sm">🌱 세계시민교육</span>
+              </div>
             </div>
           </div>
 
-          
           <!-- 소개글 -->
-          <div class="lg:col-span-2">
-            <h2 class="mb-6 text-3xl sm:text-4xl font-bold text-gray-900 font-dohyeon dark:text-white">About Me</h2>
-            <div class="space-y-4 text-gray-700 dark:text-gray-300">
-              <p>
-                교육뮤지컬을 고민하고, 창작하고, 실천합니다.
-                초등학생들과 함께 꿈꾸는 교육뮤지컬 이야기를 기록합니다.
-                따뜻한 디지털 활용 교육에도 관심이 많습니다.
-              </p>
-              <blockquote class="pl-4 italic border-l-4 border-indigo-500">
-                “교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸다.”
+          <div class="lg:col-span-2 reveal" style="transition-delay:.1s">
+            <p class="mb-2 text-sm font-bold tracking-widest uppercase text-indigo-500">About Me</p>
+            <h2 class="mb-6 text-3xl sm:text-4xl font-bold text-gray-900 font-dohyeon dark:text-white">
+              교육과 기술의<br>의미 있는 만남
+            </h2>
+            <div class="space-y-4 text-gray-600 dark:text-gray-300 text-base leading-relaxed">
+              <p>교육뮤지컬을 고민하고, 창작하고, 실천합니다. 초등학생들과 함께 꿈꾸는 교육뮤지컬 이야기를 기록합니다. 따뜻한 디지털 활용 교육에도 관심이 많습니다.</p>
+              <blockquote class="pl-5 py-1 italic border-l-4 border-indigo-400 bg-indigo-50 dark:bg-indigo-950/30 rounded-r-lg text-gray-700 dark:text-gray-200">
+                "교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸다."
               </blockquote>
               <div>
-                <h4 class="mt-6 mb-2 text-lg font-semibold text-gray-900 dark:text-white">저서</h4>
-                <ul class="flex flex-wrap gap-4">
-                  <li class="px-4 py-2 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-200 transition-colors hover:bg-gray-200 dark:hover:bg-gray-600">
-                    <a href="https://www.yes24.com/product/goods/103633243" target="_blank" rel="noopener noreferrer">
-                      『세상에서 가장 쉬운 뮤지컬 수업』
-                    </a>
-                  </li>
-                  <li class="px-4 py-2 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-200 transition-colors hover:bg-gray-200 dark:hover:bg-gray-600">
-                    <a href="https://q-shop.kr/shop_view/?idx=180" target="_blank" rel="noopener noreferrer">
-                      『뮤지컬 창작노트』
-                    </a>
-                  </li>
-                </ul>
+                <h4 class="mt-6 mb-3 text-base font-bold text-gray-900 dark:text-white">저서</h4>
+                <div class="flex flex-wrap gap-3">
+                  <a href="https://www.yes24.com/product/goods/103633243" target="_blank" rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-800 bg-gray-50 dark:bg-slate-800 dark:text-gray-200 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-700 dark:hover:text-indigo-300 ring-1 ring-black/5 dark:ring-white/10 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                    </svg>
+                    세상에서 가장 쉬운 뮤지컬 수업
+                  </a>
+                  <a href="https://q-shop.kr/shop_view/?idx=180" target="_blank" rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-800 bg-gray-50 dark:bg-slate-800 dark:text-gray-200 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-700 dark:hover:text-indigo-300 ring-1 ring-black/5 dark:ring-white/10 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                    </svg>
+                    뮤지컬 창작노트
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -141,1052 +382,598 @@
       </div>
     </section>
 
-    <section id="collection" class="py-24 bg-gray-50 dark:bg-gray-950">
+    <!-- ── App Collection ── -->
+    <section id="collection" class="py-24 bg-slate-50 dark:bg-slate-950">
       <div class="container px-4 mx-auto">
-        <h2 class="mb-4 text-3xl sm:text-4xl font-bold text-center text-gray-900 font-dohyeon dark:text-white">
-          WebApp Collection
-        </h2>
-        <p id="app-count" class="mb-12 text-center text-gray-600 dark:text-gray-400">
-          <!-- 총 앱 개수는 스크립트에서 동적 삽입 -->
-        </p>
 
-        
-        <!-- 필터 및 검색 바 -->
-        <div class="sticky top-0 z-20 py-6 mb-8 bg-gray-50/80 dark:bg-gray-950/80 backdrop-blur-md">
-          <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            
+        <!-- 섹션 헤더 -->
+        <div class="text-center mb-10 reveal">
+          <p class="mb-2 text-sm font-bold tracking-widest uppercase text-indigo-500">Collection</p>
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 font-dohyeon dark:text-white">WebApp Collection</h2>
+          <p id="app-count" class="mt-3 text-gray-500 dark:text-gray-400 text-sm"></p>
+        </div>
+
+        <!-- 필터 + 검색 (sticky) -->
+        <div class="sticky top-0 z-20 py-4 mb-8 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800/60">
+          <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+
             <!-- 검색창 -->
-            <div class="relative w-full md:max-w-xs">
+            <div class="relative w-full md:max-w-xs shrink-0">
               <input
                 type="text"
                 id="search-input"
                 placeholder="앱 이름, 태그, 기능 검색..."
-                class="w-full py-2 pl-10 pr-4 text-gray-900 bg-white border border-gray-300 rounded-full dark:bg-gray-800 dark:text-white dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                class="w-full py-2.5 pl-10 pr-4 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full transition-shadow"
               />
-              <div class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
               </div>
+              <!-- 검색 초기화 -->
+              <button id="search-clear" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
-            
-            
-            <!-- 카테고리 필터 -->
-            <div id="filter-buttons-container" class="flex flex-wrap justify-center gap-2">
-              <!-- 필터 버튼은 스크립트에서 동적 생성 -->
+
+            <!-- 카테고리 필터 (가로 스크롤) -->
+            <div id="filter-scroll" class="flex gap-2 pb-1">
+              <div id="filter-buttons-container" class="flex gap-2 min-w-max">
+                <!-- JS로 생성 -->
+              </div>
             </div>
           </div>
         </div>
 
-        
-        <!-- 앱 카드 그리드 -->
-        <div id="app-grid" class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          <!-- 앱 카드는 스크립트에서 동적 생성 -->
+        <!-- 앱 그리드 -->
+        <div id="app-grid" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <!-- JS로 생성 -->
+        </div>
+
+        <!-- 빈 검색결과 -->
+        <div id="no-results" class="hidden text-center py-20">
+          <div class="text-5xl mb-4">🔍</div>
+          <p class="text-lg font-semibold text-gray-700 dark:text-gray-300" id="no-results-text"></p>
+          <p class="mt-2 text-sm text-gray-500 dark:text-gray-500">다른 검색어로 시도해보세요.</p>
         </div>
       </div>
     </section>
 
-    <section id="concept" class="py-24 bg-white dark:bg-gray-900">
+    <!-- ── Concept ── -->
+    <section id="concept" class="py-24 bg-white dark:bg-slate-900">
       <div class="container px-4 mx-auto">
-        <h2 class="mb-12 text-3xl sm:text-4xl font-bold text-center text-gray-900 font-dohyeon dark:text-white">
-          Concept
-        </h2>
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-6">
-          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-rose-400 to-pink-500 flex flex-col">
-            <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">뮤지컬</h3>
-            <p class="text-lg font-light">이야기와 예술 친구의 만남</p>
+        <div class="text-center mb-12 reveal">
+          <p class="mb-2 text-sm font-bold tracking-widest uppercase text-indigo-500">Categories</p>
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 font-dohyeon dark:text-white">Concept</h2>
+          <p class="mt-3 text-sm text-gray-500 dark:text-gray-400">6가지 영역에서 디지털 교육 도구를 만들고 있습니다.</p>
+        </div>
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="reveal p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-rose-400 to-pink-600 flex flex-col gap-2 group hover:scale-[1.02] transition-transform">
+            <span class="text-3xl">🎭</span>
+            <h3 class="text-xl font-bold font-dohyeon">뮤지컬</h3>
+            <p class="text-sm opacity-80">이야기와 예술 친구의 만남</p>
           </div>
-          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-amber-400 to-yellow-500 flex flex-col">
-            <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">인문·창작</h3>
-            <p class="text-lg font-light">질문과 상상의 시작</p>
+          <div class="reveal p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-amber-400 to-orange-500 flex flex-col gap-2 group hover:scale-[1.02] transition-transform" style="transition-delay:.05s">
+            <span class="text-3xl">✍️</span>
+            <h3 class="text-xl font-bold font-dohyeon">인문·창작</h3>
+            <p class="text-sm opacity-80">질문과 상상의 시작</p>
           </div>
-          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-sky-400 to-cyan-500 flex flex-col">
-            <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">인터랙티브<br>시각디자인</h3>
-            <p class="text-lg font-light">예술과 기술의 상호작용</p>
+          <div class="reveal p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-sky-400 to-cyan-600 flex flex-col gap-2 group hover:scale-[1.02] transition-transform" style="transition-delay:.1s">
+            <span class="text-3xl">🎨</span>
+            <h3 class="text-xl font-bold font-dohyeon">인터랙티브 시각디자인</h3>
+            <p class="text-sm opacity-80">예술과 기술의 상호작용</p>
           </div>
-          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex flex-col">
-            <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">디지털시민교육<br>세계시민교육</h3>
-            <p class="text-lg font-light">현 시대의 시민교육</p>
+          <div class="reveal p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-emerald-400 to-teal-600 flex flex-col gap-2 group hover:scale-[1.02] transition-transform" style="transition-delay:.15s">
+            <span class="text-3xl">🌍</span>
+            <h3 class="text-xl font-bold font-dohyeon">디지털·세계시민교육</h3>
+            <p class="text-sm opacity-80">현 시대의 시민교육</p>
           </div>
-          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-indigo-400 to-violet-500 flex flex-col">
-            <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">수업·학급운영</h3>
-            <p class="text-lg font-light">교사의 전문성</p>
+          <div class="reveal p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-indigo-400 to-violet-600 flex flex-col gap-2 group hover:scale-[1.02] transition-transform" style="transition-delay:.2s">
+            <span class="text-3xl">📚</span>
+            <h3 class="text-xl font-bold font-dohyeon">수업·학급운영</h3>
+            <p class="text-sm opacity-80">교사의 전문성</p>
           </div>
-          <div class="p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-orange-400 to-red-500 flex flex-col">
-            <h3 class="mb-2 text-xl font-bold font-dohyeon min-h-[3.5rem] flex items-center">업무</h3>
-            <p class="text-lg font-light">효율성 추구</p>
+          <div class="reveal p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br from-orange-400 to-red-500 flex flex-col gap-2 group hover:scale-[1.02] transition-transform" style="transition-delay:.25s">
+            <span class="text-3xl">⚡</span>
+            <h3 class="text-xl font-bold font-dohyeon">업무</h3>
+            <p class="text-sm opacity-80">효율성 추구</p>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="py-12 text-center text-gray-400 bg-gray-800 dark:bg-black">
-    <div class="container px-4 mx-auto">
-      <p class="text-sm">
-        © 2025 원치수 · 교육뮤지컬 꿈꾸는 치수쌤. All rights reserved.
-      </p>
-      <div class="flex justify-center gap-6 mt-4">
-        <a
-          href="https://litt.ly/chichiboo"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-sm hover:text-white"
-        >
-          Portfolio
-        </a>
-        <a
-          href="https://litt.ly/stage"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center text-sm hover:text-white"
-        >
-          STAGE 
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
+  <!-- ══════════════════════ 푸터 ══════════════════════ -->
+  <footer class="py-12 bg-slate-900 dark:bg-black">
+    <div class="container px-4 mx-auto text-center">
+      <p class="font-dohyeon text-lg text-white mb-1">치수쌤 WebApps</p>
+      <p class="text-xs text-gray-400 mb-6">교육뮤지컬 꿈꾸는 치수쌤 | Education × Musical × Digital</p>
+      <div class="flex justify-center gap-6 mb-6">
+        <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener noreferrer"
+          class="text-sm text-gray-400 hover:text-white transition-colors">Portfolio</a>
+        <a href="https://litt.ly/stage" target="_blank" rel="noopener noreferrer"
+          class="flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors">
+          STAGE
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
           </svg>
         </a>
       </div>
+      <p class="text-xs text-gray-600">© 2025 원치수. All rights reserved.</p>
     </div>
   </footer>
 
-  
-  <!-- App Modal -->
-  <div 
-    id="app-modal"
-    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in hidden"
-  >
-    <div
-      id="modal-content-wrapper"
-      class="relative w-full max-w-2xl max-h-[90vh] bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden flex flex-col animate-slide-up"
-    >
-      
+  <!-- ══════════════════════ 맨위로 버튼 ══════════════════════ -->
+  <button id="back-to-top" aria-label="맨 위로" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+    </svg>
+  </button>
+
+  <!-- ══════════════════════ 모달 ══════════════════════ -->
+  <div id="app-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="modal-content-wrapper"
+      class="relative w-full max-w-2xl max-h-[92vh] bg-white dark:bg-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-scale-in ring-1 ring-black/10 dark:ring-white/10">
+
       <!-- 모달 헤더 -->
-      <div id="modal-header-bg" class="p-6 text-white"> 
-        <h2 id="modal-title" class="text-2xl sm:text-3xl font-bold font-dohyeon"></h2>
-        <p id="modal-eng-title" class="mt-1 text-lg opacity-90"></p>
+      <div id="modal-header-bg" class="p-6 text-white shrink-0">
+        <div class="flex items-start justify-between gap-4">
+          <div class="flex-1 min-w-0">
+            <span id="modal-category-badge" class="inline-block px-2.5 py-0.5 mb-2 text-xs font-bold rounded-full bg-white/20"></span>
+            <h2 id="modal-title" class="text-2xl sm:text-3xl font-bold font-dohyeon leading-tight"></h2>
+            <p id="modal-eng-title" class="mt-1 text-base opacity-80"></p>
+          </div>
+        </div>
       </div>
 
-      
       <!-- 닫기 버튼 -->
-      <button
-        id="modal-close-btn"
-        class="absolute top-4 right-4 p-2 text-white/70 rounded-full hover:bg-white/20 hover:text-white transition-colors"
-        aria-label="닫기"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <button id="modal-close-btn" class="absolute top-4 right-4 p-2 rounded-full bg-black/20 hover:bg-black/30 text-white transition-colors" aria-label="닫기">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
       </button>
 
-      
-      <!-- 모달 컨텐츠 (순서 변경됨) -->
-      <div class="flex-grow p-6 sm:p-8 overflow-y-auto">
-        
-        <div class="space-y-6">
-          
-          <!-- 1. 분류/설명 -->
-          <div>
-            <h4 id="modal-category" class="text-sm font-bold tracking-wider uppercase"></h4> 
-            <p id="modal-description" class="mt-2 text-gray-700 dark:text-gray-300"></p>
-          </div>
-          
-          
-          <!-- 2. 관련 태그 -->
-          <div>
-            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">관련 태그</h4>
-            <div id="modal-tags-container" class="flex flex-wrap gap-2 mt-2">
-              <!-- 태그는 스크립트에서 동적 생성 -->
-            </div>
-          </div>
-          
-          
-          <!-- 3. 스크린샷 (텍스트 없음) -->
-          <div id="modal-image-container" class="mb-6 hidden">
-            <img
-              id="modal-image"
-              alt="스크린샷"
-              class="w-full h-auto rounded-lg shadow-md object-cover"
-              onerror="this.parentElement.style.display='none'"
-            />
-          </div>
+      <!-- 모달 바디 -->
+      <div class="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6">
 
-          
-          <!-- 4. 사이트 링크 -->
-          <div id="modal-site-link-container" class="mb-6 hidden">
-            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">사이트 링크</h4>
-            <a
-              id="modal-site-link"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-indigo-500 hover:underline break-all"
-            ></a>
-          </div>
+        <!-- 설명 -->
+        <div>
+          <p id="modal-description" class="text-gray-700 dark:text-gray-300 text-base leading-relaxed"></p>
+        </div>
 
-          <!-- 5. 사용법 영상 -->
-          <div id="modal-video-link-container" class="mb-6 hidden">
-            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">사용법 영상</h4>
-            <a 
-              id="modal-video-link"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-indigo-500 hover:underline break-all"
-            ></a>
-          </div>
+        <!-- 태그 -->
+        <div>
+          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-2">태그</h4>
+          <div id="modal-tags-container" class="flex flex-wrap gap-2"></div>
+        </div>
 
+        <!-- 스크린샷 -->
+        <div id="modal-image-container" class="hidden">
+          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-2">스크린샷</h4>
+          <img id="modal-image" alt="스크린샷"
+            class="w-full h-auto rounded-xl shadow-md object-cover ring-1 ring-black/5 dark:ring-white/10"
+            loading="lazy"
+            onerror="this.closest('#modal-image-container').classList.add('hidden')" />
+        </div>
+
+        <!-- 사이트 링크 -->
+        <div id="modal-site-link-container" class="hidden">
+          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-2">사이트 링크</h4>
+          <a id="modal-site-link" href="#" target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition-colors shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            </svg>
+            앱 열기
+          </a>
+        </div>
+
+        <!-- 유튜브 임베드 -->
+        <div id="modal-video-container" class="hidden">
+          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-3">사용법 영상</h4>
+          <div class="yt-embed-wrap shadow-lg ring-1 ring-black/5 dark:ring-white/10">
+            <iframe id="modal-youtube-iframe" title="사용법 영상"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-
-  
-  <!-- 히어로 조명 애니메이션 -->
+  <!-- ══════════════════════ 히어로 조명 ══════════════════════ -->
   <script>
     (function () {
       const container = document.getElementById('spotlight-container');
-
-      // 조명 정의: color(r,g,b), size(px), opacity 범위
       const defs = [
-        { color: '244,63,94',   size: 520, minOp: 0.18, maxOp: 0.38 }, // 빨강/핑크
-        { color: '2,132,199',   size: 600, minOp: 0.12, maxOp: 0.30 }, // 파랑
-        { color: '245,158,11',  size: 380, minOp: 0.10, maxOp: 0.25 }, // 앰버
-        { color: '139,92,246',  size: 450, minOp: 0.12, maxOp: 0.28 }, // 보라
-        { color: '34,197,94',   size: 340, minOp: 0.08, maxOp: 0.20 }, // 초록
-        { color: '236,72,153',  size: 420, minOp: 0.10, maxOp: 0.24 }, // 핫핑크
-        { color: '14,165,233',  size: 500, minOp: 0.10, maxOp: 0.26 }, // 하늘
+        { color: '244,63,94',  size: 520, minOp: 0.18, maxOp: 0.38 },
+        { color: '2,132,199',  size: 600, minOp: 0.12, maxOp: 0.30 },
+        { color: '245,158,11', size: 380, minOp: 0.10, maxOp: 0.25 },
+        { color: '139,92,246', size: 450, minOp: 0.12, maxOp: 0.28 },
+        { color: '34,197,94',  size: 340, minOp: 0.08, maxOp: 0.20 },
+        { color: '236,72,153', size: 420, minOp: 0.10, maxOp: 0.24 },
+        { color: '14,165,233', size: 500, minOp: 0.10, maxOp: 0.26 },
       ];
-
       const rand = (min, max) => Math.random() * (max - min) + min;
-
-      const blobs = defs.map((def, i) => {
+      const blobs = defs.map(def => {
         const el = document.createElement('div');
         el.className = 'spotlight-blob';
-        el.style.width  = def.size + 'px';
-        el.style.height = def.size + 'px';
-        el.style.background = `radial-gradient(circle, rgba(${def.color},0.4) 0%, rgba(${def.color},0) 70%)`;
-        el.style.opacity = '0';
-        // 초기 위치 (화면 내 랜덤)
-        el.style.left = rand(0, 100) + '%';
-        el.style.top  = rand(0, 100) + '%';
+        el.style.cssText = `width:${def.size}px;height:${def.size}px;background:radial-gradient(circle,rgba(${def.color},.4) 0%,rgba(${def.color},0) 70%);opacity:0;left:${rand(0,100)}%;top:${rand(0,100)}%`;
         container.appendChild(el);
         return { el, def };
       });
-
-      function moveBlob({ el, def }) {
-        const duration = rand(10, 18); // 10~18초 — 느리고 부드럽게
-        const x = rand(-10, 110);      // 화면 바깥까지 살짝 나갈 수 있음
-        const y = rand(-10, 110);
-        const op = rand(def.minOp, def.maxOp);
-
-        el.style.transition = [
-          `left ${duration}s ease-in-out`,
-          `top ${duration}s ease-in-out`,
-          `opacity ${rand(3, 6)}s ease-in-out`,
-        ].join(', ');
-
-        el.style.left    = x + '%';
-        el.style.top     = y + '%';
-        el.style.opacity = op;
-
-        // 이동이 끝나기 약간 전에 다음 이동 예약 → 자연스럽게 이어짐
-        setTimeout(() => moveBlob({ el, def }), duration * 0.85 * 1000);
+      function move({ el, def }) {
+        const dur = rand(10, 18);
+        el.style.transition = `left ${dur}s ease-in-out,top ${dur}s ease-in-out,opacity ${rand(3,6)}s ease-in-out`;
+        el.style.left = rand(-10, 110) + '%';
+        el.style.top  = rand(-10, 110) + '%';
+        el.style.opacity = rand(def.minOp, def.maxOp);
+        setTimeout(() => move({ el, def }), dur * 0.85 * 1000);
       }
-
-      // 각 조명을 시차를 두고 시작 (한꺼번에 움직이지 않도록)
       blobs.forEach(({ el, def }, i) => {
-        setTimeout(() => {
-          el.style.opacity = rand(def.minOp, def.maxOp);
-          moveBlob({ el, def });
-        }, i * 600);
+        setTimeout(() => { el.style.opacity = rand(def.minOp, def.maxOp); move({ el, def }); }, i * 600);
       });
     })();
   </script>
 
-  <!-- JavaScript -->
+  <!-- ══════════════════════ 앱 데이터 & 로직 ══════════════════════ -->
   <script>
-    // --- 데이터 ---
-    // ─────────────────────────────────────────────────────────────────────
-    // 새 자료 추가 시 아래 필드를 채워서 배열 끝(마지막 항목 뒤)에 추가하세요.
-    // 필드 설명:
-    //   id            : 기존 최댓값 + 1 (중복 불가)
-    //   category      : '뮤지컬' | '인문·창작' | '인터랙티브 시각디자인' | '디지털·세계시민교육' | '수업·학급운영' | '업무'
-    //   title         : 한국어 앱 이름
-    //   engTitle      : 영어 앱 이름
-    //   description   : 한 줄 기능 설명
-    //   tags          : '#태그1 #태그2 #태그3' 형식 (공백으로 구분)
-    //   imageUrl      : 스크린샷 이미지 직접 링크 (imgbb.com 업로드 후 Direct link 복사)
-    //                   ※ Google Drive 이미지는 https://drive.google.com/thumbnail?id=FILE_ID&sz=w2000 형식 권장
-    //   siteUrl       : (선택) 외부 사이트 링크 URL
-    //   youtubeVideoId: (선택) 유튜브 영상 ID만 입력 — URL 전체 X, ID만 O
-    // ─────────────────────────────────────────────────────────────────────
+    // ─── 데이터 ───
     const appData = [
-      {
-        id: 1,
-        category: '뮤지컬',
-        title: '홍.당.뮤',
-        engTitle: 'HongDangMu',
-        description: '뮤지컬 감상 기반 디자인씽킹 학습 플랫폼',
-        tags: '#뮤지컬 #SEL #디자인씽킹',
-        imageUrl: 'https://i.ibb.co/d0cSc2Dq/2025-10-28-08-44-00.png',
-      },
-      {
-        id: 2,
-        category: '뮤지컬',
-        title: '뮤지컬 대본노트',
-        engTitle: 'Musical Script Note',
-        description: '뮤지컬 최적화 대본 작성·관리 도구',
-        tags: '#대본 #가사 #시나리오',
-        imageUrl: 'https://i.ibb.co/RTShng0m/image04.png',
-      },
-      {
-        id: 3,
-        category: '뮤지컬',
-        title: '뮤지컬 동선노트',
-        engTitle: 'Musical Blocking Note',
-        description: '뮤지컬 안무 및 무대 동선 시각화',
-        tags: '#안무 #무대 #시각화',
-        imageUrl: 'https://i.ibb.co/xtkVWXhX/image07.png',
-        youtubeVideoId: '-8XIclLTR4c',
-      },
-      {
-        id: 4,
-        category: '뮤지컬',
-        title: '뮤지컬 포스터 스튜디오',
-        engTitle: 'Musical Poster Lab',
-        description: '공연 포스터 디자인',
-        tags: '#포스터 #시각디자인 #홍보',
-        imageUrl: 'https://i.ibb.co/v2s6M7b/image08.png',
-      },
-      {
-        id: 5,
-        category: '뮤지컬',
-        title: '여기 있어 효과음',
-        engTitle: 'Sound Box',
-        description: '공연을 위한 효과음 재생기',
-        tags: '#효과음 #사운드 #무대',
-        imageUrl: 'https://i.ibb.co/S71DLpc1/2025-10-30-10-05-24.webp',
-        youtubeVideoId: 'NhU9AtZS9Eg',
-      },
-      {
-        id: 6,
-        category: '뮤지컬',
-        title: '흑백 가사 바꾸기 마법사',
-        engTitle: 'Easy Lyrics',
-        description: '가사 구조를 시각화하여 창작 활동 지원',
-        tags: '#가사 #창작 #시각화',
-        imageUrl: 'https://i.ibb.co/GvVH11Py/2025-10-30-10-08-51.webp',
-        youtubeVideoId: 'mRlLQR86f30',
-      },
-      {
-        id: 7,
-        category: '뮤지컬',
-        title: '인물도감',
-        engTitle: 'Character Matrix',
-        description: '인물 분석 및 창조 활동 지원 도구',
-        tags: '#캐릭터 #드로잉 #서사 #인물프로필',
-        imageUrl: 'https://i.ibb.co/KxRsRLjn/2025-07-19-20-10-48.png',
-      },
-      {
-        id: 24,
-        category: '뮤지컬',
-        title: '어디서나 공연장',
-        engTitle: 'Anywhere Theater',
-        description: '교육뮤지컬 작품 아카이빙 및 온라인 상영 플랫폼',
-        tags: '#뮤지컬 #온라인공연장 #감상교육',
-        imageUrl: 'https://i.ibb.co/Kx99GdyY/2026-02-20-18-36-57.png',
-      },
-      {
-        id: 25,
-        category: '뮤지컬',
-        title: '스테이지빌 온라인',
-        engTitle: 'Stagebill Online',
-        description: '뮤지컬 작품 및 수업 큐레이션 플랫폼',
-        tags: '#뮤지컬 #감상교육 #수업자료',
-        imageUrl: 'https://i.ibb.co/BVWz1jQH/2026-02-28-16-07-30.png',
-      },
-      {
-        id: 8,
-        category: '인터랙티브 시각디자인',
-        title: '한글춤',
-        engTitle: 'Han Dance',
-        description: '한글 자모와 움직임을 결합한 디지털 타이포그래피',
-        tags: '#한글 #움직임 #디지털아트',
-        imageUrl: 'https://i.ibb.co/1YbqRCZf/2025-10-30-10-24-36.webp',
-        youtubeVideoId: 'wBQe_-pANHM',
-      },
-      {
-        id: 9,
-        category: '인터랙티브 시각디자인',
-        title: '모두를 위한 그래피티',
-        engTitle: 'Graffiti for All',
-        description: '손 제스처 인식 기반 드로잉 도구',
-        tags: '#드로잉 #제스처 #창작',
-        imageUrl: 'https://i.ibb.co/W4mH32LF/2025-10-30-10-28-02.webp',
-      },
-      {
-        id: 10,
-        category: '인터랙티브 시각디자인',
-        title: '포토퍼스',
-        engTitle: 'Photopus',
-        description: '얼굴 인식 기반 AR 포토부스',
-        tags: '#AR #포토 #시각체험',
-        imageUrl: 'https://i.ibb.co/DPFMyRKL/2025-10-30-10-31-10.webp',
-      },
-      {
-        id: 11,
-        category: '인터랙티브 시각디자인',
-        title: '우리네컷',
-        engTitle: 'Our4to',
-        description: '네컷 사진 촬영 및 디자인 도구',
-        tags: '#사진 #기록 #포토부스',
-        imageUrl: 'https://i.ibb.co/5xGc8J5P/image03.png',
-        youtubeVideoId: 'IrDiL2DF_P4',
-      },
-      {
-        id: 12,
-        category: '인터랙티브 시각디자인',
-        title: '코딩캔버스',
-        engTitle: 'Coding Canvas',
-        description: '손쉬운 코딩 테스트 도구',
-        tags: '#코딩 #아이디어보드 #시각표현',
-        imageUrl: 'https://i.ibb.co/qwNQpLH/2025-10-30-10-31-34.webp',
-      },
-      {
-        id: 13,
-        category: '인터랙티브 시각디자인',
-        title: '어디서나 야구장',
-        engTitle: 'Playball Now',
-        description: '데이터 기반 게임형 인터랙티브 스코어보드',
-        tags: '#야구 #게임형수업 #데이터',
-        imageUrl: 'https://i.ibb.co/mF4sjNgC/2025-10-30-10-32-08.webp',
-        youtubeVideoId: '89Ucfhcf1uI',
-      },
-      {
-        id: 14,
-        category: '인문·창작',
-        title: '상상을 도와주는 카드',
-        engTitle: 'Cards for Imagination',
-        description: '랜덤 이미지로 상상력 자극하기',
-        tags: '#영감 #상상력 #이미지',
-        imageUrl: 'https://i.ibb.co/8pLs0gr/2025-10-30-10-32-32.webp',
-        youtubeVideoId: 'WetbgRledIU',
-      },
-      {
-        id: 15,
-        category: '인문·창작',
-        title: '시장',
-        engTitle: 'Poem Market',
-        description: '시쓰기 소재·질문 랜덤 추천기',
-        tags: '#시쓰기 #창작 #질문',
-        imageUrl: 'https://i.ibb.co/4RSG3ttK/image01.png',
-        youtubeVideoId: '8XySj7J-W2M',
-      },
-      {
-        id: 16,
-        category: '인문·창작',
-        title: '스토리텔링 카드',
-        engTitle: 'Storytelling Cards',
-        description: '이미지 기반 이야기 창작 앱',
-        tags: '#스토리텔링 #이미지 #창작',
-        imageUrl: 'https://i.ibb.co/5gD5NDHx/image02.png',
-      },
-      {
-        id: 17,
-        category: '인문·창작',
-        title: '생각의 숲',
-        engTitle: 'Forest of Thoughts',
-        description: '독서 토론 및 논술 지원 도구',
-        tags: '#독서 #논술 #사유',
-        imageUrl: 'https://i.ibb.co/hxJCGtt3/Screenshot-20251028-113526-Chrome.jpg',
-      },
-      {
-        id: 23,
-        category: '인문·창작',
-        title: '영감노트',
-        engTitle: 'Insight Notes',
-        description: 'Google Apps Script 기반 개인 영감 기록·관리 웹앱',
-        tags: '#영감 #기록 #GAS',
-        imageUrl: 'https://i.ibb.co/zh1m3Bc4/2026-02-19-15-08-20.png',
-      },
-      {
-        id: 18,
-        category: '디지털·세계시민교육',
-        title: 'SDGs 마켓',
-        engTitle: 'SDGs Market',
-        description: '지속가능발전목표(SDGs) 학습 및 실천 프로젝트 도구',
-        tags: '#SDGs #지속가능발전 #세계시민교육',
-        imageUrl: 'https://i.ibb.co/20DRsH2B/2025-10-30-10-33-55.webp',
-      },
-      {
-        id: 19,
-        category: '디지털·세계시민교육',
-        title: '출처표기 걱정마',
-        engTitle: 'Citation Helper',
-        description: '학생용 디지털 리터러시 - 간편 출처 표기 생성기',
-        tags: '#저작권 #출처 #디지털윤리',
-        imageUrl: 'https://i.ibb.co/1fvxxkwV/2025-10-30-10-34-43.webp',
-        youtubeVideoId: 'vjdiWT972bM',
-      },
-      {
-        id: 22, // 새 ID로 추가
-        category: '디지털·세계시민교육',
-        title: '가이드 바이브',
-        engTitle: 'Guide Vibe',
-        description: '앱 개발을 위한 AI 프롬프트 작성 지원 도구',
-        tags: '#AI #코딩 #디지털리터러시',
-        imageUrl: 'https://i.ibb.co/C3zspYqq/2025-11-01-10-30-23.png', // 요청하신 링크로 수정
-      },
-      {
-        id: 20,
-        category: '수업·학급운영',
-        title: '성수동(성취기준, 수업을 함께 디자인하는 동료)',
-        engTitle: 'SSD Guide',
-        description: '성취기준·수업 설계·교육과정 연계 지원 플랫폼',
-        tags: '#2022개정교육과정 #성취기준 #수업·학급운영',
-        imageUrl: 'https://i.ibb.co/BYXH5mD/2025-10-30-10-35-04.webp',
-      },
-      {
-        id: 21,
-        category: '수업·학급운영',
-        title: '뮤지컬 수업 스튜디오',
-        engTitle: 'Musical Class Studio',
-        description: '뮤지컬 수업 기획 지원 도구',
-        tags: '#교육뮤지컬 #수업·학급운영 #교육과정',
-        imageUrl: 'https://i.ibb.co/GNzWV9g/2025-10-30-10-35-35.webp',
-      },
-      {
-        id: 26,
-        category: '수업·학급운영',
-        title: '나세나반 다이어리',
-        engTitle: 'NSN Diary',
-        description: '구글 스프레드시트 연동형 통합 학급 경영 및 기록 관리 플랫폼',
-        tags: '#학급운영 #학급일지 #수업성찰 #아카이빙',
-        imageUrl: 'https://i.ibb.co/fV1r2HY7/2026-03-05-14-48-03.png',
-      },
-      {
-        id: 27,
-        category: '인문·창작',
-        title: '질문 스페이스',
-        engTitle: 'Question Space',
-        description: '질문과 답변을 통해 생각을 나누고 토픽별로 아카이빙하는 실시간 소통 웹앱',
-        tags: '#질문 #소통 #GAS',
-        imageUrl: 'https://i.ibb.co/dsq0sXsX/2026-03-09-22-06-25.png',
-      },
-      {
-        id: 28,
-        category: '인문·창작',
-        title: '책임',
-        engTitle: 'This is Book',
-        description: '책을 의인화하여 캐릭터로 만들고 질문 카드를 생성하는 독후 활동 웹앱',
-        tags: '#독서교육 #질문수업 #상상력',
-        imageUrl: 'https://i.ibb.co/m7xW05M/2026-03-09-22-08-00.png',
-      },
-      {
-        id: 29,
-        category: '업무',
-        title: '돈 워리',
-        engTitle: 'Don Worry',
-        description: '구글 스프레드시트 연동형 예산 및 사업비 집행 현황 관리 플랫폼',
-        tags: '#예산관리 #GAS #스프레드시트',
-        imageUrl: 'https://i.ibb.co/394RjC0B/2026-03-09-21-59-33.png',
-      },
-      {
-        id: 30,
-        category: '뮤지컬',
-        title: '여기 있어 공연장',
-        engTitle: 'Stage Insight',
-        description: '학교 주변 공연장 정보와 교육과정 성취기준을 연결해주는 수업 설계 지원 도구',
-        tags: '#공연예술교육 #수업설계 #KOPIS',
-        imageUrl: 'https://i.ibb.co/r2NXNZ9f/Screenshot-20260315-220522-Chrome.jpg',
-      },
-      {
-        id: 31,
-        category: '업무',
-        title: '이미지 클라우드',
-        engTitle: 'Image Cloud',
-        description: '구글 드라이브와 GAS를 연동하여 이미지를 업로드하고 다목적 호스팅 링크를 생성하는 개인용 클라우드 웹앱',
-        tags: '#이미지호스팅 #GAS #바이브코딩',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1-NH3wCyCkI9Ee4pMQXut_Od8l-wS_ZMQ&sz=w2000',
-      },
-      {
-        id: 32,
-        category: '디지털·세계시민교육',
-        title: '치수쌤 바이브코딩 클래스',
-        engTitle: 'How to vibe',
-        description: 'AI를 활용해 코딩 지식 없이도 필요한 교육 도구를 직접 만드는 방법을 안내하는 연수용 가이드 플랫폼',
-        tags: '#바이브코딩 #AI교육 #교사연수',
-        imageUrl: 'https://drive.google.com/thumbnail?id=167_OfiPWCpghH0Pnq0LeVbAxj61peK4G&sz=w2000',
-      },
-      {
-        id: 33,
-        category: '수업·학급운영',
-        title: '우리반 학급회의',
-        engTitle: 'Class Meeting Guide',
-        description: '학생 주도적인 학급회의 진행을 돕는 단계별 시나리오 및 회의 기록 플랫폼',
-        tags: '#학급회의 #학급자치 #학급운영',
-        siteUrl: 'https://chichiboo.link/classmeeting',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1HYoMFgxezOX7gbunbTgIP5vx12yYlWGS&sz=w2000',
-        youtubeVideoId: 'hPIpGA3mmu4',
-      },
-      {
-        id: 34,
-        category: '디지털·세계시민교육',
-        title: '컬처박스',
-        engTitle: 'CultureBox',
-        description: '국제 학교 간 문화 교류 디지털 콘텐츠 박스 제작·발송·개봉 플랫폼',
-        tags: '#문화교류 #국제교육 #학교교류 #다국어',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1Fcf1CO7l-_9hVsltN8VkFRWyhhSW-awQ&sz=w2000',
-      },
-      {
-        id: 35,
-        category: '디지털·세계시민교육',
-        title: 'SDGs-tory',
-        engTitle: 'SDGs-tory',
-        description: '이야기 창작과 바꿔쓰기를 통해 지속가능발전목표(SDGs)를 탐색하는 참여형 학습 앱',
-        tags: '#SDGs #스토리텔링 #세계시민교육',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1ZpQRwxeB6rIZEvAVRwIvogOjHPYn-7nz&sz=w2000',
-      },
-      {
-        id: 36,
-        category: '인터랙티브 시각디자인',
-        title: '세상의 모든 소리',
-        engTitle: 'S.O.W (Sound of the World)',
-        description: '그리드 기반으로 음표 블록을 찍고 재생·녹음·공유할 수 있는 웹 뮤직 메이커',
-        tags: '#음악 #작곡 #인터랙티브',
-        imageUrl: 'https://drive.google.com/thumbnail?id=10kPNW5uldgTIWX0Lo5ho0Y2Pq4InUo3Z&sz=w2000',
-      },
-      {
-        id: 37,
-        category: '인터랙티브 시각디자인',
-        title: '세상의 모든 색깔',
-        engTitle: 'C.O.W (Colors of the World)',
-        description: '이미지에서 대표 색상을 추출하고 색상 카드 및 포스터를 제작하는 다국어 웹 앱',
-        tags: '#색상팔레트 #색채분석 #시각디자인',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1eHs6ok71Kqalr3fNb5l3e1rNmw29IkaX&sz=w2000',
-      },
-      {
-        id: 38,
-        category: '업무',
-        title: '여기 있어 특수문자',
-        engTitle: 'Symbol Box',
-        description: '디지털 작업에 필요한 특수문자를 빠르게 검색하고 복사하는 웹 도구',
-        tags: '#특수문자 #시각디자인 #업무',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1gEoWdG6OVmrFZpDSRbaZntFL1LnSfASw&sz=w2000',
-      },
-      {
-        id: 39,
-        category: '업무',
-        title: '이지북',
-        engTitle: 'easy Book',
-        description: 'PDF 파일을 업로드하거나 URL로 불러와 실제 책처럼 넘기며 읽을 수 있는 웹 기반 eBook 뷰어',
-        tags: '#eBook #PDF #업무',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1njnSCyhUVzJAduojxYyDaEHrjtUeKYhW&sz=w2000',
-      },
-      {
-        id: 40,
-        category: '업무',
-        title: '여기 있어 QR코드',
-        engTitle: 'QR BOX',
-        description: 'QR코드 생성과 인식을 한 곳에서 할 수 있는 통합형 웹 도구',
-        tags: '#QR코드 #업무',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1RNBoJCQTDcRSuVpjEcorygjJGNJ7j99A&sz=w2000',
-      },
-      {
-        id: 41,
-        category: '인터랙티브 시각디자인',
-        title: '닷 뮤직',
-        engTitle: 'Dot Music',
-        description: '이미지·영상·웹캠의 시각 정보를 점과 격자로 변환하고, 이를 실시간 사운드와 연결해 음악적 인터랙션을 만드는 웹 기반 시청각 창작 도구',
-        tags: '#인터랙티브아트 #음악창작 #융합예술',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1q7GF74ZgDSu1G_fcBogkgh4pyveZVdoE&sz=w2000',
-        youtubeVideoId: '1l5Q_BXn6NI',
-      },
-      {
-        id: 42,
-        category: '인문·창작',
-        title: '왓츠 인 마이',
-        engTitle: "What's In My",
-        description: '8개 모듈로 자신을 탐색하고 기록하는 로컬스토리지 기반 자기표현 웹앱',
-        tags: '#자아탐색 #인문 #진로교육',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1eFvrZziFOd5p_D7xRrQ4mhE9-5MKdk_s&sz=w2000',
-      },
-      {
-        id: 43,
-        category: '인문·창작',
-        title: '마스토리',
-        engTitle: 'Mastory',
-        description: '마스코트와 장면별 텍스트를 조합해 스토리를 만들고 JPG·TXT로 바로 내보내는 스토리 제작 웹앱.',
-        tags: '#마스코트 #스토리텔링 #로컬교육',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1k1oOCCCgAiXZUUdZgj95SknpkPZq49hx&sz=w2000',
-      },
-      {
-        id: 44,
-        category: '디지털·세계시민교육',
-        title: 'Ma-sical Story 설명서',
-        engTitle: 'Ma-sical Story with SDGs',
-        description: '디지털 국제교류 수업을 위해 프로젝트 개요, 활용 도구, 참여 안내를 다국어로 제공하는 웹 기반 소개 플랫폼',
-        tags: '#국제교류 #SDGs #세계시민교육',
-        imageUrl: 'https://i.ibb.co/8LP8GFjB/image.png',
-      },
-      {
-        id: 45,
-        category: '디지털·세계시민교육',
-        title: '국기 팔레트',
-        engTitle: 'Flag Palette',
-        description: '세계 각국의 국기를 색상 중심으로 탐색하고, 관심 국기를 나만의 팔레트로 구성해 학습·수업 자료로 저장할 수 있는 웹앱',
-        tags: '#세계시민교육 #국기 #상징물',
-        imageUrl: 'https://drive.google.com/uc?export=view&id=1Ptw5x1StU-joCnAlKs1n65ohDSlnu1ij',
-        youtubeVideoId: 'gKAuxDgDGb0',
-      },
-      {
-        id: 46,
-        category: '수업·학급운영',
-        title: '디지털 페이퍼',
-        engTitle: 'Digital Paper',
-        description: 'PDF 활동지를 불러와 판서·주석 후 JPG/PDF로 저장·공유·제출까지 연결하는 웹 기반 학습 도구',
-        tags: '#구글드라이브 #디지털활동지 #패들렛임베드',
-        imageUrl: 'https://drive.google.com/thumbnail?id=13rbuESlFUxXAtPS11w4_jbs8VJDA9zXg&sz=w2000',
-      },
-      {
-        id: 47,
-        category: '디지털·세계시민교육',
-        title: '디지털 컬쳐박스 보드',
-        engTitle: 'Digital Culturebox Board',
-        description: '국제 교류 학교가 문화 상자 콘텐츠를 만들고 공유하며 지도에서 교류 흐름을 확인하는 다국어 문화교류 웹앱',
-        tags: '#국제교류 #세계시민교육 #국제공동수업',
-        imageUrl: 'https://drive.google.com/thumbnail?id=13zsnpJXUM9Te4ZeGTpeW19CrUNPAFwsm&sz=w2000',
-      },
-      {
-        id: 48,
-        category: '디지털·세계시민교육',
-        title: '캐릭터 여권 제작소',
-        engTitle: 'Toy passport',
-        description: '캐릭터의 프로필과 여행 스탬프를 꾸며 가상의 캐릭 여권 이미지를 만드는 창작형 웹앱',
-        tags: '#캐릭터 #스토리텔링 #국제교류',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1C4lOMDxyxSuZz0pbUyCdK94pkv3tmhy1&sz=w2000',
-      },
-      {
-        id: 49,
-        category: '업무',
-        title: '패들렛 스캐너',
-        engTitle: 'Padlet Scanner',
-        description: '패들렛 API를 활용해 보드의 활동 현황을 분석하고 한눈에 확인하며 엑셀로 정리할 수 있는 웹앱',
-        tags: '#패들렛 #API #데이터분석 #수업디자인',
-        imageUrl: '',
-      },
-      {
-        id: 50,
-        category: '업무',
-        title: '칫허브',
-        engTitle: 'Chithub',
-        description: 'GitHub 리포지토리를 불러와 웹앱 정보를 체계적으로 정리하고 홍보 문구를 자동 생성하는 개인 대시보드형 웹앱',
-        tags: '#Github #바이브코딩 #데이터분석 #아카이빙',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1ENf9o9m6zPgvLeHVPdurBHhA5f0QIOGc&sz=w2000',
-      },
-      {
-        id: 51,
-        category: '디지털·세계시민교육',
-        title: 'SDGs 마스터',
-        engTitle: 'SDGs Master',
-        description: 'UN 지속가능발전목표(SDGs)를 일상 사례와 연결해 나만의 마스터 카드를 만들고 학급 패들렛에 함께 전시하는 세계시민교육 웹앱',
-        tags: '#SDGs #세계시민교육 #마스터카드',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1gWmnYtgySnUNelyBXu4Y62uChvM7scrH&sz=w2000',
-      },
-      {
-        id: 52,
-        category: '디지털·세계시민교육',
-        title: 'SDGs 마스터 수업 가이드',
-        engTitle: 'SDGs Master Lesson Guide',
-        description: '직소 수업 모형으로 SDGs 팀 활동 전 과정을 안내하고 역할별 전문가 모임 기록을 지원하는 수업 가이드 웹앱',
-        tags: '#SDGs #직소수업 #세계시민교육',
-        imageUrl: 'https://drive.google.com/thumbnail?id=1zr_HKyrVN-wkbOE1Fb_Pn-VflvdDrq3d&sz=w2000',
-      },
+      { id:1,  category:'뮤지컬', title:'홍.당.뮤', engTitle:'HongDangMu', description:'뮤지컬 감상 기반 디자인씽킹 학습 플랫폼', tags:'#뮤지컬 #SEL #디자인씽킹', imageUrl:'https://i.ibb.co/d0cSc2Dq/2025-10-28-08-44-00.png' },
+      { id:2,  category:'뮤지컬', title:'뮤지컬 대본노트', engTitle:'Musical Script Note', description:'뮤지컬 최적화 대본 작성·관리 도구', tags:'#대본 #가사 #시나리오', imageUrl:'https://i.ibb.co/RTShng0m/image04.png' },
+      { id:3,  category:'뮤지컬', title:'뮤지컬 동선노트', engTitle:'Musical Blocking Note', description:'뮤지컬 안무 및 무대 동선 시각화', tags:'#안무 #무대 #시각화', imageUrl:'https://i.ibb.co/xtkVWXhX/image07.png', youtubeVideoId:'-8XIclLTR4c' },
+      { id:4,  category:'뮤지컬', title:'뮤지컬 포스터 스튜디오', engTitle:'Musical Poster Lab', description:'공연 포스터 디자인', tags:'#포스터 #시각디자인 #홍보', imageUrl:'https://i.ibb.co/v2s6M7b/image08.png' },
+      { id:5,  category:'뮤지컬', title:'여기 있어 효과음', engTitle:'Sound Box', description:'공연을 위한 효과음 재생기', tags:'#효과음 #사운드 #무대', imageUrl:'https://i.ibb.co/S71DLpc1/2025-10-30-10-05-24.webp', youtubeVideoId:'NhU9AtZS9Eg' },
+      { id:6,  category:'뮤지컬', title:'흑백 가사 바꾸기 마법사', engTitle:'Easy Lyrics', description:'가사 구조를 시각화하여 창작 활동 지원', tags:'#가사 #창작 #시각화', imageUrl:'https://i.ibb.co/GvVH11Py/2025-10-30-10-08-51.webp', youtubeVideoId:'mRlLQR86f30' },
+      { id:7,  category:'뮤지컬', title:'인물도감', engTitle:'Character Matrix', description:'인물 분석 및 창조 활동 지원 도구', tags:'#캐릭터 #드로잉 #서사 #인물프로필', imageUrl:'https://i.ibb.co/KxRsRLjn/2025-07-19-20-10-48.png' },
+      { id:24, category:'뮤지컬', title:'어디서나 공연장', engTitle:'Anywhere Theater', description:'교육뮤지컬 작품 아카이빙 및 온라인 상영 플랫폼', tags:'#뮤지컬 #온라인공연장 #감상교육', imageUrl:'https://i.ibb.co/Kx99GdyY/2026-02-20-18-36-57.png' },
+      { id:25, category:'뮤지컬', title:'스테이지빌 온라인', engTitle:'Stagebill Online', description:'뮤지컬 작품 및 수업 큐레이션 플랫폼', tags:'#뮤지컬 #감상교육 #수업자료', imageUrl:'https://i.ibb.co/BVWz1jQH/2026-02-28-16-07-30.png' },
+      { id:30, category:'뮤지컬', title:'여기 있어 공연장', engTitle:'Stage Insight', description:'학교 주변 공연장 정보와 교육과정 성취기준을 연결해주는 수업 설계 지원 도구', tags:'#공연예술교육 #수업설계 #KOPIS', imageUrl:'https://i.ibb.co/r2NXNZ9f/Screenshot-20260315-220522-Chrome.jpg' },
+      { id:8,  category:'인터랙티브 시각디자인', title:'한글춤', engTitle:'Han Dance', description:'한글 자모와 움직임을 결합한 디지털 타이포그래피', tags:'#한글 #움직임 #디지털아트', imageUrl:'https://i.ibb.co/1YbqRCZf/2025-10-30-10-24-36.webp', youtubeVideoId:'wBQe_-pANHM' },
+      { id:9,  category:'인터랙티브 시각디자인', title:'모두를 위한 그래피티', engTitle:'Graffiti for All', description:'손 제스처 인식 기반 드로잉 도구', tags:'#드로잉 #제스처 #창작', imageUrl:'https://i.ibb.co/W4mH32LF/2025-10-30-10-28-02.webp' },
+      { id:10, category:'인터랙티브 시각디자인', title:'포토퍼스', engTitle:'Photopus', description:'얼굴 인식 기반 AR 포토부스', tags:'#AR #포토 #시각체험', imageUrl:'https://i.ibb.co/DPFMyRKL/2025-10-30-10-31-10.webp' },
+      { id:11, category:'인터랙티브 시각디자인', title:'우리네컷', engTitle:'Our4to', description:'네컷 사진 촬영 및 디자인 도구', tags:'#사진 #기록 #포토부스', imageUrl:'https://i.ibb.co/5xGc8J5P/image03.png', youtubeVideoId:'IrDiL2DF_P4' },
+      { id:12, category:'인터랙티브 시각디자인', title:'코딩캔버스', engTitle:'Coding Canvas', description:'손쉬운 코딩 테스트 도구', tags:'#코딩 #아이디어보드 #시각표현', imageUrl:'https://i.ibb.co/qwNQpLH/2025-10-30-10-31-34.webp' },
+      { id:13, category:'인터랙티브 시각디자인', title:'어디서나 야구장', engTitle:'Playball Now', description:'데이터 기반 게임형 인터랙티브 스코어보드', tags:'#야구 #게임형수업 #데이터', imageUrl:'https://i.ibb.co/mF4sjNgC/2025-10-30-10-32-08.webp', youtubeVideoId:'89Ucfhcf1uI' },
+      { id:36, category:'인터랙티브 시각디자인', title:'세상의 모든 소리', engTitle:'S.O.W (Sound of the World)', description:'그리드 기반으로 음표 블록을 찍고 재생·녹음·공유할 수 있는 웹 뮤직 메이커', tags:'#음악 #작곡 #인터랙티브', imageUrl:'https://drive.google.com/thumbnail?id=10kPNW5uldgTIWX0Lo5ho0Y2Pq4InUo3Z&sz=w2000' },
+      { id:37, category:'인터랙티브 시각디자인', title:'세상의 모든 색깔', engTitle:'C.O.W (Colors of the World)', description:'이미지에서 대표 색상을 추출하고 색상 카드 및 포스터를 제작하는 다국어 웹 앱', tags:'#색상팔레트 #색채분석 #시각디자인', imageUrl:'https://drive.google.com/thumbnail?id=1eHs6ok71Kqalr3fNb5l3e1rNmw29IkaX&sz=w2000' },
+      { id:41, category:'인터랙티브 시각디자인', title:'닷 뮤직', engTitle:'Dot Music', description:'이미지·영상·웹캠의 시각 정보를 점과 격자로 변환하고, 이를 실시간 사운드와 연결해 음악적 인터랙션을 만드는 웹 기반 시청각 창작 도구', tags:'#인터랙티브아트 #음악창작 #융합예술', imageUrl:'https://drive.google.com/thumbnail?id=1q7GF74ZgDSu1G_fcBogkgh4pyveZVdoE&sz=w2000', youtubeVideoId:'1l5Q_BXn6NI' },
+      { id:14, category:'인문·창작', title:'상상을 도와주는 카드', engTitle:'Cards for Imagination', description:'랜덤 이미지로 상상력 자극하기', tags:'#영감 #상상력 #이미지', imageUrl:'https://i.ibb.co/8pLs0gr/2025-10-30-10-32-32.webp', youtubeVideoId:'WetbgRledIU' },
+      { id:15, category:'인문·창작', title:'시장', engTitle:'Poem Market', description:'시쓰기 소재·질문 랜덤 추천기', tags:'#시쓰기 #창작 #질문', imageUrl:'https://i.ibb.co/4RSG3ttK/image01.png', youtubeVideoId:'8XySj7J-W2M' },
+      { id:16, category:'인문·창작', title:'스토리텔링 카드', engTitle:'Storytelling Cards', description:'이미지 기반 이야기 창작 앱', tags:'#스토리텔링 #이미지 #창작', imageUrl:'https://i.ibb.co/5gD5NDHx/image02.png' },
+      { id:17, category:'인문·창작', title:'생각의 숲', engTitle:'Forest of Thoughts', description:'독서 토론 및 논술 지원 도구', tags:'#독서 #논술 #사유', imageUrl:'https://i.ibb.co/hxJCGtt3/Screenshot-20251028-113526-Chrome.jpg' },
+      { id:23, category:'인문·창작', title:'영감노트', engTitle:'Insight Notes', description:'Google Apps Script 기반 개인 영감 기록·관리 웹앱', tags:'#영감 #기록 #GAS', imageUrl:'https://i.ibb.co/zh1m3Bc4/2026-02-19-15-08-20.png' },
+      { id:27, category:'인문·창작', title:'질문 스페이스', engTitle:'Question Space', description:'질문과 답변을 통해 생각을 나누고 토픽별로 아카이빙하는 실시간 소통 웹앱', tags:'#질문 #소통 #GAS', imageUrl:'https://i.ibb.co/dsq0sXsX/2026-03-09-22-06-25.png' },
+      { id:28, category:'인문·창작', title:'책임', engTitle:'This is Book', description:'책을 의인화하여 캐릭터로 만들고 질문 카드를 생성하는 독후 활동 웹앱', tags:'#독서교육 #질문수업 #상상력', imageUrl:'https://i.ibb.co/m7xW05M/2026-03-09-22-08-00.png' },
+      { id:42, category:'인문·창작', title:'왓츠 인 마이', engTitle:"What's In My", description:'8개 모듈로 자신을 탐색하고 기록하는 로컬스토리지 기반 자기표현 웹앱', tags:'#자아탐색 #인문 #진로교육', imageUrl:'https://drive.google.com/thumbnail?id=1eFvrZziFOd5p_D7xRrQ4mhE9-5MKdk_s&sz=w2000' },
+      { id:43, category:'인문·창작', title:'마스토리', engTitle:'Mastory', description:'마스코트와 장면별 텍스트를 조합해 스토리를 만들고 JPG·TXT로 바로 내보내는 스토리 제작 웹앱', tags:'#마스코트 #스토리텔링 #로컬교육', imageUrl:'https://drive.google.com/thumbnail?id=1k1oOCCCgAiXZUUdZgj95SknpkPZq49hx&sz=w2000' },
+      { id:18, category:'디지털·세계시민교육', title:'SDGs 마켓', engTitle:'SDGs Market', description:'지속가능발전목표(SDGs) 학습 및 실천 프로젝트 도구', tags:'#SDGs #지속가능발전 #세계시민교육', imageUrl:'https://i.ibb.co/20DRsH2B/2025-10-30-10-33-55.webp' },
+      { id:19, category:'디지털·세계시민교육', title:'출처표기 걱정마', engTitle:'Citation Helper', description:'학생용 디지털 리터러시 - 간편 출처 표기 생성기', tags:'#저작권 #출처 #디지털윤리', imageUrl:'https://i.ibb.co/1fvxxkwV/2025-10-30-10-34-43.webp', youtubeVideoId:'vjdiWT972bM' },
+      { id:22, category:'디지털·세계시민교육', title:'가이드 바이브', engTitle:'Guide Vibe', description:'앱 개발을 위한 AI 프롬프트 작성 지원 도구', tags:'#AI #코딩 #디지털리터러시', imageUrl:'https://i.ibb.co/C3zspYqq/2025-11-01-10-30-23.png' },
+      { id:32, category:'디지털·세계시민교육', title:'치수쌤 바이브코딩 클래스', engTitle:'How to vibe', description:'AI를 활용해 코딩 지식 없이도 필요한 교육 도구를 직접 만드는 방법을 안내하는 연수용 가이드 플랫폼', tags:'#바이브코딩 #AI교육 #교사연수', imageUrl:'https://drive.google.com/thumbnail?id=167_OfiPWCpghH0Pnq0LeVbAxj61peK4G&sz=w2000' },
+      { id:34, category:'디지털·세계시민교육', title:'컬처박스', engTitle:'CultureBox', description:'국제 학교 간 문화 교류 디지털 콘텐츠 박스 제작·발송·개봉 플랫폼', tags:'#문화교류 #국제교육 #학교교류 #다국어', imageUrl:'https://drive.google.com/thumbnail?id=1Fcf1CO7l-_9hVsltN8VkFRWyhhSW-awQ&sz=w2000' },
+      { id:35, category:'디지털·세계시민교육', title:'SDGs-tory', engTitle:'SDGs-tory', description:'이야기 창작과 바꿔쓰기를 통해 지속가능발전목표(SDGs)를 탐색하는 참여형 학습 앱', tags:'#SDGs #스토리텔링 #세계시민교육', imageUrl:'https://drive.google.com/thumbnail?id=1ZpQRwxeB6rIZEvAVRwIvogOjHPYn-7nz&sz=w2000' },
+      { id:44, category:'디지털·세계시민교육', title:'Ma-sical Story 설명서', engTitle:'Ma-sical Story with SDGs', description:'디지털 국제교류 수업을 위해 프로젝트 개요, 활용 도구, 참여 안내를 다국어로 제공하는 웹 기반 소개 플랫폼', tags:'#국제교류 #SDGs #세계시민교육', imageUrl:'https://i.ibb.co/8LP8GFjB/image.png' },
+      { id:45, category:'디지털·세계시민교육', title:'국기 팔레트', engTitle:'Flag Palette', description:'세계 각국의 국기를 색상 중심으로 탐색하고, 관심 국기를 나만의 팔레트로 구성해 학습·수업 자료로 저장할 수 있는 웹앱', tags:'#세계시민교육 #국기 #상징물', imageUrl:'https://drive.google.com/uc?export=view&id=1Ptw5x1StU-joCnAlKs1n65ohDSlnu1ij', youtubeVideoId:'gKAuxDgDGb0' },
+      { id:47, category:'디지털·세계시민교육', title:'디지털 컬쳐박스 보드', engTitle:'Digital Culturebox Board', description:'국제 교류 학교가 문화 상자 콘텐츠를 만들고 공유하며 지도에서 교류 흐름을 확인하는 다국어 문화교류 웹앱', tags:'#국제교류 #세계시민교육 #국제공동수업', imageUrl:'https://drive.google.com/thumbnail?id=13zsnpJXUM9Te4ZeGTpeW19CrUNPAFwsm&sz=w2000' },
+      { id:48, category:'디지털·세계시민교육', title:'캐릭터 여권 제작소', engTitle:'Toy passport', description:'캐릭터의 프로필과 여행 스탬프를 꾸며 가상의 캐릭 여권 이미지를 만드는 창작형 웹앱', tags:'#캐릭터 #스토리텔링 #국제교류', imageUrl:'https://drive.google.com/thumbnail?id=1C4lOMDxyxSuZz0pbUyCdK94pkv3tmhy1&sz=w2000' },
+      { id:51, category:'디지털·세계시민교육', title:'SDGs 마스터', engTitle:'SDGs Master', description:'UN 지속가능발전목표(SDGs)를 일상 사례와 연결해 나만의 마스터 카드를 만들고 학급 패들렛에 함께 전시하는 세계시민교육 웹앱', tags:'#SDGs #세계시민교육 #마스터카드', imageUrl:'https://drive.google.com/thumbnail?id=1gWmnYtgySnUNelyBXu4Y62uChvM7scrH&sz=w2000' },
+      { id:52, category:'디지털·세계시민교육', title:'SDGs 마스터 수업 가이드', engTitle:'SDGs Master Lesson Guide', description:'직소 수업 모형으로 SDGs 팀 활동 전 과정을 안내하고 역할별 전문가 모임 기록을 지원하는 수업 가이드 웹앱', tags:'#SDGs #직소수업 #세계시민교육', imageUrl:'https://drive.google.com/thumbnail?id=1zr_HKyrVN-wkbOE1Fb_Pn-VflvdDrq3d&sz=w2000' },
+      { id:20, category:'수업·학급운영', title:'성수동(성취기준, 수업을 함께 디자인하는 동료)', engTitle:'SSD Guide', description:'성취기준·수업 설계·교육과정 연계 지원 플랫폼', tags:'#2022개정교육과정 #성취기준 #수업·학급운영', imageUrl:'https://i.ibb.co/BYXH5mD/2025-10-30-10-35-04.webp' },
+      { id:21, category:'수업·학급운영', title:'뮤지컬 수업 스튜디오', engTitle:'Musical Class Studio', description:'뮤지컬 수업 기획 지원 도구', tags:'#교육뮤지컬 #수업·학급운영 #교육과정', imageUrl:'https://i.ibb.co/GNzWV9g/2025-10-30-10-35-35.webp' },
+      { id:26, category:'수업·학급운영', title:'나세나반 다이어리', engTitle:'NSN Diary', description:'구글 스프레드시트 연동형 통합 학급 경영 및 기록 관리 플랫폼', tags:'#학급운영 #학급일지 #수업성찰 #아카이빙', imageUrl:'https://i.ibb.co/fV1r2HY7/2026-03-05-14-48-03.png' },
+      { id:33, category:'수업·학급운영', title:'우리반 학급회의', engTitle:'Class Meeting Guide', description:'학생 주도적인 학급회의 진행을 돕는 단계별 시나리오 및 회의 기록 플랫폼', tags:'#학급회의 #학급자치 #학급운영', siteUrl:'https://chichiboo.link/classmeeting', imageUrl:'https://drive.google.com/thumbnail?id=1HYoMFgxezOX7gbunbTgIP5vx12yYlWGS&sz=w2000', youtubeVideoId:'hPIpGA3mmu4' },
+      { id:46, category:'수업·학급운영', title:'디지털 페이퍼', engTitle:'Digital Paper', description:'PDF 활동지를 불러와 판서·주석 후 JPG/PDF로 저장·공유·제출까지 연결하는 웹 기반 학습 도구', tags:'#구글드라이브 #디지털활동지 #패들렛임베드', imageUrl:'https://drive.google.com/thumbnail?id=13rbuESlFUxXAtPS11w4_jbs8VJDA9zXg&sz=w2000' },
+      { id:29, category:'업무', title:'돈 워리', engTitle:'Don Worry', description:'구글 스프레드시트 연동형 예산 및 사업비 집행 현황 관리 플랫폼', tags:'#예산관리 #GAS #스프레드시트', imageUrl:'https://i.ibb.co/394RjC0B/2026-03-09-21-59-33.png' },
+      { id:31, category:'업무', title:'이미지 클라우드', engTitle:'Image Cloud', description:'구글 드라이브와 GAS를 연동하여 이미지를 업로드하고 다목적 호스팅 링크를 생성하는 개인용 클라우드 웹앱', tags:'#이미지호스팅 #GAS #바이브코딩', imageUrl:'https://drive.google.com/thumbnail?id=1-NH3wCyCkI9Ee4pMQXut_Od8l-wS_ZMQ&sz=w2000' },
+      { id:38, category:'업무', title:'여기 있어 특수문자', engTitle:'Symbol Box', description:'디지털 작업에 필요한 특수문자를 빠르게 검색하고 복사하는 웹 도구', tags:'#특수문자 #시각디자인 #업무', imageUrl:'https://drive.google.com/thumbnail?id=1gEoWdG6OVmrFZpDSRbaZntFL1LnSfASw&sz=w2000' },
+      { id:39, category:'업무', title:'이지북', engTitle:'easy Book', description:'PDF 파일을 업로드하거나 URL로 불러와 실제 책처럼 넘기며 읽을 수 있는 웹 기반 eBook 뷰어', tags:'#eBook #PDF #업무', imageUrl:'https://drive.google.com/thumbnail?id=1njnSCyhUVzJAduojxYyDaEHrjtUeKYhW&sz=w2000' },
+      { id:40, category:'업무', title:'여기 있어 QR코드', engTitle:'QR BOX', description:'QR코드 생성과 인식을 한 곳에서 할 수 있는 통합형 웹 도구', tags:'#QR코드 #업무', imageUrl:'https://drive.google.com/thumbnail?id=1RNBoJCQTDcRSuVpjEcorygjJGNJ7j99A&sz=w2000' },
+      { id:49, category:'업무', title:'패들렛 스캐너', engTitle:'Padlet Scanner', description:'패들렛 API를 활용해 보드의 활동 현황을 분석하고 한눈에 확인하며 엑셀로 정리할 수 있는 웹앱', tags:'#패들렛 #API #데이터분석 #수업디자인', imageUrl:'' },
+      { id:50, category:'업무', title:'칫허브', engTitle:'Chithub', description:'GitHub 리포지토리를 불러와 웹앱 정보를 체계적으로 정리하고 홍보 문구를 자동 생성하는 개인 대시보드형 웹앱', tags:'#Github #바이브코딩 #데이터분석 #아카이빙', imageUrl:'https://drive.google.com/thumbnail?id=1ENf9o9m6zPgvLeHVPdurBHhA5f0QIOGc&sz=w2000' },
     ];
 
-    const categories = [
-      '뮤지컬',
-      '인문·창작',
-      '인터랙티브 시각디자인',
-      '디지털·세계시민교육',
-      '수업·학급운영',
-      '업무',
-    ];
-    const allCategories = '전체';
+    const categories = ['뮤지컬','인문·창작','인터랙티브 시각디자인','디지털·세계시민교육','수업·학급운영','업무'];
 
-    const categoryStyles = {
-      '뮤지컬': {
-        gradient: 'from-rose-400 to-pink-500',
-        text: 'text-pink-500',
-        border: 'border-pink-500',
-        bg: 'bg-pink-500',
-      },
-      '인문·창작': {
-        gradient: 'from-amber-400 to-yellow-500',
-        text: 'text-yellow-500',
-        border: 'border-yellow-500',
-        bg: 'bg-yellow-500',
-      },
-      '인터랙티브 시각디자인': {
-        gradient: 'from-sky-400 to-cyan-500',
-        text: 'text-cyan-500',
-        border: 'border-cyan-500',
-        bg: 'bg-cyan-500',
-      },
-      '디지털·세계시민교육': {
-        gradient: 'from-emerald-400 to-teal-500',
-        text: 'text-teal-500',
-        border: 'border-teal-500',
-        bg: 'bg-teal-500',
-      },
-      '수업·학급운영': {
-        gradient: 'from-indigo-400 to-violet-500',
-        text: 'text-violet-500',
-        border: 'border-violet-500',
-        bg: 'bg-violet-500',
-      },
-      '업무': {
-        gradient: 'from-orange-400 to-red-500',
-        text: 'text-red-500',
-        border: 'border-red-500',
-        bg: 'bg-red-500',
-      },
+    const categoryMeta = {
+      '뮤지컬':               { gradient:'from-rose-400 to-pink-600',     text:'text-pink-500',   bg:'bg-gradient-to-r from-rose-400 to-pink-600',   emoji:'🎭' },
+      '인문·창작':             { gradient:'from-amber-400 to-orange-500',  text:'text-amber-500',  bg:'bg-gradient-to-r from-amber-400 to-orange-500', emoji:'✍️' },
+      '인터랙티브 시각디자인':   { gradient:'from-sky-400 to-cyan-600',     text:'text-cyan-500',   bg:'bg-gradient-to-r from-sky-400 to-cyan-600',    emoji:'🎨' },
+      '디지털·세계시민교육':     { gradient:'from-emerald-400 to-teal-600', text:'text-teal-500',   bg:'bg-gradient-to-r from-emerald-400 to-teal-600', emoji:'🌍' },
+      '수업·학급운영':          { gradient:'from-indigo-400 to-violet-600', text:'text-violet-500', bg:'bg-gradient-to-r from-indigo-400 to-violet-600',emoji:'📚' },
+      '업무':                  { gradient:'from-orange-400 to-red-500',    text:'text-orange-500', bg:'bg-gradient-to-r from-orange-400 to-red-500',   emoji:'⚡' },
     };
 
-    // --- 상태 변수 ---
-    let currentFilter = allCategories;
-    let currentSearchTerm = '';
+    // ─── 상태 ───
+    let currentFilter = '전체';
+    let currentSearch = '';
 
-    // --- DOM 요소 참조 ---
-    const appGrid = document.getElementById('app-grid');
-    const searchInput = document.getElementById('search-input');
-    const filterButtonsContainer = document.getElementById('filter-buttons-container');
-    const appCount = document.getElementById('app-count');
-    
-    const modal = document.getElementById('app-modal');
-    const modalContentWrapper = document.getElementById('modal-content-wrapper');
-    const modalCloseBtn = document.getElementById('modal-close-btn');
-    const modalHeaderBg = document.getElementById('modal-header-bg');
-    const modalTitle = document.getElementById('modal-title');
-    const modalEngTitle = document.getElementById('modal-eng-title');
-        
-    const modalImageContainer = document.getElementById('modal-image-container');
-    const modalImage = document.getElementById('modal-image');
-    
-    const modalSiteLinkContainer = document.getElementById('modal-site-link-container');
-    const modalSiteLink = document.getElementById('modal-site-link');
+    // ─── DOM ───
+    const appGrid        = document.getElementById('app-grid');
+    const noResults      = document.getElementById('no-results');
+    const noResultsText  = document.getElementById('no-results-text');
+    const searchInput    = document.getElementById('search-input');
+    const searchClear    = document.getElementById('search-clear');
+    const filterCont     = document.getElementById('filter-buttons-container');
+    const appCount       = document.getElementById('app-count');
+    const heroCount      = document.getElementById('hero-app-count');
+    const modal          = document.getElementById('app-modal');
+    const modalWrapper   = document.getElementById('modal-content-wrapper');
+    const modalCloseBtn  = document.getElementById('modal-close-btn');
+    const modalHeaderBg  = document.getElementById('modal-header-bg');
+    const modalTitle     = document.getElementById('modal-title');
+    const modalEngTitle  = document.getElementById('modal-eng-title');
+    const modalCatBadge  = document.getElementById('modal-category-badge');
+    const modalDesc      = document.getElementById('modal-description');
+    const modalTagsCont  = document.getElementById('modal-tags-container');
+    const modalImgCont   = document.getElementById('modal-image-container');
+    const modalImg       = document.getElementById('modal-image');
+    const modalSiteCont  = document.getElementById('modal-site-link-container');
+    const modalSiteLink  = document.getElementById('modal-site-link');
+    const modalVidCont   = document.getElementById('modal-video-container');
+    const modalYtIframe  = document.getElementById('modal-youtube-iframe');
 
-    const modalVideoLinkContainer = document.getElementById('modal-video-link-container');
-    const modalVideoLink = document.getElementById('modal-video-link');
-    
-    const modalCategory = document.getElementById('modal-category');
-    const modalDescription = document.getElementById('modal-description');
-    const modalTagsContainer = document.getElementById('modal-tags-container');
+    // 카테고리별 앱 수
+    function countByCategory(cat) {
+      return cat === '전체'
+        ? appData.length
+        : appData.filter(a => a.category === cat).length;
+    }
 
-    // --- 핵심 함수 ---
+    // ─── 필터 버튼 렌더 ───
+    function renderFilters() {
+      const all = [{ label:'전체', meta: null }, ...categories.map(c => ({ label:c, meta: categoryMeta[c] }))];
+      filterCont.innerHTML = all.map(({ label, meta }) => {
+        const active = currentFilter === label;
+        const count  = countByCategory(label);
+        const activeCls = active
+          ? (meta ? meta.bg + ' text-white' : 'bg-indigo-600 text-white')
+          : 'filter-btn-inactive bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 ring-1 ring-black/5 dark:ring-white/10';
+        return `
+          <button onclick="setFilter('${label}')"
+            class="inline-flex items-center px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all whitespace-nowrap ${activeCls}">
+            ${meta ? meta.emoji + ' ' : ''}${label}
+            <span class="filter-badge">${count}</span>
+          </button>`;
+      }).join('');
+    }
 
-    /** 앱 카드를 생성하고 그리드에 렌더링합니다. */
-    function renderAppGrid() {
-      // 1. 데이터 필터링
-      const filteredApps = appData.filter((app) => {
-        if (currentFilter !== allCategories && app.category !== currentFilter) {
-          return false;
-        }
-        if (currentSearchTerm) {
-          const lowerSearch = currentSearchTerm.toLowerCase();
-          return (
-            app.title.toLowerCase().includes(lowerSearch) ||
-            app.engTitle.toLowerCase().includes(lowerSearch) ||
-            app.tags.toLowerCase().includes(lowerSearch) ||
-            app.description.toLowerCase().includes(lowerSearch)
-          );
-        }
+    // 검색어 하이라이트
+    function highlight(text, term) {
+      if (!term) return text;
+      const re = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+      return text.replace(re, '<mark>$1</mark>');
+    }
+
+    // ─── 카드 그리드 렌더 ───
+    function renderGrid() {
+      const term = currentSearch.toLowerCase();
+      let list = appData.filter(app => {
+        if (currentFilter !== '전체' && app.category !== currentFilter) return false;
+        if (term) return [app.title, app.engTitle, app.tags, app.description]
+          .some(s => s.toLowerCase().includes(term));
         return true;
       });
 
-      // 2. 전체 보기일 때 categories 배열 순서대로 정렬 (같은 카테고리 내 순서 유지)
-      if (currentFilter === allCategories) {
-        filteredApps.sort((a, b) => categories.indexOf(a.category) - categories.indexOf(b.category));
+      if (currentFilter === '전체') {
+        list.sort((a,b) => categories.indexOf(a.category) - categories.indexOf(b.category));
       }
 
-      // 3. 그리드 초기화
       appGrid.innerHTML = '';
 
-      // 4. 필터링 결과에 따라 렌더링
-      if (filteredApps.length > 0) {
-        const allCardsHTML = filteredApps.map(app => {
-          const style = categoryStyles[app.category];
-          const tagsHTML = app.tags.split(' ').map(tag =>
-            `<span class="inline-block px-2 py-1 mb-1 mr-1 text-xs text-gray-700 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">${tag}</span>`
-          ).join('');
+      if (list.length === 0) {
+        noResults.classList.remove('hidden');
+        noResultsText.textContent = `"${currentSearch}"에 대한 결과가 없습니다.`;
+        appCount.textContent = '';
+        return;
+      }
 
-          return `
-            <div
-              class="flex flex-col h-full overflow-hidden transition-all duration-300 bg-white shadow-lg cursor-pointer dark:bg-gray-800 rounded-xl hover:shadow-2xl hover:-translate-y-1"
-              onclick="openModal(${app.id})"
-            >
-              <div class="h-2 w-full bg-gradient-to-r ${style.gradient}"></div>
-              <div class="flex flex-col flex-grow p-6">
-                <span class="text-sm font-bold ${style.text}">${app.category}</span>
-                <h3 class="mt-2 mb-1 text-xl font-bold text-gray-900 font-dohyeon dark:text-white">
-                  ${app.title}
-                </h3>
-                <p class="mb-4 text-xs text-gray-500 dark:text-gray-400">${app.engTitle}</p>
-                <p class="flex-grow text-sm text-gray-600 dark:text-gray-400">
-                  ${app.description}
-                </p>
-                <div class="mt-4">
-                  ${tagsHTML}
-                </div>
+      noResults.classList.add('hidden');
+      appCount.textContent = currentFilter === '전체'
+        ? `총 ${appData.length}개의 디지털 교육 도구`
+        : `${currentFilter} · ${list.length}개`;
+
+      appGrid.innerHTML = list.map(app => {
+        const meta = categoryMeta[app.category];
+        const tagsHtml = app.tags.split(' ').map(t =>
+          `<span class="tag-pill">${highlight(t, currentSearch)}</span>`
+        ).join('');
+
+        const thumbHtml = app.imageUrl
+          ? `<img src="${app.imageUrl}" alt="${app.title}" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'card-placeholder\\'><svg xmlns=\\'http://www.w3.org/2000/svg\\' class=\\'w-10 h-10 text-slate-300 dark:text-slate-600\\' fill=\\'none\\' viewBox=\\'0 0 24 24\\' stroke-width=\\'1\\'  stroke=\\'currentColor\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' d=\\'M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0H3\\'/></svg></div>'">`
+          : `<div class="card-placeholder"><svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-slate-300 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0H3"/></svg></div>`;
+
+        const hasBadges = app.youtubeVideoId || app.siteUrl;
+        const badgeHtml = hasBadges ? `
+          <div class="absolute top-2 right-2 flex gap-1">
+            ${app.youtubeVideoId ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500 text-white text-xs font-bold shadow"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82Z"/></svg>영상</span>` : ''}
+            ${app.siteUrl ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500 text-white text-xs font-bold shadow">링크</span>` : ''}
+          </div>` : '';
+
+        return `
+          <article class="app-card group reveal" onclick="openModal(${app.id})">
+            <div class="card-thumb">
+              ${thumbHtml}
+              ${badgeHtml}
+              <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-end p-3">
+                <span class="text-xs font-bold text-white bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full">자세히 보기 →</span>
               </div>
             </div>
-          `;
-        });
-        appGrid.innerHTML = allCardsHTML.join('');
-      } else {
-        appGrid.innerHTML = `
-          <p class="text-center text-gray-500 md:col-span-2 lg:col-span-3">
-            "${currentSearchTerm}"에 대한 검색 결과가 없습니다.
-          </p>
-        `;
-      }
+            <div class="p-5 flex flex-col gap-3">
+              <div>
+                <span class="inline-flex items-center gap-1 text-xs font-bold ${meta.text}">${meta.emoji} ${highlight(app.category, currentSearch)}</span>
+                <h3 class="mt-1 text-base font-bold text-gray-900 dark:text-white font-dohyeon leading-snug line-clamp-2">${highlight(app.title, currentSearch)}</h3>
+                <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">${highlight(app.engTitle, currentSearch)}</p>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">${highlight(app.description, currentSearch)}</p>
+              <div class="flex flex-wrap gap-1 pt-1">${tagsHtml}</div>
+            </div>
+          </article>`;
+      }).join('');
+
+      // Reveal 애니메이션 (새로 렌더된 카드 관찰)
+      observeReveal();
     }
 
-    /** 필터 버튼을 렌더링합니다. */
-    function renderFilterButtons() {
-      filterButtonsContainer.innerHTML = ''; // 초기화
+    window.setFilter = (f) => {
+      currentFilter = f;
+      renderFilters();
+      renderGrid();
+    };
 
-      // '전체' 버튼
-      const allBtnClass = currentFilter === allCategories
-        ? 'bg-indigo-600 text-white'
-        : 'bg-white text-gray-700 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600';
-      filterButtonsContainer.innerHTML += `
-        <button
-          onclick="setFilter('${allCategories}')"
-          class="px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${allBtnClass}"
-        >
-          ${allCategories}
-        </button>
-      `;
-
-      // 나머지 카테고리 버튼
-      categories.forEach(category => {
-        const style = categoryStyles[category];
-        const btnClass = currentFilter === category
-          ? `${style.bg} text-white`
-          : 'bg-white text-gray-700 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600';
-        
-        filterButtonsContainer.innerHTML += `
-          <button
-            onclick="setFilter('${category}')"
-            class="px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${btnClass}"
-          >
-            ${category}
-          </button>
-        `;
-      });
-    }
-
-    /** 필터 상태를 변경하고 다시 렌더링합니다. */
-    window.setFilter = (newFilter) => {
-      currentFilter = newFilter;
-      renderFilterButtons(); // 버튼 활성 상태 업데이트
-      renderAppGrid(); // 그리드 다시 렌더링
-    }
-
-    /** 모달을 엽니다. */
-    window.openModal = (appId) => {
-      const app = appData.find(a => a.id === appId);
+    // ─── 모달 ───
+    window.openModal = (id) => {
+      const app = appData.find(a => a.id === id);
       if (!app) return;
+      const meta = categoryMeta[app.category];
 
-      const style = categoryStyles[app.category];
-
-      // 1. 모달 내용 채우기
-      modalTitle.textContent = app.title;
+      modalHeaderBg.className = `p-6 text-white shrink-0 ${meta.bg}`;
+      modalCatBadge.textContent = meta.emoji + ' ' + app.category;
+      modalTitle.textContent    = app.title;
       modalEngTitle.textContent = app.engTitle;
-      
-      // 헤더 및 카테고리 스타일
-      modalHeaderBg.className = `p-6 bg-gradient-to-r ${style.gradient} text-white`;
-      modalCategory.className = `text-sm font-bold tracking-wider uppercase ${style.text}`;
+      modalDesc.textContent     = app.description;
 
-      // (1) 분류/설명
-      modalCategory.textContent = app.category;
-      modalDescription.textContent = app.description;
-
-      // (2) 태그
-      modalTagsContainer.innerHTML = app.tags.split(' ').map(tag => 
-        `<span class="px-3 py-1 text-sm text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-200">${tag}</span>`
+      modalTagsCont.innerHTML = app.tags.split(' ').map(t =>
+        `<span class="tag-pill">${t}</span>`
       ).join('');
 
-      // (3) 이미지
       if (app.imageUrl) {
-        modalImage.src = app.imageUrl;
-        modalImage.alt = `${app.title} 스크린샷`;
-        modalImageContainer.classList.remove('hidden');
-        modalImage.parentElement.style.display = 'block'; // onerror로 숨겨졌을 경우 대비
+        modalImg.src = app.imageUrl;
+        modalImgCont.classList.remove('hidden');
       } else {
-        modalImageContainer.classList.add('hidden');
-        modalImage.src = '';
+        modalImgCont.classList.add('hidden');
       }
-      
-      // (4) 사이트 텍스트 링크
+
       if (app.siteUrl) {
         modalSiteLink.href = app.siteUrl;
-        modalSiteLink.textContent = app.siteUrl;
-        modalSiteLinkContainer.classList.remove('hidden');
+        modalSiteCont.classList.remove('hidden');
       } else {
-        modalSiteLinkContainer.classList.add('hidden');
-        modalSiteLink.href = '#';
-        modalSiteLink.textContent = '';
+        modalSiteCont.classList.add('hidden');
       }
 
-      // (5) 유튜브 텍스트 링크
       if (app.youtubeVideoId) {
-        const videoUrl = `https://youtu.be/${app.youtubeVideoId}`;
-        modalVideoLink.href = videoUrl;
-        modalVideoLink.textContent = videoUrl;
-        modalVideoLinkContainer.classList.remove('hidden');
+        modalYtIframe.src = `https://www.youtube.com/embed/${app.youtubeVideoId}`;
+        modalVidCont.classList.remove('hidden');
       } else {
-        modalVideoLinkContainer.classList.add('hidden');
-        modalVideoLink.href = '#';
-        modalVideoLink.textContent = '';
+        modalYtIframe.src = '';
+        modalVidCont.classList.add('hidden');
       }
 
-      // 2. 모달 보이기
       modal.classList.remove('hidden');
-    }
+      document.body.style.overflow = 'hidden';
+    };
 
-    /** 모달을 닫습니다. */
     function closeModal() {
       modal.classList.add('hidden');
+      modalYtIframe.src = ''; // 영상 정지
+      document.body.style.overflow = '';
     }
 
-    // --- 초기화 및 이벤트 리스너 ---
-    document.addEventListener('DOMContentLoaded', () => {
-      // 총 앱 개수 표시
-      appCount.textContent = `총 ${appData.length}개의 디지털 교육 도구를 만나보세요.`;
+    modalCloseBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', closeModal);
+    modalWrapper.addEventListener('click', e => e.stopPropagation());
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-      // 초기 렌더링
-      renderFilterButtons();
-      renderAppGrid();
+    // ─── 네비게이션 스크롤 효과 ───
+    const nav     = document.getElementById('main-nav');
+    const navLogo = document.getElementById('nav-logo');
+    const navLinks = nav.querySelectorAll('a:not(#nav-logo)');
 
-      // 검색창 이벤트
-      searchInput.addEventListener('input', (e) => {
-        currentSearchTerm = e.target.value;
-        renderAppGrid();
-      });
+    function updateNav() {
+      const scrolled = window.scrollY > 60;
+      nav.classList.toggle('scrolled', scrolled);
+      // 스크롤 후 색상 조정
+      if (scrolled) {
+        navLogo.classList.replace('text-white','text-gray-900');
+        navLogo.classList.add('dark:text-white');
+        navLinks.forEach(a => {
+          a.classList.replace('text-white/80','text-gray-600');
+          a.classList.replace('hover:text-white','hover:text-gray-900');
+          a.classList.replace('hover:bg-white/10','hover:bg-gray-100');
+          a.classList.add('dark:text-gray-300','dark:hover:text-white','dark:hover:bg-white/10');
+        });
+      } else {
+        navLogo.classList.replace('text-gray-900','text-white');
+        navLogo.classList.remove('dark:text-white');
+        navLinks.forEach(a => {
+          a.classList.replace('text-gray-600','text-white/80');
+          a.classList.replace('hover:text-gray-900','hover:text-white');
+          a.classList.replace('hover:bg-gray-100','hover:bg-white/10');
+          a.classList.remove('dark:text-gray-300','dark:hover:text-white','dark:hover:bg-white/10');
+        });
+      }
+    }
 
-      // 모달 닫기 이벤트
-      modalCloseBtn.addEventListener('click', closeModal);
-      modal.addEventListener('click', closeModal); // 배경 클릭 시
-      modalContentWrapper.addEventListener('click', (e) => {
-        e.stopPropagation(); // 모달 내부 클릭 시 DOKS.
-      });
+    // ─── 맨위로 버튼 ───
+    const backToTop = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      updateNav();
+      backToTop.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+
+    // ─── 다크모드 ───
+    const themeToggle = document.getElementById('theme-toggle');
+    const iconSun     = document.getElementById('icon-sun');
+    const iconMoon    = document.getElementById('icon-moon');
+
+    function applyTheme(dark) {
+      document.documentElement.classList.toggle('dark', dark);
+      iconSun.classList.toggle('hidden', !dark);
+      iconMoon.classList.toggle('hidden', dark);
+    }
+
+    const savedTheme = localStorage.getItem('theme');
+    applyTheme(savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches));
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      iconSun.classList.toggle('hidden', !isDark);
+      iconMoon.classList.toggle('hidden', isDark);
     });
 
-  </script>
-</body>
+    // ─── 검색 ───
+    searchInput.addEventListener('input', e => {
+      currentSearch = e.target.value.trim();
+      searchClear.classList.toggle('hidden', !currentSearch);
+      renderGrid();
+    });
+    searchClear.addEventListener('click', () => {
+      searchInput.value = '';
+      currentSearch = '';
+      searchClear.classList.add('hidden');
+      searchInput.focus();
+      renderGrid();
+    });
 
+    // ─── Intersection Observer (reveal 애니메이션) ───
+    let revealObserver;
+    function observeReveal() {
+      if (revealObserver) revealObserver.disconnect();
+      revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    }
+
+    // ─── 초기화 ───
+    document.addEventListener('DOMContentLoaded', () => {
+      heroCount.textContent = appData.length;
+      appCount.textContent  = `총 ${appData.length}개의 디지털 교육 도구`;
+      renderFilters();
+      renderGrid();
+      updateNav();
+      observeReveal();
+    });
+  </script>
+
+</body>
 </html>
