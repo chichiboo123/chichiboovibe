@@ -666,6 +666,14 @@
       "description": "Excel과 Google Sheets를 웹페이지처럼 편하게 탐색하고 편집·공유할 수 있는 스프레드시트 웹앱",
       "tags": "#스프레드시트 #엑셀 #구글시트 #업무효율화",
       "imageUrl": "https://drive.google.com/thumbnail?id=11dZYlKJHEzlyA_6pf5-C3t6oxT2vs1yt&sz=w2000"
+    },
+    {
+      "title": "링크스캐너",
+      "engTitle": "Link Scanner",
+      "category": "업무",
+      "description": "웹앱 URL과 GitHub 저장소를 기반으로 기능·구조·UI/UX·소스코드를 AI로 종합 분석해 리포트로 정리하는 웹앱",
+      "tags": "#바이브코딩 #앱분석 #Gemini #API",
+      "imageUrl": "https://drive.google.com/thumbnail?id=1Y-zrgoUoOUBCYJOiADSgSahX_Iuvce91&sz=w2000"
     }
   ]
 }
