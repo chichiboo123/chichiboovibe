@@ -658,6 +658,14 @@
       "description": "HTML 기반 카드뉴스·포스터·PPT를 화면에서 직접 편집하고 다양한 형식으로 변환·내보낼 수 있는 시각 편집 웹앱",
       "tags": "#HTML편집 #카드뉴스 #시각디자인",
       "imageUrl": "https://drive.google.com/thumbnail?id=1MXHPjGCHxlXWBxhGFsUEV6F-FhdRbeZO&sz=w2000"
+    },
+    {
+      "title": "시트페이지",
+      "engTitle": "SheetPage",
+      "category": "업무",
+      "description": "Excel과 Google Sheets를 웹페이지처럼 편하게 탐색하고 편집·공유할 수 있는 스프레드시트 웹앱",
+      "tags": "#스프레드시트 #엑셀 #구글시트 #업무효율화",
+      "imageUrl": "https://drive.google.com/thumbnail?id=11dZYlKJHEzlyA_6pf5-C3t6oxT2vs1yt&sz=w2000"
     }
   ]
 }
