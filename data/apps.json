@@ -70,6 +70,15 @@
       "youtubeVideoId": "-8XIclLTR4c"
     },
     {
+      "title": "동선노트",
+      "engTitle": "Dance Note",
+      "category": "뮤지컬",
+      "description": "공연 장면마다 배우의 무대 위치를 기록하고 동선을 재생하며 연습 자료로 만드는 웹앱",
+      "tags": "#무대동선 #공연연출 #교육뮤지컬 #학예회",
+      "imageUrl": "https://drive.google.com/thumbnail?id=1RdHdK8d-DEhve4syXXESq1ORn8n18BI3&sz=w2000",
+      "youtubeVideoId": "o5czQtO1gv0"
+    },
+    {
       "title": "뮤지컬 포스터 스튜디오",
       "engTitle": "Musical Poster Lab",
       "category": "뮤지컬",
