@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="ko" class="">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#111827" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FAF9F6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#09090B" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="교육뮤지컬 꿈꾸는 치수쌤이 직접 만든 교육·뮤지컬·디지털 융합 웹앱 컬렉션">
+  <meta property="og:title" content="치수쌤의 WebApps">
+  <meta property="og:description" content="교육과 뮤지컬, 디지털의 의미 있는 만남 — 직접 만든 디지털 교육 도구 모음">
+  <meta property="og:type" content="website">
   <title>WebApp 포트폴리오 | 치수쌤</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
@@ -20,6 +24,13 @@
     })();
   </script>
 
+  <!-- 폰트 & 아이콘 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined&display=block">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- 다크모드를 .dark 클래스 기준으로 동작시키는 핵심 설정 -->
   <script>
@@ -27,34 +38,555 @@
   </script>
 
   <style>
-    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
-    @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
-
+    /* ═════════════ 디자인 토큰 ═════════════ */
     :root {
-      --nav-h: 64px;
+      --bg:        #FAF9F6;   /* 웜 아이보리 */
+      --bg-alt:    #F3F1EC;
+      --surface:   #FFFFFF;
+      --surface-2: #F6F5F1;
+      --ink:       #0E0E10;
+      --ink-2:     #3F3F46;
+      --muted:     #71717A;
+      --line:      rgba(14,14,16,.08);
+      --line-2:    rgba(14,14,16,.14);
+      --glass:     rgba(255,255,255,.72);
+      --accent:    #5B4BE0;   /* 아이리스 */
+      --accent-2:  #C2410C;
+      --grad-text: linear-gradient(100deg, #5B4BE0 0%, #B83EC9 45%, #E0732B 100%);
+      --shadow-sm: 0 1px 2px rgba(14,14,16,.04), 0 2px 8px rgba(14,14,16,.04);
+      --shadow-lg: 0 24px 60px -20px rgba(14,14,16,.22), 0 8px 20px -10px rgba(14,14,16,.10);
+      --nav-h: 76px;
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+    .dark {
+      --bg:        #09090B;
+      --bg-alt:    #0E0E11;
+      --surface:   #121215;
+      --surface-2: #18181C;
+      --ink:       #F4F4F5;
+      --ink-2:     #D4D4D8;
+      --muted:     #A1A1AA;
+      --line:      rgba(255,255,255,.08);
+      --line-2:    rgba(255,255,255,.14);
+      --glass:     rgba(18,18,21,.66);
+      --accent:    #A39BFF;
+      --accent-2:  #F5A35C;
+      --grad-text: linear-gradient(100deg, #B7B0FF 0%, #F0A6F5 45%, #FBC77D 100%);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+      --shadow-lg: 0 30px 70px -24px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.06);
     }
 
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
     body {
-      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto,
-        'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
-        'Malgun Gothic', sans-serif;
-      /* 테마 전환 시 부드러운 색상 변화 */
-      transition: background-color .3s ease, color .3s ease;
+      font-family: 'Pretendard GOV', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+        'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      word-break: keep-all;
+      transition: background-color .4s ease, color .4s ease;
+    }
+    ::selection { background: var(--accent); color: #fff; }
+
+    .font-serif-display { font-family: 'Instrument Serif', 'Times New Roman', serif; font-weight: 400; }
+    .text-grad {
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .text-ink   { color: var(--ink); }
+    .text-ink-2 { color: var(--ink-2); }
+    .text-muted { color: var(--muted); }
+    .bg-page    { background: var(--bg); }
+    .bg-page-alt{ background: var(--bg-alt); }
+    .hairline   { border-color: var(--line); }
+
+    .material-icons-outlined {
+      font-size: 1.1em;
+      line-height: 1;
+      vertical-align: middle;
+      user-select: none;
     }
 
-    /* ── 키보드 포커스 접근성 (마우스 클릭 시엔 표시 안 함) ── */
-    a:focus-visible,
-    button:focus-visible,
-    input:focus-visible,
-    [role="button"]:focus-visible {
-      outline: 2px solid #6366f1;
-      outline-offset: 2px;
-      border-radius: 8px;
+    /* ── 키보드 포커스 접근성 ── */
+    a:focus-visible, button:focus-visible, input:focus-visible, [role="button"]:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 12px;
     }
+
+    /* ── 스크롤바 ── */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 9999px; border: 2px solid var(--bg); }
+
+    /* ── 그레인 텍스처 (고급스러운 질감) ── */
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .05;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .dark .grain::after { opacity: .07; mix-blend-mode: screen; }
+
+    /* ── 스크롤 진행 바 ── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; height: 2px; width: 100%;
+      transform-origin: 0 50%; transform: scaleX(0);
+      background: var(--grad-text);
+      z-index: 150;
+    }
+
+    /* ═════════════ 네비게이션 (플로팅 글래스 pill) ═════════════ */
+    #main-nav {
+      position: fixed; top: 14px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: min(1120px, calc(100% - 24px));
+      height: 56px;
+      padding: 0 8px 0 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      transition: background .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease), width .4s var(--ease);
+    }
+    #main-nav.scrolled {
+      background: var(--glass);
+      border-color: var(--line);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: saturate(160%) blur(18px);
+      -webkit-backdrop-filter: saturate(160%) blur(18px);
+      width: min(960px, calc(100% - 24px));
+    }
+    .nav-link {
+      position: relative;
+      padding: 8px 14px;
+      font-size: .875rem; font-weight: 500;
+      color: var(--ink-2);
+      border-radius: 9999px;
+      transition: color .2s, background .2s;
+    }
+    .nav-link:hover { color: var(--ink); background: var(--line); }
+    .nav-link.active { color: var(--ink); }
+    .nav-link.active::after {
+      content: ''; position: absolute; left: 50%; bottom: 3px;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--accent); transform: translateX(-50%);
+    }
+    .logo-mark {
+      width: 30px; height: 30px; border-radius: 9px;
+      display: grid; place-items: center;
+      background: var(--ink); color: var(--bg);
+      font-weight: 800; font-size: 14px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    .icon-btn {
+      width: 40px; height: 40px; border-radius: 9999px;
+      display: grid; place-items: center;
+      color: var(--ink-2);
+      transition: background .2s, color .2s, transform .2s;
+    }
+    .icon-btn:hover { background: var(--line); color: var(--ink); }
+    .icon-btn:active { transform: scale(.94); }
+
+    /* ═════════════ 버튼 ═════════════ */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      height: 48px; padding: 0 22px;
+      border-radius: 9999px;
+      font-size: .9375rem; font-weight: 600; letter-spacing: -.01em;
+      transition: transform .3s var(--ease), background .3s, box-shadow .3s, color .3s;
+      white-space: nowrap;
+    }
+    .btn-sm { height: 40px; padding: 0 16px; font-size: .8125rem; }
+    .btn-primary { background: var(--ink); color: var(--bg); box-shadow: 0 10px 30px -10px rgba(14,14,16,.5); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -12px rgba(14,14,16,.55); }
+    .dark .btn-primary { box-shadow: 0 10px 40px -12px rgba(163,155,255,.45); }
+    .btn-ghost { color: var(--ink); background: transparent; box-shadow: inset 0 0 0 1px var(--line-2); }
+    .btn-ghost:hover { background: var(--line); }
+    .btn .btn-arrow { transition: transform .3s var(--ease); }
+    .btn:hover .btn-arrow { transform: translateX(3px); }
+
+    /* ═════════════ 히어로 ═════════════ */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .aurora { position: absolute; inset: -10%; z-index: -2; filter: blur(70px) saturate(140%); opacity: .55; }
+    .dark .aurora { opacity: .45; }
+    .aurora span {
+      position: absolute; border-radius: 50%;
+      mix-blend-mode: multiply;
+      animation: drift 22s var(--ease) infinite alternate;
+    }
+    .dark .aurora span { mix-blend-mode: screen; }
+    .aurora span:nth-child(1) { width: 46vw; height: 46vw; left: 6%;  top: 8%;  background: #C7BFFF; animation-duration: 24s; }
+    .aurora span:nth-child(2) { width: 38vw; height: 38vw; right: 4%; top: 2%;  background: #FFC9E3; animation-duration: 28s; animation-delay: -6s; }
+    .aurora span:nth-child(3) { width: 34vw; height: 34vw; left: 34%; bottom: 0; background: #FFE2B8; animation-duration: 26s; animation-delay: -12s; }
+    .aurora span:nth-child(4) { width: 26vw; height: 26vw; right: 22%; bottom: 14%; background: #B9E6E0; animation-duration: 30s; animation-delay: -3s; }
+    .dark .aurora span:nth-child(1) { background: #4C3FD1; }
+    .dark .aurora span:nth-child(2) { background: #9D2E7A; }
+    .dark .aurora span:nth-child(3) { background: #8A4A12; }
+    .dark .aurora span:nth-child(4) { background: #0F6E66; }
+    @keyframes drift {
+      0%   { transform: translate(0,0) scale(1); }
+      50%  { transform: translate(6vw,-4vh) scale(1.12); }
+      100% { transform: translate(-4vw,5vh) scale(.94); }
+    }
+    .hero-grid {
+      position: absolute; inset: 0; z-index: -1;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+    }
+    .eyebrow-chip {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 6px 14px 6px 8px;
+      border-radius: 9999px;
+      background: var(--glass);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      font-size: .75rem; font-weight: 600; letter-spacing: .02em;
+      color: var(--ink-2);
+    }
+    .eyebrow-chip .pulse {
+      position: relative; width: 8px; height: 8px; border-radius: 50%; background: #22C55E;
+    }
+    .eyebrow-chip .pulse::after {
+      content: ''; position: absolute; inset: -4px; border-radius: 50%;
+      border: 2px solid #22C55E; opacity: 0;
+      animation: ping 2.4s ease-out infinite;
+    }
+    @keyframes ping { 0% { transform: scale(.5); opacity: .7; } 100% { transform: scale(1.6); opacity: 0; } }
+
+    .hero-title {
+      font-weight: 800;
+      letter-spacing: -.045em;
+      line-height: .98;
+      font-size: clamp(3.5rem, 15vw, 9.5rem);
+    }
+    .hero-title .font-serif-display {
+      font-style: italic;
+      letter-spacing: -.02em;
+      font-size: 1.08em;
+      padding-right: .06em;
+    }
+    .stat-num { font-size: clamp(1.75rem, 3.6vw, 2.5rem); font-weight: 700; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+
+    /* ── 마퀴 ── */
+    .marquee {
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+    .marquee-track {
+      display: flex; width: max-content; gap: 0;
+      animation: marquee 80s linear infinite;
+    }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 18px;
+      padding-right: 18px;
+      font-size: 1rem; font-weight: 500; color: var(--muted);
+      white-space: nowrap;
+    }
+    .marquee-item .font-serif-display { font-size: 1.25rem; font-style: italic; color: var(--ink-2); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* ═════════════ 섹션 공통 ═════════════ */
+    .section-index {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: .75rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .section-index::before { content: ''; width: 28px; height: 1px; background: var(--line-2); }
+    .section-title {
+      font-weight: 800;
+      letter-spacing: -.04em;
+      line-height: 1.08;
+      font-size: clamp(2.25rem, 5.5vw, 4.25rem);
+    }
+    .section-title .font-serif-display { font-style: italic; letter-spacing: -.01em; font-size: 1.08em; }
+
+    /* ═════════════ 벤토 / 카드 ═════════════ */
+    .bento {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 9999px;
+      font-size: .8125rem; font-weight: 500;
+      color: var(--ink-2);
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+    }
+    .book-link {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      transition: transform .3s var(--ease), border-color .3s, background .3s;
+    }
+    .book-link:hover { transform: translateY(-2px); border-color: var(--line-2); background: var(--surface); }
+    .book-link .arrow { margin-left: auto; color: var(--muted); transition: transform .3s var(--ease), color .3s; }
+    .book-link:hover .arrow { transform: translate(2px,-2px); color: var(--ink); }
+
+    /* ── 앱 카드 ── */
+    .app-card {
+      --mx: 50%; --my: 0%;
+      position: relative;
+      display: flex; flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 8px;
+      cursor: pointer;
+      transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s;
+    }
+    .app-card::before {
+      content: ''; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
+      background: radial-gradient(420px circle at var(--mx) var(--my), rgba(91,75,224,.10), transparent 45%);
+      opacity: 0; transition: opacity .4s;
+    }
+    .dark .app-card::before { background: radial-gradient(420px circle at var(--mx) var(--my), rgba(163,155,255,.12), transparent 45%); }
+    .app-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--line-2); }
+    .app-card:hover::before { opacity: 1; }
+
+    .card-thumb {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--surface-2);
+    }
+    .card-thumb img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .8s var(--ease), filter .8s var(--ease);
+    }
+    .app-card:hover .card-thumb img { transform: scale(1.06); }
+    .card-thumb .card-placeholder {
+      position: absolute; inset: 0;
+      display: grid; place-items: center;
+      color: var(--muted);
+      font-size: 2.5rem;
+    }
+    .card-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      height: 26px; padding: 0 10px;
+      border-radius: 9999px;
+      font-size: .6875rem; font-weight: 700; letter-spacing: .02em;
+      color: #fff;
+      background: rgba(10,10,12,.55);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .card-go {
+      width: 36px; height: 36px; border-radius: 9999px;
+      display: grid; place-items: center;
+      border: 1px solid var(--line-2);
+      color: var(--ink);
+      flex-shrink: 0;
+      transition: background .4s var(--ease), color .4s var(--ease), transform .4s var(--ease), border-color .4s;
+    }
+    .app-card:hover .card-go { background: var(--ink); color: var(--bg); border-color: var(--ink); transform: rotate(45deg); }
+    .cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    .tag-pill {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      font-size: .6875rem; font-weight: 500;
+      color: var(--muted);
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+    }
+
+    /* ── 툴바 (검색 + 필터) ── */
+    .toolbar {
+      position: sticky; top: 82px; z-index: 30;
+      padding: 8px;
+      border-radius: 9999px;
+      background: var(--glass);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: saturate(160%) blur(18px);
+      -webkit-backdrop-filter: saturate(160%) blur(18px);
+    }
+    @media (max-width: 767px) {
+      .toolbar { border-radius: 24px; top: 78px; }
+    }
+    #search-input {
+      height: 42px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    #search-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); }
+    #search-input::placeholder { color: var(--muted); }
+    #search-input::-webkit-search-cancel-button { display: none; }
+    .kbd {
+      min-width: 22px; height: 22px; padding: 0 6px;
+      border-radius: 6px;
+      font-size: .6875rem; font-weight: 600;
+      color: var(--muted);
+      border: 1px solid var(--line-2);
+      background: var(--surface-2);
+    }
+
+    #filter-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      mask-image: linear-gradient(90deg, #000 92%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, #000 92%, transparent);
+    }
+    #filter-scroll::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 42px; padding: 0 16px;
+      border-radius: 9999px;
+      font-size: .8125rem; font-weight: 600;
+      color: var(--ink-2);
+      white-space: nowrap;
+      transition: background .3s var(--ease), color .3s var(--ease);
+    }
+    .filter-btn:hover { background: var(--line); color: var(--ink); }
+    .filter-btn.is-active { background: var(--ink); color: var(--bg); }
+    .filter-badge {
+      font-size: .6875rem; font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      opacity: .55;
+    }
+    .filter-btn.is-active .filter-badge { opacity: .7; }
+
+    /* ── 하이라이트 텍스트 ── */
+    mark {
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
+      color: inherit;
+      border-radius: 4px; padding: 0 2px;
+    }
+
+    /* ── 컨셉 카드 ── */
+    .concept-card {
+      position: relative;
+      display: flex; flex-direction: column;
+      min-height: 240px;
+      padding: 28px;
+      border-radius: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      overflow: hidden;
+      text-align: left;
+      transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s;
+      isolation: isolate;
+    }
+    .concept-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--line-2); }
+    .concept-orb {
+      position: absolute; z-index: -1;
+      width: 260px; height: 260px; right: -80px; top: -90px;
+      border-radius: 50%;
+      filter: blur(50px);
+      opacity: .35;
+      transition: opacity .6s var(--ease), transform .8s var(--ease);
+    }
+    .dark .concept-orb { opacity: .28; }
+    .concept-card:hover .concept-orb { opacity: .6; transform: scale(1.2) translate(-20px, 20px); }
+    .concept-emoji {
+      width: 52px; height: 52px; border-radius: 16px;
+      display: grid; place-items: center;
+      font-size: 1.5rem;
+      background: var(--glass);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* ═════════════ 모달 ═════════════ */
+    #app-modal.hidden { display: none !important; }
+    #app-modal { animation: fade-in .3s ease-out; }
+    #modal-content-wrapper { animation: sheet-in .5s var(--ease); background: var(--surface); }
+    @keyframes fade-in  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes sheet-in { from { transform: translateY(28px) scale(.98); opacity: 0; } to { transform: none; opacity: 1; } }
+    .modal-label {
+      font-size: .6875rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .yt-embed-wrap {
+      position: relative; aspect-ratio: 16 / 9;
+      overflow: hidden; border-radius: 18px;
+      border: 1px solid var(--line);
+    }
+    .yt-embed-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+    /* ═════════════ 맨위로 버튼 ═════════════ */
+    #back-to-top {
+      position: fixed; bottom: calc(1.5rem + env(safe-area-inset-bottom)); right: 1.25rem; z-index: 90;
+      width: 48px; height: 48px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--ink); color: var(--bg);
+      box-shadow: var(--shadow-lg);
+      opacity: 0; pointer-events: none;
+      transform: translateY(12px) scale(.9);
+      transition: opacity .4s var(--ease), transform .4s var(--ease);
+    }
+    #back-to-top.visible { opacity: 1; pointer-events: auto; transform: none; }
+    #back-to-top:hover { transform: translateY(-3px); }
+
+    /* ═════════════ 푸터 ═════════════ */
+    .footer-word {
+      font-weight: 800;
+      letter-spacing: -.05em;
+      line-height: .9;
+      font-size: clamp(3.5rem, 14vw, 11rem);
+      color: transparent;
+      -webkit-text-stroke: 1px var(--line-2);
+      user-select: none;
+    }
+    .footer-word .font-serif-display { font-style: italic; -webkit-text-stroke: 0; padding-right: .12em; }
+    .chichiboo-footer a {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      transition: color .2s;
+    }
+    .chichiboo-footer a:hover { color: var(--accent); }
+    .chichiboo-footer .material-icons-outlined { font-size: 16px; }
+
+    /* ═════════════ Reveal 애니메이션 ═════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      filter: blur(6px);
+      transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: none; filter: none; }
+    .card-in { animation: card-in .5s var(--ease) both; }
+    @keyframes card-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .rise { animation: rise 1.1s var(--ease) both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(32px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
 
     /* 모션 최소화 선호 사용자 배려 */
     @media (prefers-reduced-motion: reduce) {
@@ -64,597 +596,369 @@
         transition-duration: .01ms !important;
         scroll-behavior: auto !important;
       }
+      .reveal { opacity: 1; transform: none; filter: none; }
     }
 
-    .font-dohyeon { font-family: 'Do Hyeon', sans-serif; }
-
-    /* ── 스크롤바 ── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 9999px; }
-
-    /* ── 애니메이션 ── */
-    @keyframes fade-in   { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slide-up  { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    @keyframes bounce-y  { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
-    @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    @keyframes scale-in  { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-    .animate-fade-in   { animation: fade-in  0.25s ease-out; }
-    .animate-slide-up  { animation: slide-up 0.3s  ease-out; }
-    .animate-scale-in  { animation: scale-in 0.3s  cubic-bezier(.2,.8,.2,1); }
-    .animate-bounce-y  { animation: bounce-y 1.8s  ease-in-out infinite; }
-
-    /* ── 조명 blob ── */
-    .spotlight-blob {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      will-change: left, top, opacity;
-      transform: translate(-50%, -50%);
-    }
-
-    /* ── 카드 썸네일 ── */
-    .card-thumb {
-      position: relative;
-      width: 100%;
-      padding-bottom: 56.25%; /* 16:9 */
-      overflow: hidden;
-      background: #f1f5f9;
-    }
-    .dark .card-thumb { background: #1e293b; }
-    .card-thumb img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-    .card-thumb .card-placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .group:hover .card-thumb img { transform: scale(1.05); }
-
-    /* ── 카드 ── */
-    .app-card {
-      background: #fff;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,.06), 0 0 0 1px rgba(0,0,0,.04);
-      transition: box-shadow .3s, transform .3s;
-      cursor: pointer;
-    }
-    .dark .app-card {
-      background: #0f172a;
-      box-shadow: 0 2px 8px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.08);
-    }
-    .app-card:hover {
-      box-shadow: 0 12px 32px rgba(0,0,0,.13), 0 0 0 1px rgba(99,102,241,.2);
-      transform: translateY(-4px);
-    }
-    .dark .app-card:hover {
-      box-shadow: 0 12px 32px rgba(0,0,0,.6), 0 0 0 1px rgba(99,102,241,.5);
-    }
-
-    /* ── 모달 ── */
-    #app-modal { transition: opacity .2s; }
-    #app-modal.hidden { display: none !important; }
-
-    /* ── 네비게이션 ── */
-    #main-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      height: var(--nav-h);
-      transition: background .3s, box-shadow .3s;
-    }
-    #main-nav.scrolled {
-      background: rgba(255,255,255,0.92);
-      box-shadow: 0 1px 16px rgba(0,0,0,.08);
-      backdrop-filter: blur(12px);
-    }
-    .dark #main-nav.scrolled {
-      background: rgba(15,23,42,0.92);
-      box-shadow: 0 1px 16px rgba(0,0,0,.4);
-    }
-
-    /* ── 맨위로 버튼 ── */
-    #back-to-top {
-      position: fixed;
-      bottom: 2rem;
-      right: 1.5rem;
-      z-index: 90;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #6366f1;
-      color: #fff;
-      box-shadow: 0 4px 16px rgba(99,102,241,.4);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .3s, transform .3s;
-      transform: translateY(8px);
-    }
-    #back-to-top.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    /* ── 필터 스크롤 ── */
-    #filter-scroll {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-    #filter-scroll::-webkit-scrollbar { display: none; }
-
-    /* ── Reveal 애니메이션 ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity .5s ease, transform .5s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── 다크모드 토글 버튼 ── */
-    .theme-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background .2s;
-    }
-    .theme-btn:hover { background: rgba(99,102,241,.12); }
-    .dark .theme-btn:hover { background: rgba(99,102,241,.2); }
-
-    /* ── 태그 pill ── */
-    .tag-pill {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 9999px;
-      font-size: 0.7rem;
-      font-weight: 500;
-      background: #f1f5f9;
-      color: #475569;
-    }
-    .dark .tag-pill { background: #1e3a5f; color: #93c5fd; }
-
-    /* ── 다크모드 전용 텍스트 강화 ── */
-    .dark .card-desc    { color: #cbd5e1; }
-    .dark .card-eng     { color: #64748b; }
-    .dark .section-desc { color: #94a3b8; }
-
-    /* ── 모달 유튜브 임베드 ── */
-    .yt-embed-wrap {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-      border-radius: 10px;
-    }
-    .yt-embed-wrap iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* ── 필터 버튼 badge ── */
-    .filter-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 18px;
-      height: 18px;
-      border-radius: 9999px;
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 0 5px;
-      background: rgba(255,255,255,0.25);
-      margin-left: 5px;
-    }
-    .filter-btn-inactive .filter-badge {
-      background: rgba(0,0,0,0.08);
-      color: #64748b;
-    }
-    .dark .filter-btn-inactive .filter-badge {
-      background: rgba(255,255,255,0.1);
-      color: #94a3b8;
-    }
-
-    /* ── 검색창 ── */
-    #search-input:focus { outline: none; box-shadow: 0 0 0 2px #6366f1; }
-    #search-input::placeholder { color: #9ca3af; }
-    .dark #search-input::placeholder { color: #475569; }
-
-    /* ── 하이라이트 텍스트 ── */
-    mark { background: #fef08a; border-radius: 2px; padding: 0 2px; }
-    .dark mark { background: #1e3a5f; color: #93c5fd; }
-
-    /* ── 모바일: 히어로 패딩 (nav 높이만큼 확보) ── */
     @media (max-width: 640px) {
-      #main-nav .container { padding-left: 1rem; padding-right: 1rem; }
-      .hero-btns { flex-direction: column; align-items: stretch; }
-      .hero-btns a { text-align: center; justify-content: center; }
+      #main-nav { padding: 0 6px 0 14px; top: 10px; }
+      .hero-btns { flex-direction: column; align-items: stretch; width: 100%; }
     }
   </style>
 </head>
-<body class="min-h-screen bg-white text-gray-900 dark:bg-slate-950 dark:text-gray-100">
+<body class="min-h-screen">
+
+  <div id="scroll-progress" aria-hidden="true"></div>
 
   <!-- ══════════════════════ 네비게이션 ══════════════════════ -->
-  <nav id="main-nav">
-    <div class="container mx-auto px-4 h-full flex items-center justify-between">
-      <!-- 로고 -->
-      <a href="#" class="font-dohyeon text-xl text-white dark:text-white transition-colors" id="nav-logo">
-        치수쌤 WebApps
-      </a>
+  <nav id="main-nav" aria-label="주요 메뉴">
+    <a href="#" class="flex items-center gap-2.5 text-ink" id="nav-logo" aria-label="맨 위로">
+      <span class="logo-mark">치</span>
+      <span class="text-[15px] font-bold tracking-tight">치수쌤 <span class="font-serif-display italic text-[17px] font-normal">WebApps</span></span>
+    </a>
 
-      <!-- 데스크탑 링크 -->
-      <div class="hidden md:flex items-center gap-1">
-        <a href="#about"      class="px-3 py-1.5 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors">About</a>
-        <a href="#collection" class="px-3 py-1.5 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors">Apps</a>
-        <a href="#concept"    class="px-3 py-1.5 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors">Concept</a>
-      </div>
+    <div class="hidden md:flex items-center gap-1">
+      <a href="#about"      class="nav-link" data-section="about">About</a>
+      <a href="#collection" class="nav-link" data-section="collection">Apps</a>
+      <a href="#concept"    class="nav-link" data-section="concept">Concept</a>
+    </div>
 
-      <!-- 오른쪽: 다크모드 + 외부링크 -->
-      <div class="flex items-center gap-2">
-        <button id="theme-toggle" class="theme-btn text-white/70 hover:text-white" aria-label="다크/라이트 모드 전환">
-          <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364-1.414 1.414M7.05 16.95l-1.414 1.414M18.364 18.364l-1.414-1.414M7.05 7.05 5.636 5.636M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" />
-          </svg>
-          <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75 9.75 9.75 0 0 1 8.25 6 9.77 9.77 0 0 1 8.998 2.248 9.75 9.75 0 0 0 12 21.75c3.43 0 6.45-1.77 8.19-4.454a.75.75 0 0 0-.438-1.294Z" />
-          </svg>
-        </button>
-        <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener noreferrer"
-          class="hidden sm:flex items-center gap-1.5 px-4 py-1.5 text-sm font-semibold rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm">
+    <div class="flex items-center gap-1">
+      <button id="theme-toggle" class="icon-btn" aria-label="다크/라이트 모드 전환">
+        <span id="icon-sun"  class="material-icons-outlined hidden" aria-hidden="true">light_mode</span>
+        <span id="icon-moon" class="material-icons-outlined" aria-hidden="true">dark_mode</span>
+      </button>
+      <div class="hidden sm:block">
+        <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
           홈페이지
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-          </svg>
+          <span class="material-icons-outlined btn-arrow" aria-hidden="true">arrow_outward</span>
         </a>
       </div>
     </div>
   </nav>
 
   <!-- ══════════════════════ 히어로 ══════════════════════ -->
-  <section class="relative flex flex-col items-center justify-center w-full h-screen text-center text-white bg-gray-900 dark:bg-slate-950 overflow-hidden">
-    <div id="spotlight-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+  <header class="hero grain">
+    <div class="aurora" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="hero-grid" aria-hidden="true"></div>
 
-    <div class="z-10 p-4 animate-slide-up">
-      <p class="mb-4 text-sm font-semibold tracking-[0.2em] uppercase text-indigo-300/80">Education × Musical × Digital</p>
-      <h1 class="font-dohyeon text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-tight">
-        치수쌤의<br class="sm:hidden"> WebApps
-      </h1>
-      <p class="mt-5 text-base md:text-lg text-gray-300 max-w-xl mx-auto leading-relaxed px-2">
-        교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸며<br class="hidden sm:inline">
-        직접 만든 <span id="hero-app-count" class="text-indigo-300 font-bold"></span>개의 디지털 교육 도구 모음
-      </p>
-      <div class="hero-btns flex flex-col sm:flex-row items-center justify-center gap-3 mt-10">
-        <a href="#collection"
-          class="inline-flex items-center gap-2 px-7 py-3.5 font-semibold text-gray-900 bg-white rounded-full hover:bg-gray-100 transition-colors shadow-lg shadow-white/10">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m0 0-6.75-6.75M20.25 12l-6.75 6.75" />
-          </svg>
-          WebApps 둘러보기
-        </a>
-        <a href="#about"
-          class="inline-flex items-center gap-2 px-7 py-3.5 font-semibold text-white bg-white/10 rounded-full hover:bg-white/20 transition-colors backdrop-blur-sm">
-          About Me
-        </a>
+    <div class="flex-1 flex flex-col items-center justify-center text-center px-5 pt-32 pb-12">
+      <div class="eyebrow-chip rise">
+        <span class="pulse"></span>
+        Education × Musical × Digital
       </div>
+
+      <h1 class="hero-title mt-8 text-ink rise" style="animation-delay:.08s">
+        치수쌤의<br>
+        <span class="font-serif-display text-grad">WebApps</span>
+      </h1>
+
+      <p class="mt-8 text-base md:text-lg text-ink-2 max-w-xl leading-relaxed rise" style="animation-delay:.16s">
+        교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸며<br class="hidden sm:inline">
+        직접 만든 <strong id="hero-app-count" class="font-bold text-ink"></strong>개의 디지털 교육 도구 모음
+      </p>
+
+      <div class="hero-btns flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 rise" style="animation-delay:.24s">
+        <a href="#collection" class="btn btn-primary">
+          WebApps 둘러보기
+          <span class="material-icons-outlined btn-arrow" aria-hidden="true">arrow_forward</span>
+        </a>
+        <a href="#about" class="btn btn-ghost">About Me</a>
+      </div>
+
+      <!-- 통계 -->
+      <dl id="hero-stats" class="mt-16 grid grid-cols-3 gap-6 sm:gap-14 rise" style="animation-delay:.32s">
+        <div class="flex flex-col-reverse items-center">
+          <dt class="text-xs text-muted tracking-wide mt-2">WebApps</dt>
+          <dd class="stat-num text-ink" id="stat-apps">–</dd>
+        </div>
+        <div class="flex flex-col-reverse items-center">
+          <dt class="text-xs text-muted tracking-wide mt-2">Categories</dt>
+          <dd class="stat-num text-ink" id="stat-cats">–</dd>
+        </div>
+        <div class="flex flex-col-reverse items-center">
+          <dt class="text-xs text-muted tracking-wide mt-2">Tutorials</dt>
+          <dd class="stat-num text-ink" id="stat-videos">–</dd>
+        </div>
+      </dl>
     </div>
 
-    <!-- 스크롤 다운 indicator -->
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/40 animate-bounce-y">
-      <span class="text-xs tracking-widest uppercase">Scroll</span>
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-      </svg>
+    <!-- 앱 이름 마퀴 -->
+    <div class="relative border-t hairline py-5 marquee" aria-hidden="true">
+      <div id="marquee-track" class="marquee-track"></div>
     </div>
-  </section>
+  </header>
 
   <!-- ══════════════════════ MAIN ══════════════════════ -->
   <main>
 
-    <!-- ── About ── -->
-    <section id="about" class="py-24 bg-white dark:bg-slate-900 scroll-mt-16">
-      <div class="container px-4 mx-auto">
-        <div class="grid items-center gap-12 lg:grid-cols-3">
+    <!-- ── 01 About ── -->
+    <section id="about" class="py-24 md:py-32 bg-page scroll-mt-20">
+      <div class="max-w-6xl px-5 mx-auto">
+        <div class="mb-12 md:mb-16 reveal">
+          <span class="section-index">01 — About</span>
+          <h2 class="section-title mt-5 text-ink">
+            교육과 뮤지컬, 디지털의<br>
+            <span class="font-serif-display text-grad">의미 있는 만남</span>
+          </h2>
+        </div>
 
-          <!-- 프로필 카드 -->
-          <div class="flex justify-center lg:col-span-1 reveal">
-            <div class="w-full max-w-sm p-8 text-center bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-slate-800 dark:to-slate-700 rounded-2xl shadow-lg ring-1 ring-black/5 dark:ring-white/10">
-              <div class="relative inline-block">
+        <div class="grid gap-4 md:gap-5 lg:grid-cols-12">
+
+          <!-- 프로필 -->
+          <div class="bento p-8 md:p-10 lg:col-span-5 lg:row-span-2 flex flex-col reveal">
+            <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-gradient-to-br from-violet-300 via-fuchsia-200 to-amber-200 dark:from-violet-700 dark:via-fuchsia-800 dark:to-amber-700 opacity-40 blur-3xl pointer-events-none" aria-hidden="true"></div>
+            <div class="relative flex items-center gap-5">
+              <div class="relative shrink-0">
                 <img
                   src="https://i.ibb.co/Tx52NF6Q/image.png"
-                  alt="프로필 이미지"
-                  class="w-28 h-28 mx-auto rounded-full shadow-md object-cover ring-4 ring-white dark:ring-slate-700"
-                  onerror="this.src='https://placehold.co/150x150/6366f1/ffffff?text=ChiSoo'"
+                  alt="원치수 프로필 사진"
+                  class="w-24 h-24 rounded-full object-cover ring-1 ring-black/5 dark:ring-white/10 shadow-lg"
+                  onerror="this.src='https://placehold.co/150x150/5B4BE0/ffffff?text=ChiSoo'"
                 />
-                <span class="absolute bottom-1 right-1 w-5 h-5 bg-green-400 border-2 border-white dark:border-slate-700 rounded-full"></span>
+                <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-400 border-[3px] border-white dark:border-zinc-900 rounded-full" aria-hidden="true"></span>
               </div>
-              <h3 class="mt-5 text-2xl font-bold font-dohyeon text-gray-900 dark:text-white">원치수</h3>
-              <p class="mt-1 text-sm font-medium text-indigo-500 dark:text-indigo-400">교육뮤지컬 꿈꾸는 치수쌤</p>
-              <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <span class="px-3 py-1 text-xs font-medium rounded-full bg-white dark:bg-slate-900 text-gray-600 dark:text-gray-300 shadow-sm">🎭 교육뮤지컬</span>
-                <span class="px-3 py-1 text-xs font-medium rounded-full bg-white dark:bg-slate-900 text-gray-600 dark:text-gray-300 shadow-sm">💻 바이브코딩</span>
-                <span class="px-3 py-1 text-xs font-medium rounded-full bg-white dark:bg-slate-900 text-gray-600 dark:text-gray-300 shadow-sm">🌱 세계시민교육</span>
+              <div>
+                <p class="text-xs font-semibold tracking-[.18em] uppercase text-muted">Creator</p>
+                <h3 class="mt-1 text-3xl font-extrabold tracking-tight text-ink">원치수</h3>
+                <p class="mt-1 text-sm font-medium text-ink-2">교육뮤지컬 꿈꾸는 치수쌤</p>
               </div>
+            </div>
+
+            <p class="relative mt-8 text-[15px] md:text-base leading-[1.8] text-ink-2">
+              교육뮤지컬을 고민하고, 창작하고, 실천합니다. 초등학생들과 함께 꿈꾸는 교육뮤지컬 이야기를 기록합니다. 따뜻한 디지털 활용 교육에도 관심이 많습니다.
+            </p>
+
+            <div class="relative mt-auto pt-8 flex flex-wrap gap-2">
+              <span class="chip">🎭 교육뮤지컬</span>
+              <span class="chip">💻 바이브코딩</span>
+              <span class="chip">🌱 세계시민교육</span>
             </div>
           </div>
 
-          <!-- 소개글 -->
-          <div class="lg:col-span-2 reveal" style="transition-delay:.1s">
-            <p class="mb-2 text-sm font-bold tracking-widest uppercase text-indigo-500">About Me</p>
-            <h2 class="mb-6 text-3xl sm:text-4xl font-bold text-gray-900 font-dohyeon dark:text-white">
-              교육과 뮤지컬, 디지털의<br>의미 있는 만남
-            </h2>
-            <div class="space-y-4 text-gray-600 dark:text-slate-300 text-base leading-relaxed">
-              <p>교육뮤지컬을 고민하고, 창작하고, 실천합니다. 초등학생들과 함께 꿈꾸는 교육뮤지컬 이야기를 기록합니다. 따뜻한 디지털 활용 교육에도 관심이 많습니다.</p>
-              <blockquote class="pl-5 py-3 italic border-l-4 border-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 rounded-r-lg text-gray-700 dark:text-indigo-200 text-sm">
-                "교육과 뮤지컬, 디지털의 의미 있는 만남을 꿈꾸다."
-              </blockquote>
-              <div>
-                <h4 class="mt-6 mb-3 text-base font-bold text-gray-900 dark:text-white">저서</h4>
-                <div class="flex flex-wrap gap-3">
-                  <a href="https://www.yes24.com/product/goods/103633243" target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-800 bg-gray-50 dark:bg-slate-800 dark:text-gray-200 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-700 dark:hover:text-indigo-300 ring-1 ring-black/5 dark:ring-white/10 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-                    </svg>
-                    세상에서 가장 쉬운 뮤지컬 수업
-                  </a>
-                  <a href="https://q-shop.kr/shop_view/?idx=180" target="_blank" rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-800 bg-gray-50 dark:bg-slate-800 dark:text-gray-200 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-700 dark:hover:text-indigo-300 ring-1 ring-black/5 dark:ring-white/10 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-                    </svg>
-                    뮤지컬 창작노트
-                  </a>
-                </div>
-              </div>
+          <!-- 인용 -->
+          <figure class="bento p-8 md:p-10 lg:col-span-7 flex flex-col justify-between min-h-[220px] reveal" style="transition-delay:.08s">
+            <span class="font-serif-display text-7xl leading-none text-grad select-none" aria-hidden="true">“</span>
+            <blockquote class="-mt-6 text-2xl md:text-3xl font-semibold tracking-tight leading-snug text-ink">
+              교육과 뮤지컬, 디지털의<br class="hidden sm:inline">
+              <span class="font-serif-display italic font-normal text-[1.1em]">의미 있는 만남</span>을 꿈꾸다.
+            </blockquote>
+            <figcaption class="mt-6 text-sm text-muted">— 치수쌤</figcaption>
+          </figure>
+
+          <!-- 저서 -->
+          <div class="bento p-6 md:p-8 lg:col-span-7 reveal" style="transition-delay:.16s">
+            <div class="flex items-center justify-between mb-5">
+              <h4 class="text-xs font-semibold tracking-[.18em] uppercase text-muted">Books · 저서</h4>
+              <span class="material-icons-outlined text-muted" aria-hidden="true">auto_stories</span>
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <a href="https://www.yes24.com/product/goods/103633243" target="_blank" rel="noopener noreferrer" class="book-link">
+                <span class="w-10 h-10 shrink-0 rounded-xl grid place-items-center bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white">
+                  <span class="material-icons-outlined" aria-hidden="true">menu_book</span>
+                </span>
+                <span class="text-sm font-semibold leading-snug text-ink">세상에서 가장 쉬운<br>뮤지컬 수업</span>
+                <span class="material-icons-outlined arrow" aria-hidden="true">arrow_outward</span>
+              </a>
+              <a href="https://q-shop.kr/shop_view/?idx=180" target="_blank" rel="noopener noreferrer" class="book-link">
+                <span class="w-10 h-10 shrink-0 rounded-xl grid place-items-center bg-gradient-to-br from-amber-400 to-rose-500 text-white">
+                  <span class="material-icons-outlined" aria-hidden="true">edit_note</span>
+                </span>
+                <span class="text-sm font-semibold leading-snug text-ink">뮤지컬<br>창작노트</span>
+                <span class="material-icons-outlined arrow" aria-hidden="true">arrow_outward</span>
+              </a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── App Collection ── -->
-    <section id="collection" class="py-24 bg-slate-50 dark:bg-slate-950 scroll-mt-16">
-      <div class="container px-4 mx-auto">
+    <!-- ── 02 Collection ── -->
+    <section id="collection" class="py-24 md:py-32 bg-page-alt scroll-mt-20 border-y hairline">
+      <div class="max-w-7xl px-5 mx-auto">
 
-        <!-- 섹션 헤더 -->
-        <div class="text-center mb-10 reveal">
-          <p class="mb-2 text-sm font-bold tracking-widest uppercase text-indigo-500">Collection</p>
-          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 font-dohyeon dark:text-white">WebApp Collection</h2>
-          <p id="app-count" class="mt-3 text-gray-500 dark:text-gray-400 text-sm"></p>
+        <div class="mb-10 md:mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-6 reveal">
+          <div>
+            <span class="section-index">02 — Collection</span>
+            <h2 class="section-title mt-5 text-ink">
+              WebApp <span class="font-serif-display text-grad">Collection</span>
+            </h2>
+          </div>
+          <p id="app-count" class="text-sm text-muted md:text-right md:pb-3" aria-live="polite"></p>
         </div>
 
         <!-- 필터 + 검색 (sticky) -->
-        <div class="sticky top-16 z-20 py-4 mb-8 -mx-4 px-4 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800/60">
-          <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div class="toolbar mb-10 flex flex-col md:flex-row md:items-center gap-2">
+          <div class="relative w-full md:w-72 shrink-0">
+            <span class="material-icons-outlined absolute left-4 top-1/2 -translate-y-1/2 text-muted pointer-events-none" aria-hidden="true">search</span>
+            <input
+              type="search"
+              id="search-input"
+              placeholder="앱 이름, 태그, 기능 검색"
+              aria-label="앱 검색"
+              autocomplete="off"
+              class="w-full pl-11 pr-12 text-sm rounded-full"
+            />
+            <span id="search-kbd" class="kbd absolute right-3 top-1/2 -translate-y-1/2 place-items-center hidden md:inline-grid" aria-hidden="true">/</span>
+            <button id="search-clear" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 place-items-center rounded-full text-muted hover:bg-black/5 dark:hover:bg-white/10 transition-colors grid hidden" aria-label="검색어 지우기">
+              <span class="material-icons-outlined text-base" aria-hidden="true">close</span>
+            </button>
+          </div>
 
-            <!-- 검색창 -->
-            <div class="relative w-full md:max-w-xs shrink-0">
-              <input
-                type="text"
-                id="search-input"
-                placeholder="앱 이름, 태그, 기능 검색..."
-                class="w-full py-2.5 pl-10 pr-4 text-sm text-gray-900 dark:text-white bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full transition-shadow"
-              />
-              <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-              </div>
-              <!-- 검색 초기화 -->
-              <button id="search-clear" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <!-- 카테고리 필터 (가로 스크롤) -->
-            <div id="filter-scroll" class="flex gap-2 pb-1">
-              <div id="filter-buttons-container" class="flex gap-2 min-w-max">
-                <!-- JS로 생성 -->
-              </div>
+          <div id="filter-scroll" class="flex-1 min-w-0">
+            <div id="filter-buttons-container" class="flex gap-1 min-w-max pr-6" role="tablist" aria-label="카테고리 필터">
+              <!-- JS로 생성 -->
             </div>
           </div>
         </div>
 
         <!-- 앱 그리드 -->
-        <div id="app-grid" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div id="app-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <!-- JS로 생성 -->
         </div>
 
         <!-- 빈 검색결과 -->
-        <div id="no-results" class="hidden text-center py-20">
-          <div class="text-5xl mb-4">🔍</div>
-          <p class="text-lg font-semibold text-gray-700 dark:text-gray-300" id="no-results-text"></p>
-          <p class="mt-2 text-sm text-gray-500 dark:text-gray-500">다른 검색어로 시도해보세요.</p>
+        <div id="no-results" class="hidden text-center py-24">
+          <span class="material-icons-outlined text-5xl text-muted" aria-hidden="true">search_off</span>
+          <p class="mt-4 text-lg font-semibold text-ink" id="no-results-text"></p>
+          <p class="mt-2 text-sm text-muted">다른 검색어로 시도해보세요.</p>
         </div>
 
         <!-- 데이터 로딩 중 -->
-        <div id="data-loading" class="text-center py-20">
-          <div class="inline-block w-8 h-8 border-[3px] border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-          <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">앱 목록을 불러오는 중…</p>
+        <div id="data-loading" class="text-center py-24">
+          <div class="inline-block w-8 h-8 border-2 border-current border-t-transparent rounded-full animate-spin text-muted"></div>
+          <p class="mt-4 text-sm text-muted">앱 목록을 불러오는 중…</p>
         </div>
 
         <!-- 데이터 로딩 실패 -->
-        <div id="data-error" class="hidden text-center py-20">
-          <div class="text-5xl mb-4">⚠️</div>
-          <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">앱 목록을 불러오지 못했습니다.</p>
-          <p class="mt-2 text-sm text-gray-500 dark:text-gray-500" id="data-error-detail"></p>
+        <div id="data-error" class="hidden text-center py-24">
+          <span class="material-icons-outlined text-5xl text-amber-500" aria-hidden="true">error_outline</span>
+          <p class="mt-4 text-lg font-semibold text-ink">앱 목록을 불러오지 못했습니다.</p>
+          <p class="mt-2 text-sm text-muted max-w-md mx-auto" id="data-error-detail"></p>
         </div>
       </div>
     </section>
 
-    <!-- ── Concept ── -->
-    <section id="concept" class="py-24 bg-white dark:bg-slate-900 scroll-mt-16">
-      <div class="container px-4 mx-auto">
-        <div class="text-center mb-12 reveal">
-          <p class="mb-2 text-sm font-bold tracking-widest uppercase text-indigo-500">Categories</p>
-          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 font-dohyeon dark:text-white">Concept</h2>
-          <p id="concept-desc" class="mt-3 text-sm text-gray-500 dark:text-gray-400"></p>
+    <!-- ── 03 Concept ── -->
+    <section id="concept" class="py-24 md:py-32 bg-page scroll-mt-20">
+      <div class="max-w-6xl px-5 mx-auto">
+        <div class="mb-12 md:mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6 reveal">
+          <div>
+            <span class="section-index">03 — Concept</span>
+            <h2 class="section-title mt-5 text-ink">
+              <span class="font-serif-display text-grad">Six</span> Perspectives
+            </h2>
+          </div>
+          <p id="concept-desc" class="text-sm text-muted md:text-right md:pb-3 max-w-xs"></p>
         </div>
         <!-- data/apps.json 의 categories 로 렌더링 -->
-        <div id="concept-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
+        <div id="concept-grid" class="grid grid-cols-1 gap-4 md:gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
       </div>
     </section>
   </main>
 
   <!-- ══════════════════════ 푸터 ══════════════════════ -->
-  <footer class="py-12 bg-slate-900 dark:bg-black">
-    <div class="container px-4 mx-auto text-center">
-      <p class="font-dohyeon text-lg text-white mb-1">치수쌤 WebApps</p>
-      <p class="text-xs text-gray-400 mb-6">교육뮤지컬 꿈꾸는 치수쌤 | Education × Musical × Digital</p>
-      <div class="flex justify-center gap-6 mb-6">
-        <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener noreferrer"
-          class="text-sm text-gray-400 hover:text-white transition-colors">Portfolio</a>
-        <a href="https://litt.ly/stage" target="_blank" rel="noopener noreferrer"
-          class="flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors">
-          STAGE
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-          </svg>
-        </a>
+  <footer class="relative overflow-hidden border-t hairline bg-page-alt">
+    <div class="max-w-7xl px-5 mx-auto pt-20 pb-10">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-10">
+        <div class="max-w-sm">
+          <a href="#" class="flex items-center gap-2.5 text-ink">
+            <span class="logo-mark">치</span>
+            <span class="text-[15px] font-bold tracking-tight">치수쌤 <span class="font-serif-display italic text-[17px] font-normal">WebApps</span></span>
+          </a>
+          <p class="mt-4 text-sm leading-relaxed text-muted">교육뮤지컬 꿈꾸는 치수쌤 | Education × Musical × Digital</p>
+        </div>
+        <nav class="flex gap-12 text-sm" aria-label="푸터 링크">
+          <div class="flex flex-col gap-3">
+            <span class="text-xs font-semibold tracking-[.18em] uppercase text-muted">Explore</span>
+            <a href="#about" class="text-ink-2 hover:text-[color:var(--ink)] transition-colors">About</a>
+            <a href="#collection" class="text-ink-2 hover:text-[color:var(--ink)] transition-colors">Apps</a>
+            <a href="#concept" class="text-ink-2 hover:text-[color:var(--ink)] transition-colors">Concept</a>
+          </div>
+          <div class="flex flex-col gap-3">
+            <span class="text-xs font-semibold tracking-[.18em] uppercase text-muted">Links</span>
+            <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink-2 hover:text-[color:var(--ink)] transition-colors">Portfolio <span class="material-icons-outlined text-sm" aria-hidden="true">arrow_outward</span></a>
+            <a href="https://litt.ly/stage" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-ink-2 hover:text-[color:var(--ink)] transition-colors">STAGE <span class="material-icons-outlined text-sm" aria-hidden="true">arrow_outward</span></a>
+          </div>
+        </nav>
       </div>
-      <p class="text-xs text-gray-600">© 2025 원치수. All rights reserved.</p>
+
+      <div class="footer-word mt-16 md:mt-24 text-center select-none" aria-hidden="true">
+        치수쌤<span class="font-serif-display text-grad">Vibe</span>
+      </div>
+
+      <div class="mt-10 pt-6 border-t hairline flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p class="text-xs text-muted">© <span id="copyright-year">2025</span> 원치수. All rights reserved.</p>
+        <div class="chichiboo-footer">
+          <a href="https://litt.ly/chichiboo" target="_blank" rel="noopener noreferrer">
+            <span class="material-icons-outlined" aria-hidden="true">auto_stories</span>
+            Created by. 교육뮤지컬 꿈꾸는 치수쌤
+          </a>
+        </div>
+      </div>
     </div>
   </footer>
 
   <!-- ══════════════════════ 맨위로 버튼 ══════════════════════ -->
   <button id="back-to-top" aria-label="맨 위로" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-    </svg>
+    <span class="material-icons-outlined" aria-hidden="true">arrow_upward</span>
   </button>
 
   <!-- ══════════════════════ 모달 ══════════════════════ -->
-  <div id="app-modal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div id="app-modal" class="fixed inset-0 z-[200] flex items-end sm:items-center justify-center sm:p-6 bg-black/50 backdrop-blur-md hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div id="modal-content-wrapper"
-      class="relative w-full max-w-2xl max-h-[92vh] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col animate-scale-in ring-1 ring-black/10 dark:ring-white/10">
-
-      <!-- 모달 헤더 -->
-      <div id="modal-header-bg" class="p-6 text-white shrink-0">
-        <div class="flex items-start justify-between gap-4">
-          <div class="flex-1 min-w-0">
-            <span id="modal-category-badge" class="inline-block px-2.5 py-0.5 mb-2 text-xs font-bold rounded-full bg-white/20"></span>
-            <h2 id="modal-title" class="text-2xl sm:text-3xl font-bold font-dohyeon leading-tight"></h2>
-            <p id="modal-eng-title" class="mt-1 text-base opacity-80"></p>
-          </div>
-        </div>
-      </div>
+      class="relative w-full sm:max-w-2xl max-h-[92svh] rounded-t-[28px] sm:rounded-[28px] shadow-2xl overflow-hidden flex flex-col border hairline">
 
       <!-- 닫기 버튼 -->
-      <button id="modal-close-btn" class="absolute top-4 right-4 p-2 rounded-full bg-black/20 hover:bg-black/30 text-white transition-colors" aria-label="닫기">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-        </svg>
+      <button id="modal-close-btn" class="absolute top-4 right-4 z-10 w-10 h-10 grid place-items-center rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md border border-white/20 transition-colors" aria-label="닫기">
+        <span class="material-icons-outlined" aria-hidden="true">close</span>
       </button>
 
-      <!-- 모달 바디 -->
-      <div class="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6">
-
-        <!-- 설명 -->
-        <div>
-          <p id="modal-description" class="text-gray-700 dark:text-slate-200 text-base leading-relaxed"></p>
+      <div class="flex-1 overflow-y-auto overscroll-contain">
+        <!-- 모달 커버 -->
+        <div id="modal-header-bg" class="relative aspect-[16/9] overflow-hidden">
+          <img id="modal-image" alt="" class="absolute inset-0 w-full h-full object-cover"
+            onerror="this.classList.add('hidden')" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute left-0 right-0 bottom-0 p-6 sm:p-8 text-white">
+            <span id="modal-category-badge" class="card-badge"></span>
+            <h2 id="modal-title" class="mt-3 text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight"></h2>
+            <p id="modal-eng-title" class="mt-1 font-serif-display italic text-xl text-white/80"></p>
+          </div>
         </div>
 
-        <!-- 태그 -->
-        <div>
-          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-500 dark:text-slate-400 mb-2">태그</h4>
-          <div id="modal-tags-container" class="flex flex-wrap gap-2"></div>
-        </div>
+        <!-- 모달 바디 -->
+        <div class="p-6 sm:p-8 space-y-8">
+          <p id="modal-description" class="text-ink-2 text-base sm:text-[17px] leading-[1.8]"></p>
 
-        <!-- 스크린샷 -->
-        <div id="modal-image-container" class="hidden">
-          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-500 dark:text-slate-400 mb-2">스크린샷</h4>
-          <img id="modal-image" alt="스크린샷"
-            class="w-full h-auto rounded-xl shadow-md object-cover ring-1 ring-black/5 dark:ring-white/10"
-            loading="lazy"
-            onerror="this.closest('#modal-image-container').classList.add('hidden')" />
-        </div>
+          <div>
+            <h4 class="modal-label">Tags</h4>
+            <div id="modal-tags-container" class="flex flex-wrap gap-2"></div>
+          </div>
 
-        <!-- 사이트 링크 -->
-        <div id="modal-site-link-container" class="hidden">
-          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-500 dark:text-slate-400 mb-2">사이트 링크</h4>
-          <a id="modal-site-link" href="#" target="_blank" rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition-colors shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-            </svg>
-            앱 열기
-          </a>
-        </div>
+          <!-- 스크린샷: 커버 이미지로 표시 (컨테이너는 스크립트 호환을 위해 유지) -->
+          <div id="modal-image-container" class="hidden"></div>
 
-        <!-- 유튜브 임베드 -->
-        <div id="modal-video-container" class="hidden">
-          <h4 class="text-xs font-bold tracking-widest uppercase text-gray-500 dark:text-slate-400 mb-3">사용법 영상</h4>
-          <div class="yt-embed-wrap shadow-lg ring-1 ring-black/5 dark:ring-white/10">
-            <iframe id="modal-youtube-iframe" title="사용법 영상"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen></iframe>
+          <!-- 유튜브 임베드 -->
+          <div id="modal-video-container" class="hidden">
+            <h4 class="modal-label">How to use · 사용법 영상</h4>
+            <div class="yt-embed-wrap">
+              <iframe id="modal-youtube-iframe" title="사용법 영상"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <!-- 사이트 링크 -->
+          <div id="modal-site-link-container" class="hidden">
+            <a id="modal-site-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary w-full sm:w-auto">
+              앱 열기
+              <span class="material-icons-outlined btn-arrow" aria-hidden="true">arrow_outward</span>
+            </a>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- ══════════════════════ 히어로 조명 ══════════════════════ -->
-  <script>
-    (function () {
-      const container = document.getElementById('spotlight-container');
-      const defs = [
-        { color: '244,63,94',  size: 520, minOp: 0.18, maxOp: 0.38 },
-        { color: '2,132,199',  size: 600, minOp: 0.12, maxOp: 0.30 },
-        { color: '245,158,11', size: 380, minOp: 0.10, maxOp: 0.25 },
-        { color: '139,92,246', size: 450, minOp: 0.12, maxOp: 0.28 },
-        { color: '34,197,94',  size: 340, minOp: 0.08, maxOp: 0.20 },
-        { color: '236,72,153', size: 420, minOp: 0.10, maxOp: 0.24 },
-        { color: '14,165,233', size: 500, minOp: 0.10, maxOp: 0.26 },
-      ];
-      const rand = (min, max) => Math.random() * (max - min) + min;
-      const blobs = defs.map(def => {
-        const el = document.createElement('div');
-        el.className = 'spotlight-blob';
-        el.style.cssText = `width:${def.size}px;height:${def.size}px;background:radial-gradient(circle,rgba(${def.color},.4) 0%,rgba(${def.color},0) 70%);opacity:0;left:${rand(0,100)}%;top:${rand(0,100)}%`;
-        container.appendChild(el);
-        return { el, def };
-      });
-      function move({ el, def }) {
-        const dur = rand(10, 18);
-        el.style.transition = `left ${dur}s ease-in-out,top ${dur}s ease-in-out,opacity ${rand(3,6)}s ease-in-out`;
-        el.style.left = rand(-10, 110) + '%';
-        el.style.top  = rand(-10, 110) + '%';
-        el.style.opacity = rand(def.minOp, def.maxOp);
-        setTimeout(() => move({ el, def }), dur * 0.85 * 1000);
-      }
-      blobs.forEach(({ el, def }, i) => {
-        setTimeout(() => { el.style.opacity = rand(def.minOp, def.maxOp); move({ el, def }); }, i * 600);
-      });
-    })();
-  </script>
 
   <!-- ══════════════════════ 앱 데이터 & 로직 ══════════════════════ -->
   <script>
@@ -675,6 +979,9 @@
       bg: 'bg-gradient-to-r from-slate-400 to-slate-600',
     };
     const metaOf = (name) => categoryMeta[name] || FALLBACK_META;
+
+    // 숫자 → 영어 단어 (Concept 제목용)
+    const NUM_WORDS = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve'];
 
     // apps.json 을 검증하고 화면에서 쓰는 형태로 정리
     function applyData(raw) {
@@ -716,6 +1023,7 @@
     const noResultsText  = document.getElementById('no-results-text');
     const searchInput    = document.getElementById('search-input');
     const searchClear    = document.getElementById('search-clear');
+    const searchKbd      = document.getElementById('search-kbd');
     const filterCont     = document.getElementById('filter-buttons-container');
     const appCount       = document.getElementById('app-count');
     const heroCount      = document.getElementById('hero-app-count');
@@ -728,7 +1036,6 @@
     const modalCatBadge  = document.getElementById('modal-category-badge');
     const modalDesc      = document.getElementById('modal-description');
     const modalTagsCont  = document.getElementById('modal-tags-container');
-    const modalImgCont   = document.getElementById('modal-image-container');
     const modalImg       = document.getElementById('modal-image');
     const modalSiteCont  = document.getElementById('modal-site-link-container');
     const modalSiteLink  = document.getElementById('modal-site-link');
@@ -739,6 +1046,7 @@
     const dataLoading    = document.getElementById('data-loading');
     const dataError      = document.getElementById('data-error');
     const dataErrorInfo  = document.getElementById('data-error-detail');
+    const marqueeTrack   = document.getElementById('marquee-track');
 
     // 카테고리별 앱 수
     function countByCategory(cat) {
@@ -753,16 +1061,22 @@
       filterCont.innerHTML = all.map(({ label, meta }) => {
         const active = currentFilter === label;
         const count  = countByCategory(label);
-        const activeCls = active
-          ? (meta ? meta.bg + ' text-white' : 'bg-indigo-600 text-white')
-          : 'filter-btn-inactive bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-700 ring-1 ring-black/5 dark:ring-white/10';
+        const dot = meta ? `<span class="cat-dot bg-gradient-to-br ${meta.gradient}"></span>` : '';
         return `
-          <button onclick="setFilter('${label}')"
-            class="inline-flex items-center px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all whitespace-nowrap ${activeCls}">
-            ${meta ? meta.emoji + ' ' : ''}${label}
+          <button onclick="setFilter('${label}')" role="tab" aria-selected="${active}"
+            class="filter-btn ${active ? 'is-active' : ''}">
+            ${dot}${label}
             <span class="filter-badge">${count}</span>
           </button>`;
       }).join('');
+
+      // 선택된 필터가 보이도록 가로 스크롤
+      const activeBtn = filterCont.querySelector('.is-active');
+      const scroller  = document.getElementById('filter-scroll');
+      if (activeBtn) {
+        const left = activeBtn.getBoundingClientRect().left - scroller.getBoundingClientRect().left + scroller.scrollLeft - 16;
+        scroller.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+      }
     }
 
     // "#태그1 #태그2" → ['#태그1','#태그2'] (값이 없거나 공백이 겹쳐도 안전하게)
@@ -775,7 +1089,10 @@
       return text.replace(re, '<mark>$1</mark>');
     }
 
+    const PLACEHOLDER_HTML = '<div class="card-placeholder"><span class="material-icons-outlined" aria-hidden="true">web</span></div>';
+
     // ─── 카드 그리드 렌더 ───
+    let gridRendered = false; // 첫 렌더만 스크롤 reveal, 이후(검색·필터)는 가벼운 페이드
     function renderGrid() {
       const term = currentSearch.toLowerCase();
       let list = appData.filter(app => {
@@ -804,50 +1121,65 @@
       appCount.textContent = currentFilter === '전체'
         ? `총 ${appData.length}개의 디지털 교육 도구`
         : `${currentFilter} · ${list.length}개`;
+      if (currentSearch && currentFilter === '전체') appCount.textContent = `검색 결과 ${list.length}개`;
 
-      appGrid.innerHTML = list.map(app => {
+      appGrid.innerHTML = list.map((app, n) => {
         const meta = metaOf(app.category);
         const tagsHtml = splitTags(app.tags).map(t =>
           `<span class="tag-pill">${highlight(t, currentSearch)}</span>`
         ).join('');
 
         const thumbHtml = app.imageUrl
-          ? `<img src="${app.imageUrl}" alt="${app.title}" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'card-placeholder\\'><svg xmlns=\\'http://www.w3.org/2000/svg\\' class=\\'w-10 h-10 text-slate-300 dark:text-slate-600\\' fill=\\'none\\' viewBox=\\'0 0 24 24\\' stroke-width=\\'1\\'  stroke=\\'currentColor\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' d=\\'M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0H3\\'/></svg></div>'">`
-          : `<div class="card-placeholder"><svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-slate-300 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0H3"/></svg></div>`;
+          ? `<img src="${app.imageUrl}" alt="" loading="lazy" decoding="async" onerror="this.outerHTML=PLACEHOLDER_HTML">`
+          : PLACEHOLDER_HTML;
 
         const hasBadges = app.youtubeVideoId || app.siteUrl;
         const badgeHtml = hasBadges ? `
-          <div class="absolute top-2 right-2 flex gap-1">
-            ${app.youtubeVideoId ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500 text-white text-xs font-bold shadow"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82Z"/></svg>영상</span>` : ''}
-            ${app.siteUrl ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500 text-white text-xs font-bold shadow">링크</span>` : ''}
+          <div class="absolute top-3 left-3 flex gap-1.5">
+            ${app.youtubeVideoId ? `<span class="card-badge"><span class="material-icons-outlined" style="font-size:14px" aria-hidden="true">play_arrow</span>영상</span>` : ''}
+            ${app.siteUrl ? `<span class="card-badge"><span class="material-icons-outlined" style="font-size:13px" aria-hidden="true">link</span>링크</span>` : ''}
           </div>` : '';
 
         return `
-          <article class="app-card group reveal" role="button" tabindex="0" aria-label="${app.title} 상세 보기"
+          <article class="app-card ${gridRendered ? 'card-in' : 'reveal'}" role="button" tabindex="0" aria-label="${app.title} 상세 보기"
+            style="${gridRendered ? `animation-delay:${Math.min(n, 8) * 0.03}s` : `transition-delay:${(n % 4) * 0.06}s`}"
             onclick="openModal(${app._i})"
             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal(${app._i});}">
             <div class="card-thumb">
               ${thumbHtml}
               ${badgeHtml}
-              <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-end p-3">
-                <span class="text-xs font-bold text-white bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full">자세히 보기 →</span>
-              </div>
             </div>
-            <div class="p-5 flex flex-col gap-3">
-              <div>
-                <span class="inline-flex items-center gap-1 text-xs font-bold ${meta.text}">${meta.emoji} ${highlight(app.category, currentSearch)}</span>
-                <h3 class="mt-1 text-base font-bold text-gray-900 dark:text-white font-dohyeon leading-snug line-clamp-2">${highlight(app.title, currentSearch)}</h3>
-                <p class="text-xs text-gray-500 dark:text-slate-400 mt-0.5">${highlight(app.engTitle, currentSearch)}</p>
+            <div class="px-3 pt-4 pb-3 flex flex-col gap-3 flex-1">
+              <div class="flex items-center gap-2 text-xs font-medium text-muted">
+                <span class="cat-dot bg-gradient-to-br ${meta.gradient}"></span>
+                ${highlight(app.category, currentSearch)}
               </div>
-              <p class="text-sm text-gray-600 dark:text-slate-300 leading-relaxed line-clamp-2">${highlight(app.description, currentSearch)}</p>
-              <div class="flex flex-wrap gap-1 pt-1">${tagsHtml}</div>
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <h3 class="text-[17px] font-bold tracking-tight leading-snug text-ink line-clamp-2">${highlight(app.title, currentSearch)}</h3>
+                  <p class="mt-0.5 font-serif-display italic text-[15px] text-muted truncate">${highlight(app.engTitle, currentSearch)}</p>
+                </div>
+                <span class="card-go" aria-hidden="true"><span class="material-icons-outlined" style="font-size:18px">arrow_outward</span></span>
+              </div>
+              <p class="text-sm text-ink-2 leading-relaxed line-clamp-2">${highlight(app.description, currentSearch)}</p>
+              <div class="flex flex-wrap gap-1 mt-auto pt-1">${tagsHtml}</div>
             </div>
           </article>`;
       }).join('');
 
       // Reveal 애니메이션 (새로 렌더된 카드 관찰)
-      observeReveal();
+      if (!gridRendered) observeReveal();
+      gridRendered = true;
     }
+
+    // 카드 위 마우스 위치에 따라 은은한 조명 효과
+    appGrid.addEventListener('pointermove', (e) => {
+      const card = e.target.closest('.app-card');
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      card.style.setProperty('--my', `${e.clientY - r.top}px`);
+    });
 
     window.setFilter = (f) => {
       currentFilter = f;
@@ -862,21 +1194,24 @@
       if (!app) return;
       const meta = metaOf(app.category);
 
-      modalHeaderBg.className = `p-6 text-white shrink-0 ${meta.bg}`;
+      // 커버 이미지가 없을 때는 카테고리 그라데이션이 배경으로 보임
+      modalHeaderBg.className = `relative aspect-[16/9] overflow-hidden bg-gradient-to-br ${meta.gradient}`;
       modalCatBadge.textContent = meta.emoji + ' ' + app.category;
       modalTitle.textContent    = app.title;
       modalEngTitle.textContent = app.engTitle;
       modalDesc.textContent     = app.description;
 
       modalTagsCont.innerHTML = splitTags(app.tags).map(t =>
-        `<span class="tag-pill">${t}</span>`
+        `<span class="chip">${t}</span>`
       ).join('');
 
       if (app.imageUrl) {
+        modalImg.classList.remove('hidden');
+        modalImg.alt = `${app.title} 스크린샷`;
         modalImg.src = app.imageUrl;
-        modalImgCont.classList.remove('hidden');
       } else {
-        modalImgCont.classList.add('hidden');
+        modalImg.classList.add('hidden');
+        modalImg.removeAttribute('src');
       }
 
       if (app.siteUrl) {
@@ -896,6 +1231,7 @@
 
       lastFocusedEl = document.activeElement;
       modal.classList.remove('hidden');
+      modalWrapper.querySelector('.overflow-y-auto').scrollTop = 0;
       document.body.style.overflow = 'hidden';
       modalCloseBtn.focus();
     };
@@ -913,42 +1249,29 @@
     modalWrapper.addEventListener('click', e => e.stopPropagation());
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    // ─── 네비게이션 스크롤 효과 ───
-    const nav     = document.getElementById('main-nav');
-    const navLogo = document.getElementById('nav-logo');
-    const navLinks = nav.querySelectorAll('a:not(#nav-logo)');
+    // ─── 스크롤: 네비게이션 / 진행 바 / 맨위로 ───
+    const nav         = document.getElementById('main-nav');
+    const backToTop   = document.getElementById('back-to-top');
+    const progressBar = document.getElementById('scroll-progress');
 
-    function updateNav() {
-      const scrolled = window.scrollY > 60;
-      nav.classList.toggle('scrolled', scrolled);
-      // 스크롤 후 색상 조정
-      if (scrolled) {
-        navLogo.classList.replace('text-white','text-gray-900');
-        navLogo.classList.add('dark:text-white');
-        navLinks.forEach(a => {
-          a.classList.replace('text-white/80','text-gray-600');
-          a.classList.replace('hover:text-white','hover:text-gray-900');
-          a.classList.replace('hover:bg-white/10','hover:bg-gray-100');
-          a.classList.add('dark:text-gray-300','dark:hover:text-white','dark:hover:bg-white/10');
-        });
-      } else {
-        navLogo.classList.replace('text-gray-900','text-white');
-        navLogo.classList.remove('dark:text-white');
-        navLinks.forEach(a => {
-          a.classList.replace('text-gray-600','text-white/80');
-          a.classList.replace('hover:text-gray-900','hover:text-white');
-          a.classList.replace('hover:bg-gray-100','hover:bg-white/10');
-          a.classList.remove('dark:text-gray-300','dark:hover:text-white','dark:hover:bg-white/10');
-        });
-      }
+    function onScroll() {
+      const y = window.scrollY;
+      nav.classList.toggle('scrolled', y > 24);
+      backToTop.classList.toggle('visible', y > 600);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
     }
+    window.addEventListener('scroll', onScroll, { passive: true });
 
-    // ─── 맨위로 버튼 ───
-    const backToTop = document.getElementById('back-to-top');
-    window.addEventListener('scroll', () => {
-      updateNav();
-      backToTop.classList.toggle('visible', window.scrollY > 400);
-    }, { passive: true });
+    // 현재 보고 있는 섹션을 네비게이션에 표시
+    const navLinks = document.querySelectorAll('.nav-link[data-section]');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(a => a.classList.toggle('active', a.dataset.section === entry.target.id));
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    ['about', 'collection', 'concept'].forEach(id => sectionObserver.observe(document.getElementById(id)));
 
     // ─── 다크모드 ───
     const themeToggle = document.getElementById('theme-toggle');
@@ -966,29 +1289,42 @@
 
     themeToggle.addEventListener('click', () => {
       const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
       syncThemeUI(isDark);
     });
 
     // 사용자가 직접 테마를 고르지 않은 경우, OS 테마 변경을 실시간 반영
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (localStorage.getItem('theme')) return;
+      try { if (localStorage.getItem('theme')) return; } catch (err) {}
       document.documentElement.classList.toggle('dark', e.matches);
       syncThemeUI(e.matches);
     });
 
     // ─── 검색 ───
+    function syncSearchUI() {
+      searchClear.classList.toggle('hidden', !currentSearch);
+      searchKbd.classList.toggle('md:inline-grid', !currentSearch);
+    }
     searchInput.addEventListener('input', e => {
       currentSearch = e.target.value.trim();
-      searchClear.classList.toggle('hidden', !currentSearch);
+      syncSearchUI();
       renderGrid();
     });
     searchClear.addEventListener('click', () => {
       searchInput.value = '';
       currentSearch = '';
-      searchClear.classList.add('hidden');
+      syncSearchUI();
       searchInput.focus();
       renderGrid();
+    });
+    // "/" 키로 검색창 바로가기
+    document.addEventListener('keydown', e => {
+      if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
+      const tag = (document.activeElement && document.activeElement.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || !modal.classList.contains('hidden')) return;
+      e.preventDefault();
+      document.getElementById('collection').scrollIntoView({ behavior: 'smooth' });
+      searchInput.focus({ preventScroll: true });
     });
 
     // ─── Intersection Observer (reveal 애니메이션) ───
@@ -1003,27 +1339,75 @@
           }
         });
       }, { threshold: 0.08 });
-      document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+      document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
     }
 
     // ─── Concept 섹션 렌더 (카테고리 = apps.json 의 categories) ───
     function renderConcept() {
-      conceptDesc.textContent = `${categories.length}가지 영역에서 디지털 교육 도구를 만들고 있습니다.`;
+      conceptDesc.textContent = `${categories.length}가지 영역에서 디지털 교육 도구를 만들고 있습니다. 카드를 누르면 해당 앱만 모아 볼 수 있어요.`;
+      const word = NUM_WORDS[categories.length] || categories.length;
+      document.querySelector('#concept .section-title .font-serif-display').textContent = word;
+
       conceptGrid.innerHTML = categories.map((name, i) => {
-        const meta = metaOf(name);
+        const meta  = metaOf(name);
+        const count = countByCategory(name);
         return `
-          <div class="reveal p-8 text-white rounded-2xl shadow-lg bg-gradient-to-br ${meta.gradient} flex flex-col gap-2 group hover:scale-[1.02] transition-transform"
-            style="transition-delay:${(i * 0.05).toFixed(2)}s">
-            <span class="text-3xl">${meta.emoji}</span>
-            <h3 class="text-xl font-bold font-dohyeon">${name}</h3>
-            <p class="text-sm opacity-80">${meta.tagline}</p>
-          </div>`;
+          <a href="#collection" class="concept-card reveal" style="transition-delay:${(i % 3 * 0.08).toFixed(2)}s"
+            onclick="showCategory('${name}'); return false;" aria-label="${name} 앱 ${count}개 보기">
+            <span class="concept-orb bg-gradient-to-br ${meta.gradient}" aria-hidden="true"></span>
+            <div class="flex items-start justify-between">
+              <span class="concept-emoji" aria-hidden="true">${meta.emoji}</span>
+              <span class="font-serif-display italic text-2xl text-muted">${String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="mt-auto pt-10">
+              <h3 class="text-2xl font-bold tracking-tight text-ink">${name}</h3>
+              <p class="mt-1.5 text-sm text-muted">${meta.tagline}</p>
+              <div class="mt-5 pt-4 border-t hairline flex items-center justify-between text-sm">
+                <span class="text-ink-2"><strong class="text-ink font-semibold">${count}</strong> apps</span>
+                <span class="material-icons-outlined text-muted" aria-hidden="true">arrow_forward</span>
+              </div>
+            </div>
+          </a>`;
       }).join('');
+    }
+
+    window.showCategory = (name) => {
+      setFilter(name);
+      document.getElementById('collection').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ─── 히어로: 통계 + 마퀴 ───
+    function animateNumber(el, to) {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) { el.textContent = to; return; }
+      const start = performance.now(), dur = 1400;
+      const step = (now) => {
+        const p = Math.min((now - start) / dur, 1);
+        el.textContent = Math.round(to * (1 - Math.pow(1 - p, 4)));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    function renderHero() {
+      heroCount.textContent = appData.length;
+      animateNumber(document.getElementById('stat-apps'), appData.length);
+      animateNumber(document.getElementById('stat-cats'), categories.length);
+      animateNumber(document.getElementById('stat-videos'), appData.filter(a => a.youtubeVideoId).length);
+
+      const items = appData.map(a => `
+        <span class="marquee-item">
+          <span>${a.title}</span>
+          <span class="font-serif-display">${a.engTitle || ''}</span>
+          <span class="text-[10px] opacity-40">✦</span>
+        </span>`).join('');
+      marqueeTrack.innerHTML = items + items; // 끊김 없는 루프를 위해 두 번 반복
     }
 
     // ─── 초기화 ───
     async function init() {
-      updateNav();
+      onScroll();
+      document.getElementById('copyright-year').textContent = new Date().getFullYear();
 
       try {
         const res = await fetch(DATA_URL, { cache: 'no-cache' });
@@ -1041,7 +1425,7 @@
       }
 
       dataLoading.classList.add('hidden');
-      heroCount.textContent = appData.length;
+      renderHero();
       renderFilters();
       renderConcept();
       renderGrid();
